@@ -1,0 +1,14 @@
+{
+  "name": "ita-dataloader-report-viewer",
+  "version": "1.0.0",
+  "description": "An App for viewing PowerBI Reports",
+  "author": "Vango <evangelos.poenres@trade.gov>",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.16.1",
+    "guid": "0.0.12"
+  }
+}

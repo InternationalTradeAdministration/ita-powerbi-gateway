@@ -4,6 +4,8 @@ const PORT = 8080;
 const HOST = '0.0.0.0';
 
 var utils = require(__dirname + '/utils.js');
+var auth = require(__dirname + '/authentication.js');
+var axios = require('axios');
 
 // App
 const app = express();
@@ -15,45 +17,53 @@ app.get("/api/getPowerBI-token", (req, res, next) => {
   res.json(["Vango", "Is", "Cool"]);
 });
 
-app.get("/api/reports", (req, res, next) => {
-  console.log(req.query.businessUnit)
-  res.json([{ reportName: "otexa rpt", reportUrl: "url" }]);
+app.get("/api/reports", async (req, res, next) => {
+  const validationResults = utils.validateConfig();
+  if (validationResults) {
+    console.log("error: " + validationResults);
+    return;
+  }
+
+  tokenResponse = await auth.getAuthenticationToken();
+  if (('' + tokenResponse).indexOf('Error') > -1) {
+    console.log('' + tokenResponse);
+    return;
+  }
+
+  const requestParams = utils.getReports(tokenResponse.accessToken);
+  // const resonse = await utils.sendGetReportRequestAsync(requestParams.url, requestParams.options)
+  const reportsResponse = await axios({
+    url: requestParams.url,
+    method: requestParams.options.method,
+    headers: requestParams.options.headers
+  });
+  return res.json(reportsResponse.data);
+});
+
+app.get("/api/report", async (req, res, next) => {
+  //console.log(req.query.reportId)
+
+  const validationResults = utils.validateConfig();
+  if (validationResults) {
+    console.log("error: " + validationResults);
+    return;
+  }
+
+  tokenResponse = await auth.getAuthenticationToken();
+  if (('' + tokenResponse).indexOf('Error') > -1) {
+    console.log('' + tokenResponse);
+    return;
+  }
+
+  var token = tokenResponse.accessToken;
+  var requestParams = utils.createGetReportRequestParams(token)
+  const resonse = await utils.sendGetReportRequestAsync(requestParams.url, requestParams.options)
+  return res.json(resonse)
 });
 
 app.listen(PORT, HOST);
 console.log(`Running on http://${HOST}:${PORT}`);
 
-
-// var auth = require(__dirname +'/authentication.js');
-// var config = require(__dirname + '/config.json');
-// var utils = require(__dirname + '/utils.js');
-
-// async function getReport () {
-//     // validate configuration info
-//     res = utils.validateConfig();
-//     if(res){
-//        console.log("error: "  + res);
-//        return;
-//     }
-
-//     // get aad token to use for sending api requests
-//     tokenResponse = await auth.getAuthenticationToken();
-//     if(('' + tokenResponse).indexOf('Error') > -1){
-//         console.log('' + tokenResponse);
-//         return;
-//     }
-    
-//     var token = tokenResponse.accessToken;
-//     console.log("Returned accessToken: " + token);
-
-//     // create reqest for GetReport api call
-//     var requestParams = utils.createGetReportRequestParams(token)
-
-//     // get the requested report from the requested api workspace.
-//     // if report not specified - returns the first report in the workspace.
-//     // the request's results will be printed to console.
-//     return await utils.sendGetReportRequestAsync(requestParams.url, requestParams.options);
-// }
 
 // async function generateEmbedToken(){
 //     // validate configuration info
@@ -69,7 +79,7 @@ console.log(`Running on http://${HOST}:${PORT}`);
 //         console.log('' + tokenResponse);
 //         return;
 //     }
-    
+
 //     var token = tokenResponse.accessToken;
 //     var authHeader = utils.getAuthHeader(token);
 
@@ -120,7 +130,7 @@ console.log(`Running on http://${HOST}:${PORT}`);
 //         console.log('' + tokenResponse);
 //         return;
 //     }
-    
+
 //     var token = tokenResponse.accessToken;
 //     var authHeader = utils.getAuthHeader(token);
 

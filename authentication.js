@@ -21,9 +21,9 @@ async function getAuthenticationToken() {
 
     turnOnLogging();
 
-    var config = require(__dirname + '/config.json');
+    var config = require(__dirname + '/config.js');
 
-    var authorityUrl = config.authorityUrl
+    var authorityUrl = config.params.authorityUrl
 
     var casjson = fs.readFileSync(__dirname + '/cas.json');
     var cas = JSON.parse(casjson);
@@ -34,7 +34,7 @@ async function getAuthenticationToken() {
     // use user credentials and appId to get an aad token
     let promise = () => { return new Promise(
         (resolve, reject) => {
-            context.acquireTokenWithUsernamePassword(config.resourceUrl, config.username, config.password, config.appId , function(err, tokenResponse) {
+            context.acquireTokenWithUsernamePassword(config.params.resourceUrl, config.params.username, config.params.password, config.params.appId , function(err, tokenResponse) {
                 if (err) reject(err);
                 resolve(tokenResponse);
             })

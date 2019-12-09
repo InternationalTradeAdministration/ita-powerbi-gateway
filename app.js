@@ -1,11 +1,11 @@
 const express = require('express');
+var axios = require('axios');
+
+var utils = require(__dirname + '/services/utils.js');
+var auth = require(__dirname + '/services/authentication.js');
 
 const PORT = 8080;
 const HOST = '0.0.0.0';
-
-var utils = require(__dirname + '/utils.js');
-var auth = require(__dirname + '/authentication.js');
-var axios = require('axios');
 
 // App
 const app = express();
@@ -41,12 +41,14 @@ app.get("/api/reports", async (req, res, next) => {
 });
 
 app.get("/api/report", async (req, res, next) => {
-  //console.log(req.query.reportId)
+  if(!req.query.reportId) {
+    res.json("Please pass a reportId on the query string")
+    return res;
+  }
 
   const validationResults = utils.validateConfig();
   if (validationResults) {
     console.log("error: " + validationResults);
-    return;
   }
 
   tokenResponse = await auth.getAuthenticationToken();
@@ -56,7 +58,7 @@ app.get("/api/report", async (req, res, next) => {
   }
 
   var token = tokenResponse.accessToken;
-  var requestParams = utils.createGetReportRequestParams(token)
+  var requestParams = utils.createGetReportRequestParams(token, req.query.reportId)
   const resonse = await utils.sendGetReportRequestAsync(requestParams.url, requestParams.options)
   return res.json(resonse)
 });

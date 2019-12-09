@@ -6,7 +6,6 @@ const params = {
     "apiUrl": "https://api.powerbi.com/",
     "appId": process.env.APP_ID,
     "workspaceId": process.env.WORKSPACE_ID,
-    "reportId": process.env.REPORT_ID,
     "username": process.env.RPT_USERNAME,
     "password": process.env.RPT_PASSWORD
 };

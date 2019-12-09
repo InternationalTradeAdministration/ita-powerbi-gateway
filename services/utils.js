@@ -1,5 +1,5 @@
 var request = require('request');
-var config = require(__dirname + '/config.js');
+var config = require(__dirname + '/../config/config.js');
 
 function getAuthHeader(accessToken) {
     var b = "Bearer ";
@@ -38,7 +38,7 @@ function validateConfig() {
     }
 }
 
-function createGetReportRequestParams(accessToken) {
+function createGetReportRequestParams(accessToken, reportId) {
     var authHeader = getAuthHeader(accessToken);
     var headers = {
         'Authorization': authHeader,
@@ -47,7 +47,7 @@ function createGetReportRequestParams(accessToken) {
         headers: headers,
         method: 'GET',
     };
-    var url = config.params.apiUrl + 'v1.0/myorg/groups/' + config.params.workspaceId + '/reports/' + config.params.reportId;
+    var url = config.params.apiUrl + 'v1.0/myorg/groups/' + config.params.workspaceId + '/reports/' + reportId;
 
     return {
         'url': url,
@@ -87,26 +87,11 @@ async function sendGetReportRequestAsync(url, options) {
                     if (error) {
                         reject(error);
                     }
-                    if (body == "") {
-                        console.log('error: no report with id: ' + config.params.reportId + " in group with id: " + config.params.workspaceId);
-                        reject('error: no report with id: ' + config.params.reportId + " in group with id: " + config.params.workspaceId);
-                    }
                     try {
                         getReportRes = JSON.parse(body)
-                        if (config.params.reportId) {
-                            console.log("Returned report name: " + getReportRes.name);
-                            console.log("Returned report Id: " + getReportRes.id);
-                            resolve(getReportRes);
-                        } else {
-                            if (getReportRes.value.length == 0) {
-                                console.log('No reports in the given workspace');
-                                reject('error: No reports in the given workspace');
-                            } else {
-                                console.log("Returned report name: " + getReportRes.value[0].name);
-                                console.log("Returned report Id: " + getReportRes.value[0].id);
-                                resolve(getReportRes.value[0]);
-                            }
-                        }
+                        console.log("Returned report name: " + getReportRes.name);
+                        console.log("Returned report Id: " + getReportRes.id);
+                        resolve(getReportRes);
                     } catch (e) { }
                 });
             });
@@ -131,19 +116,10 @@ async function sendGenerateEmbedTokenRequestAsync(url, options) {
                     if (error) {
                         reject(error);
                     }
-                    if (body == '') {
-                        console.log('error: no report with id: ' + config.params.reportId + " in group with id: " + config.params.workspaceId);
-                        reject('error: no report with id: ' + config.params.reportId + " in group with id: " + config.params.workspaceId);
-                    }
                     try {
                         generateEmbedTokenRes = JSON.parse(body)
-                        if (config.params.reportId) {
-                            console.log('Token Generated: ' + generateEmbedTokenRes.token);
-                            resolve(generateEmbedTokenRes.token);
-                        } else {
-                            console.log('Token Generated: ' + generateEmbedTokenRes.token);
-                            resolve(generateEmbedTokenRes.token);
-                        }
+                        console.log('Token Generated: ' + generateEmbedTokenRes.token);
+                        resolve(generateEmbedTokenRes.token);
                     } catch (e) { }
                 });
             });

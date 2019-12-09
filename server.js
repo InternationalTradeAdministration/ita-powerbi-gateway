@@ -8,6 +8,8 @@ var utils = require(__dirname + '/utils.js');
 // App
 const app = express();
 
+app.use(express.static('public'))
+
 app.get("/api/getPowerBI-token", (req, res, next) => {
   utils.validateConfig()
   res.json(["Vango", "Is", "Cool"]);

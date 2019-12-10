@@ -1,11 +1,23 @@
 <template>
   <div id="app">
-    <h1>ITA Dataloader Report Viewer</h1>
-    {{fromTheBackEnd}}
+    <vue-headful title="ITA Dataloader Reporting" />
+    <h1>ITA Dataloader Reporting</h1>
+    <md-table v-model="reports">
+      <md-table-row slot-scope="{ item }" slot="md-table-row">
+        <md-table-cell md-label="Report Name">{{item.name}}</md-table-cell>
+        <md-table-cell md-label="Web URL">
+          <a :href="item.webUrl" target="_blank">{{item.webUrl}}</a>
+        </md-table-cell>
+        <md-table-cell md-label="Embed URL">{{item.embedUrl}}</md-table-cell>
+      </md-table-row>
+    </md-table>
   </div>
 </template>
 
 <style scoped>
+#app {
+  margin: 10px;
+}
 </style>
 
 <script>
@@ -14,19 +26,18 @@ export default {
   components: {},
   data() {
     return {
-      fromTheBackEnd: null,
       reports: []
     };
   },
   async created() {
-    const reports = await fetch("/api/reports?businessUnit=otexa", {
+    const reports = await fetch("/api/list-reports", {
       method: "GET",
       headers: {
         "Content-Type": "application/json"
       }
     });
-
-    this.reports = await reports.json();
+    const response = await reports.json();
+    this.reports = response.value;
   },
   methods: {}
 };

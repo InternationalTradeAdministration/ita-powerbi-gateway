@@ -40,19 +40,8 @@ function validateConfig() {
 
 function createGetReportRequestParams(accessToken, reportId) {
     var authHeader = getAuthHeader(accessToken);
-    var headers = {
-        'Authorization': authHeader,
-    };
-    var options = {
-        headers: headers,
-        method: 'GET',
-    };
     var url = config.params.apiUrl + 'v1.0/myorg/groups/' + config.params.workspaceId + '/reports/' + reportId;
-
-    return {
-        'url': url,
-        'options': options
-    };
+    return queryApiWithAuthHeader(url, accessToken, authHeader)
 }
 
 function getReports(accessToken) {
@@ -106,7 +95,8 @@ async function sendGetReportRequestAsync(url, options) {
     return res;
 }
 
-async function sendGenerateEmbedTokenRequestAsync(url, options) {
+async function sendGenerateEmbedTokenRequestAsync(reportId, options) {
+    var url = config.params.apiUrl + 'v1.0/myorg/groups/' + config.params.workspaceId + '/reports/' + reportId + '/GenerateToken';
     let promise = () => {
         return new Promise(
             (resolve, reject) => {

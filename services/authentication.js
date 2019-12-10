@@ -1,4 +1,4 @@
-var config = require(__dirname + '/../config/config.js');
+var config = require('../config/config.js');
 var casPath = __dirname + '/../config/cas.json';
 
 async function getAuthenticationToken() {

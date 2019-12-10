@@ -1,5 +1,5 @@
 var request = require('request');
-var config = require(__dirname + '/../config/config.js');
+var config = require('../config/config.js');
 
 function getAuthHeader(accessToken) {
     var b = "Bearer ";

@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "An App for viewing PowerBI Reports",
   "author": "Vango <evangelos.poenres@trade.gov>",
-  "main": "server.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "start:prod": "env NODE_ENV=production node app.js "
   },
   "dependencies": {
     "adal-node": "^0.2.1",

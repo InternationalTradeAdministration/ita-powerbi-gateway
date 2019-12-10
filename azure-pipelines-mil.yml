@@ -1,0 +1,20 @@
+trigger:
+  - master
+
+pool:
+  vmImage: 'ubuntu-16.04'
+
+variables:
+  webAppName: 'ita-dataloader-reporting'
+  azureServiceConnection: 'vangos-app-service-connection'
+  containerRegestryServiceConnection: 'vangos-container-registry-service-connection'
+  imageName: '<container-registry-url>/ita-dataloader-reporting'
+
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '8.x'
+    displayName: Install Node
+  - script: |
+      ./build.sh
+    displayName: Build project artifacts

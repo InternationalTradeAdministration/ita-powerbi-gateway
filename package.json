@@ -5,7 +5,7 @@
   "author": "Vango <evangelos.poenres@trade.gov>",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node app.js"
   },
   "dependencies": {
     "adal-node": "^0.2.1",

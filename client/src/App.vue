@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <vue-headful title="ITA Dataloader Reporting" />
     <h1>ITA Dataloader Reporting</h1>
     <md-table v-model="reports">
       <md-table-row slot-scope="{ item }" slot="md-table-row">

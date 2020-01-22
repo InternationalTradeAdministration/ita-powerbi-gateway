@@ -53,9 +53,9 @@ exports.generateEmbedToken = async (req, res) => {
     return res;
   }
 
-  res = utils.validateConfig();
-  if (res) {
-    console.log("error: " + res);
+  const validationResults = utils.validateConfig();
+  if (validationResults) {
+    console.log("error: " + validationResults);
     return;
   }
 
@@ -78,5 +78,6 @@ exports.generateEmbedToken = async (req, res) => {
     body: JSON.stringify({ "accessLevel": "View" })
   };
 
-  return await utils.sendGenerateEmbedTokenRequestAsync(req.query.reportId, options);
+  const response = await utils.sendGenerateEmbedTokenRequestAsync(req.query.reportId, options);
+  return res.json(response) 
 }

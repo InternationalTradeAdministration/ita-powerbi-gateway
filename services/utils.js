@@ -9,12 +9,24 @@ function getAuthHeader(accessToken) {
 function validateConfig() {
     var guid = require('guid');
 
-    if (!config.params.appId) {
-        return "ApplicationId is empty. please register your application as Native app in https://dev.powerbi.com/apps and fill client Id in config.js";
+    if (!config.params.tenantId) {
+        return "TenantId is empty. please register your application as Native app in https://dev.powerbi.com/apps and fill client Id in config.js";
     }
 
-    if (!guid.isGuid(config.params.appId)) {
-        return "ApplicationId must be a Guid object. please register your application as Native app in https://dev.powerbi.com/apps and fill application Id in config.js";
+    if (!guid.isGuid(config.params.tenantId)) {
+        return "TenantId must be a Guid object. please register your application as Native app in https://dev.powerbi.com/apps and fill application Id in config.js";
+    }
+
+    if (!config.params.clientSecret) {
+        return "ClientSecret is empty. please register your application as Native app in https://dev.powerbi.com/apps and fill client Id in config.js";
+    }
+
+    if (!config.params.clientId) {
+        return "ClientId is empty. please register your application as Native app in https://dev.powerbi.com/apps and fill client Id in config.js";
+    }
+
+    if (!guid.isGuid(config.params.clientId)) {
+        return "ClientId must be a Guid object. please register your application as Native app in https://dev.powerbi.com/apps and fill application Id in config.js";
     }
 
     if (!config.params.workspaceId) {
@@ -29,13 +41,6 @@ function validateConfig() {
         return "AuthorityUrl is empty. Please fill valid AuthorityUrl under config.js";
     }
 
-    if (!config.params.username || !config.params.username.trim()) {
-        return "Username is empty. Please fill Power BI username in config.js";
-    }
-
-    if (!config.params.password || !config.params.password.trim()) {
-        return "Password is empty. Please fill password of Power BI username in config.js";
-    }
 }
 
 function createGetReportRequestParams(accessToken, reportId) {

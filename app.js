@@ -1,11 +1,7 @@
 const express = require('express');
 var routes = require('./routes/routes.js');
 
-let PORT = 8080;
-if (process.env.NODE_ENV === 'production') {
-  PORT = 80
-}
-
+let PORT = (process.env.NODE_ENV !== 'production') ? 8080 : 80;
 const HOST = '0.0.0.0';
 const app = express();
 

@@ -1,11 +1,7 @@
 var config = require('../config/config.js');
-var casPath = __dirname + '/../config/cas.json';
 
 async function getAuthenticationToken() {
     var adal = require('adal-node');
-    var fs = require('fs');
-    var https = require('https');
-
     var AuthenticationContext = adal.AuthenticationContext;
 
     function turnOnLogging() {
@@ -24,20 +20,12 @@ async function getAuthenticationToken() {
 
     turnOnLogging();
 
-
-    var authorityUrl = config.params.authorityUrl
-
-    var casjson = fs.readFileSync(casPath);
-    var cas = JSON.parse(casjson);
-    https.globalAgent.options.ca = cas;
-
+    var authorityUrl = config.params.authorityUrl.replace('common', config.params.tenantId)
     var context = new AuthenticationContext(authorityUrl);
-
-    // use user credentials and appId to get an aad token
     let promise = () => {
         return new Promise(
             (resolve, reject) => {
-                context.acquireTokenWithUsernamePassword(config.params.resourceUrl, config.params.username, config.params.password, config.params.appId, function (err, tokenResponse) {
+                context.acquireTokenWithClientCredentials(config.params.resourceUrl, config.params.clientId, config.params.clientSecret, function (err, tokenResponse) {
                     if (err) reject(err);
                     resolve(tokenResponse);
                 })

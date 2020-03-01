@@ -1,180 +1,89 @@
-var request = require('request');
-var config = require('../config/config.js');
+const request = require('request')
+const config = require('../config/config.js')
+const guid = require('guid')
 
-function getAuthHeader(accessToken) {
-    var b = "Bearer ";
-    return b.concat(accessToken);
+function validateConfig () {
+  if (!config.params.tenantId) {
+    return 'TenantId is empty. please register your application as Native app in https://dev.powerbi.com/apps and fill client Id in config.js'
+  }
+
+  if (!guid.isGuid(config.params.tenantId)) {
+    return 'TenantId must be a Guid object. please register your application as Native app in https://dev.powerbi.com/apps and fill application Id in config.js'
+  }
+
+  if (!config.params.clientSecret) {
+    return 'ClientSecret is empty. please register your application as Native app in https://dev.powerbi.com/apps and fill client Id in config.js'
+  }
+
+  if (!config.params.clientId) {
+    return 'ClientId is empty. please register your application as Native app in https://dev.powerbi.com/apps and fill client Id in config.js'
+  }
+
+  if (!guid.isGuid(config.params.clientId)) {
+    return 'ClientId must be a Guid object. please register your application as Native app in https://dev.powerbi.com/apps and fill application Id in config.js'
+  }
+
+  if (!config.params.workspaceId) {
+    return 'WorkspaceId is empty. Please select a group you own and fill its Id in config.js'
+  }
+
+  if (!guid.isGuid(config.params.workspaceId)) {
+    return 'WorkspaceId must be a Guid object. Please select a workspace you own and fill its Id in config.js'
+  }
+
+  if (!config.params.authorityUrl) {
+    return 'AuthorityUrl is empty. Please fill valid AuthorityUrl under config.js'
+  }
 }
 
-function validateConfig() {
-    var guid = require('guid');
-
-    if (!config.params.tenantId) {
-        return "TenantId is empty. please register your application as Native app in https://dev.powerbi.com/apps and fill client Id in config.js";
-    }
-
-    if (!guid.isGuid(config.params.tenantId)) {
-        return "TenantId must be a Guid object. please register your application as Native app in https://dev.powerbi.com/apps and fill application Id in config.js";
-    }
-
-    if (!config.params.clientSecret) {
-        return "ClientSecret is empty. please register your application as Native app in https://dev.powerbi.com/apps and fill client Id in config.js";
-    }
-
-    if (!config.params.clientId) {
-        return "ClientId is empty. please register your application as Native app in https://dev.powerbi.com/apps and fill client Id in config.js";
-    }
-
-    if (!guid.isGuid(config.params.clientId)) {
-        return "ClientId must be a Guid object. please register your application as Native app in https://dev.powerbi.com/apps and fill application Id in config.js";
-    }
-
-    if (!config.params.workspaceId) {
-        return "WorkspaceId is empty. Please select a group you own and fill its Id in config.js";
-    }
-
-    if (!guid.isGuid(config.params.workspaceId)) {
-        return "WorkspaceId must be a Guid object. Please select a workspace you own and fill its Id in config.js";
-    }
-
-    if (!config.params.authorityUrl) {
-        return "AuthorityUrl is empty. Please fill valid AuthorityUrl under config.js";
-    }
-
+async function createReportRequest (accessToken, reportId) {
+  const url = config.params.apiUrl + 'v1.0/myorg/groups/' + config.params.workspaceId + '/reports/' + reportId
+  const requestParmas = buildHttpRequestParameters(url, accessToken, 'GET')
+  return sendRequest(requestParmas)
 }
 
-function createGetReportRequestParams(accessToken, reportId) {
-    var authHeader = getAuthHeader(accessToken);
-    var url = config.params.apiUrl + 'v1.0/myorg/groups/' + config.params.workspaceId + '/reports/' + reportId;
-    return queryApiWithAuthHeader(url, accessToken, authHeader)
+async function createListReportsRequest (accessToken) {
+  const url = config.params.apiUrl + 'v1.0/myorg/groups/' + config.params.workspaceId + '/reports'
+  const requestParmas = buildHttpRequestParameters(url, accessToken, 'GET')
+  return sendRequest(requestParmas)
 }
 
-function getReports(accessToken) {
-    var authHeader = getAuthHeader(accessToken);
-    var url = config.params.apiUrl + 'v1.0/myorg/groups/' + config.params.workspaceId + '/reports';
-    return queryApiWithAuthHeader(url, accessToken, authHeader);
+async function createEmbedTokenRequest (accessToken, reportId) {
+  const url = config.params.apiUrl + 'v1.0/myorg/groups/' + config.params.workspaceId + '/reports/' + reportId + '/GenerateToken'
+  const requestParmas = buildHttpRequestParameters(url, accessToken, 'POST', JSON.stringify({ accessLevel: 'View' }));
+  return sendRequest(requestParmas)
 }
 
-function queryApiWithAuthHeader(url, accessToken, authHeader) {
-    var authHeader = getAuthHeader(accessToken);
-    var headers = {
-        'Authorization': authHeader,
-    };
-    var options = {
-        headers: headers,
-        method: 'GET',
-    };
-
-    return {
-        'url': url,
-        'options': options
-    };
-}
-
-async function sendGetReportRequestAsync(url, options) {
-    let promise = () => {
-        return new Promise(
-            (resolve, reject) => {
-                request(url, options, function (error, response, body) {
-                    console.log("-----Get Report Results-----");
-                    console.log('Request STATUS: ' + response.statusCode);
-                    if (error) {
-                        reject(error);
-                    }
-                    try {
-                        getReportRes = JSON.parse(body)
-                        console.log("Returned report name: " + getReportRes.name);
-                        console.log("Returned report Id: " + getReportRes.id);
-                        resolve(getReportRes);
-                    } catch (e) { }
-                });
-            });
+function buildHttpRequestParameters (url, accessToken, method, body) {
+  return {
+    url,
+    options: {
+      method,
+      body,
+      headers: {
+        Authorization: 'Bearer '.concat(accessToken),
+        'Content-Type': 'application/json'
+      }
     }
-
-    var res;
-    await promise().then(
-        reportResponse => res = reportResponse
-    ).catch(
-        err => res = err
-    );
-    return res;
+  }
 }
 
-async function sendGenerateEmbedTokenRequestAsync(reportId, options) {
-    var url = config.params.apiUrl + 'v1.0/myorg/groups/' + config.params.workspaceId + '/reports/' + reportId + '/GenerateToken';
-    let promise = () => {
-        return new Promise(
-            (resolve, reject) => {
-                request(url, options, function (error, response, body) {
-                    console.log("-----Generate EmbedToken Results-----");
-                    console.log('Request STATUS: ' + response.statusCode);
-                    if (error) {
-                        reject(error);
-                    }
-                    try {
-                        generateEmbedTokenRes = JSON.parse(body)
-                        console.log('Token Generated: ' + generateEmbedTokenRes.token);
-                        resolve(generateEmbedTokenRes.token);
-                    } catch (e) { }
-                });
-            });
-    };
-
-    var res;
-    await promise().then(
-        tokenResponse => res = tokenResponse
-    ).catch(
-        err => res = err
-    );
-
-    return res;
-}
-
-async function sendGetDatasetRequestAsync(token, datasetId) {
-    authHeader = getAuthHeader(token);
-    var headers = {
-        'Authorization': authHeader,
-    };
-    var options = {
-        headers: headers,
-        method: 'GET',
-    };
-    var url = config.params.apiUrl + 'v1.0/myorg/groups/' + config.params.workspaceId + '/datasets/' + datasetId;
-
-    let promise = () => {
-        return new Promise(
-            (resolve, reject) => {
-                request(url, options, function (error, response, body) {
-                    console.log('Get dataset request STATUS: ' + response.statusCode);
-                    if (error) {
-                        reject(error);
-                    }
-                    try {
-                        dataset = JSON.parse(body)
-                        resolve(dataset);
-                    } catch (e) {
-                        reject(e)
-                    }
-                });
-            });
-    };
-
-    var res;
-    await promise().then(
-        tokenResponse => res = tokenResponse
-    ).catch(
-        err => res = err
-    );
-
-    return res;
+async function sendRequest (requestParmas) {
+  return new Promise(
+    (resolve, reject) => {
+      request(requestParmas.url, requestParmas.options, function (error, response, body) {
+        if (error) {
+          reject(error)
+        } else {
+          resolve(JSON.parse(body))
+        }
+      })
+    })
 }
 
 module.exports = {
-    getAuthHeader: getAuthHeader,
-    validateConfig: validateConfig,
-    createGetReportRequestParams: createGetReportRequestParams,
-    sendGetReportRequestAsync: sendGetReportRequestAsync,
-    sendGenerateEmbedTokenRequestAsync: sendGenerateEmbedTokenRequestAsync,
-    sendGetDatasetRequestAsync: sendGetDatasetRequestAsync,
-    getReports: getReports
+  validateConfig: validateConfig,
+  createReportRequest: createReportRequest,
+  createListReportsRequest: createListReportsRequest,
+  createEmbedTokenRequest: createEmbedTokenRequest,
 }

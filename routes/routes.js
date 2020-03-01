@@ -1,9 +1,9 @@
-var express = require('express');
-var router = express.Router();
-var reporing_controller = require('./controllers/reporting.js');
+const express = require('express')
+const router = express.Router()
+const reporingController = require('./controllers/reporting.js')
 
-router.get("/list-reports", reporing_controller.listReports);
-router.get("/get-report", reporing_controller.getReport);
-router.get("/generate-embed-token", reporing_controller.generateEmbedToken);
+router.get('/list-reports', reporingController.listReports)
+router.get('/get-report', reporingController.getReport)
+router.get('/generate-embed-token', reporingController.generateEmbedToken)
 
-module.exports = router;
+module.exports = router

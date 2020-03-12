@@ -1,0 +1,38 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: ita-dataloader-reporting
+  labels:
+    app: ita-dataloader-reporting
+spec:
+  containers:
+  - name: ita-dataloader
+    image: dataservices.azurecr.io/ita-dataloader-reporting:latest
+    imagePullPolicy: Always
+    ports:
+    - containerPort: 80
+    env:
+      - name: TENANT_ID
+        value: <Azure Tenant ID>
+      - name: CLIENT_ID
+        value: <Application ID from the AD App Registration>
+      - name: CLIENT_SECRET
+        value: <Client secret from the AD App Registration>
+      - name: WORKSPACE_ID
+        value: <Power BI Workspace ID / Group>
+  restartPolicy: Always
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: ita-dataloader-reporting
+  namespace: default
+  annotations:
+    service.beta.kubernetes.io/azure-dns-label-name: ita-dataloader-reporting-dev
+spec:
+  ports:
+  - port: 80
+  type: LoadBalancer
+  selector:
+    app: ita-dataloader-reporting

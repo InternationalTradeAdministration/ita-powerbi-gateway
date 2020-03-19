@@ -50,7 +50,7 @@ async function createListReportsRequest (accessToken) {
 
 async function createEmbedTokenRequest (accessToken, reportId) {
   const url = config.params.apiUrl + 'v1.0/myorg/groups/' + config.params.workspaceId + '/reports/' + reportId + '/GenerateToken'
-  const requestParmas = buildHttpRequestParameters(url, accessToken, 'POST', JSON.stringify({ accessLevel: 'View' }));
+  const requestParmas = buildHttpRequestParameters(url, accessToken, 'POST', JSON.stringify({ accessLevel: 'View' }))
   return sendRequest(requestParmas)
 }
 
@@ -85,5 +85,5 @@ module.exports = {
   validateConfig: validateConfig,
   createReportRequest: createReportRequest,
   createListReportsRequest: createListReportsRequest,
-  createEmbedTokenRequest: createEmbedTokenRequest,
+  createEmbedTokenRequest: createEmbedTokenRequest
 }

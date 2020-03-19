@@ -9,6 +9,7 @@
 </template>
 <script>
 import * as pbi from "powerbi-client";
+import { getReports, getReport, generateEmbedToken } from '@/utils/Repository';
 
 export default {
   name: "ReportViewer",
@@ -16,9 +17,16 @@ export default {
     loading: true
   }),
   async created() {
-    let id = this.$route.query.reportId;
-    let embedUrl = await this.get("/api/get-report?reportId=" + id).then(reportInfo => reportInfo.embedUrl)
-    let accessToken = await this.get("/api/generate-embed-token?reportId=" + id)
+    let id;
+    if (this.$route.query.reportId) {
+      id = this.$route.query.reportId;
+    } else {
+      const reports = await getReports() 
+      id = reports.find(r => r.name === this.$route.query.reportName).id
+    }
+
+    let embedUrl = await getReport(id).then(reportInfo => reportInfo.embedUrl)
+    let accessToken = await generateEmbedToken(id)
     this.loading = false;
 
     var config = {
@@ -32,19 +40,6 @@ export default {
 
     let embedContainer = this.$refs['embed-container']
     window.powerbi.embed(embedContainer, config) 
-  },
-  methods: {
-    async get(url) {
-      const response = await fetch(url, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json"
-        }
-      }
-    );
-    const responseJson = await response.json();
-    return responseJson;
-    }
   }
 };
 </script>

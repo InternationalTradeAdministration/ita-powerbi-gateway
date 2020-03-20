@@ -1,38 +1,71 @@
-kind: Pod
+kind: Deployment
 apiVersion: v1
 metadata:
   name: ita-dataloader-reporting
+  namespace: mdsnamespace
   labels:
     app: ita-dataloader-reporting
 spec:
-  containers:
-  - name: ita-dataloader
-    image: dataservices.azurecr.io/ita-dataloader-reporting:latest
-    imagePullPolicy: Always
-    ports:
-    - containerPort: 80
-    env:
-      - name: TENANT_ID
-        value: <Azure Tenant ID>
-      - name: CLIENT_ID
-        value: <Application ID from the AD App Registration>
-      - name: CLIENT_SECRET
-        value: <Client secret from the AD App Registration>
-      - name: WORKSPACE_ID
-        value: <Power BI Workspace ID / Group>
-  restartPolicy: Always
+  replicas: 1
+  strategy:
+    rollingUpdate: 
+      maxSurge: 1 
+      maxUnavailable: 1 
+  minReadySeconds: 5  
+  template:
+    metadata:
+      labels:
+        app: ita-dataloader-reporting
+    spec:
+      containers:
+      - name: ita-dataloader-reporting
+        image: dataservices.azurecr.io/ita-dataloader-reporting:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        env:
+          - name: TENANT_ID
+            value: <Azure Tenant ID>
+          - name: CLIENT_ID
+            value: <Application ID from the AD App Registration>
+          - name: CLIENT_SECRET
+            value: <Client secret from the AD App Registration>
+          - name: WORKSPACE_ID
+            value: <Power BI Workspace ID / Group>
+      restartPolicy: Always
 ---
 
 kind: Service
 apiVersion: v1
 metadata:
   name: ita-dataloader-reporting
-  namespace: default
-  annotations:
-    service.beta.kubernetes.io/azure-dns-label-name: ita-dataloader-reporting-dev
+  namespace: mdsnamespace
 spec:
+  type: ClusterIP
   ports:
-  - port: 80
-  type: LoadBalancer
+  - name: http
+    port: 80
   selector:
     app: ita-dataloader-reporting
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  name: ita-dataloader-reporting
+  namespace: mdsnamespace
+spec:
+  rules:
+    - host: <ip-dns-name>.<location>.cloudapp.azure.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: ita-dataloader-reporting
+              servicePort: 80
+  tls:
+    - hosts:
+        - <ip-dns-name>.<location>.cloudapp.azure.com
+      secretName: tls-secret

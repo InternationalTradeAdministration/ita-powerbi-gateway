@@ -32,7 +32,32 @@ The following links can help configure Azure and Power BI:
 - CLIENT_SECRET: Client secret from the AD App Registration
 - WORKSPACE_ID: Power BI Workspace ID / Group
 
-## Deployment
+## AKS Deployment
 
-- AKS:```./deploy-aks.sh```
-- For Azure DevOps pipeline configuration, update: ```azure-pipelines.yml```
+**Prerequisites*
+
+- Azure CLI <https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest>
+- Docker CLI <https://docs.docker.com/engine/reference/commandline/cli/>
+- KUBECTL CLI (if deploying to AKS) <https://kubernetes.io/docs/tasks/tools/install-kubectl/>
+- Azure Subscription
+- Azure Container Registry (ACR)
+- Azure Kubernetes Service (AKS)
+- A Static IP Address in Azure confiured with a DNS Name
+- An AKS Ingess Controller with TLS
+- Additional documentaion: <https://docs.microsoft.com/en-us/azure/aks/ingress-static-ip>
+
+### Scripts & Configuration Files
+
+1. Log in with the Azure CLI: ```az login```
+1. Select the appropriate Subscription. Ex: ```az account set --subscription "Sample_Subscription"```
+1. Get credentials. Ex: ````az aks get-credentials --resource-group my-resources --name myAKS --overwrite-existing````
+1. Rename ```kube-config-template.yml``` to ```kube-config.yml``` and update it with the following:
+    - image locations
+    - namespace for each section
+    - host names in the Ingress section
+1. Update ```deploy-aks.sh``` with the appropriate Azure Container Registry and Azure Container Key
+1. Execute ```deploy-aks.sh```
+1. For Azure DevOps pipeline configuration, update: ```azure-pipelines.yml```
+
+The application will be available at the following URL: [<http://ip-dns-name.location.cloudapp.azure.com>]
+The location in the URL will be the location of the Kubernetes cluster. Ex: eastus, centralus, etc...

@@ -4,24 +4,22 @@
       <md-table-cell md-label="Reports">
         <router-link :to="'/view?reportId='+item.id">{{item.name}}</router-link>
       </md-table-cell>
+       <md-table-cell md-label="Stable URL">
+        <router-link :to="'/view?reportName='+item.name">URL</router-link>
+      </md-table-cell>
     </md-table-row>
   </md-table>
 </template>
 <script>
+import { getReports } from '@/utils/Repository';
+
 export default {
   name: "Reports",
   data: () => ({
     reports: []
   }),
   async created() {
-    const reports = await fetch("/api/list-reports", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
-    const response = await reports.json();
-    this.reports = response.value;
+    this.reports = await getReports()
   }
 };
 </script>

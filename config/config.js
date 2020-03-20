@@ -11,4 +11,3 @@ const params = {
 }
 
 exports.params = params
-  

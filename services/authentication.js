@@ -1,7 +1,7 @@
 const config = require('../config/config.js')
 const adal = require('adal-node')
 
-async function getAuthenticationToken() {
+async function getAuthenticationToken () {
   var AuthenticationContext = adal.AuthenticationContext
 
   turnOnLogging()
@@ -22,7 +22,7 @@ async function getAuthenticationToken() {
     })
 }
 
-function turnOnLogging() {
+function turnOnLogging () {
   var log = adal.Logging
   log.setLoggingOptions(
     {

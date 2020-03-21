@@ -9,7 +9,7 @@
 </template>
 <script>
 import * as pbi from "powerbi-client";
-import { getReports, getReport, generateEmbedToken } from '@/utils/Repository';
+import { getReportById, getReportByName } from '@/utils/Repository';
 
 export default {
   name: "ReportViewer",
@@ -17,22 +17,19 @@ export default {
     loading: true
   }),
   async created() {
-    let id;
+    let report;
     if (this.$route.query.reportId) {
-      id = this.$route.query.reportId;
+      report = await getReportById(this.$route.query.reportId)
     } else {
-      const reports = await getReports() 
-      id = reports.find(r => r.name === this.$route.query.reportName).id
+      report = await getReportByName(this.$route.query.reportName)
     }
 
-    let embedUrl = await getReport(id).then(reportInfo => reportInfo.embedUrl)
-    let accessToken = await generateEmbedToken(id)
     this.loading = false;
 
     var config = {
-      id,
-      embedUrl,
-      accessToken,
+      id: report.id,
+      embedUrl: report.embedUrl,
+      accessToken: report.embedToken,
       type: "report",
       tokenType: pbi.models.TokenType.Embed,
       permissions: pbi.models.Permissions.All

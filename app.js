@@ -1,4 +1,5 @@
 const express = require('express')
+const bodyParser = require('body-parser');
 const utils = require('./services/utils.js')
 const routes = require('./routes/routes.js')
 const app = express()
@@ -12,6 +13,7 @@ if (validationResults) {
 const PORT = (process.env.NODE_ENV !== 'production') ? 8080 : 80
 const HOST = '0.0.0.0'
 
+app.use(bodyParser.json())
 app.use(express.static('public'))
 app.use('/api', routes)
 app.listen(PORT, HOST)

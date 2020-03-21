@@ -1,15 +1,23 @@
 export async function getReports () {
-  const reports = await getRequest('/api/list-reports')
-  console.log(reports)
-  return reports.value
+  return await getRequest('/api/list-reports')
 }
 
-export async function getReport (reportId) {
-  return getRequest('/api/get-report?reportId=' + reportId)
+export async function getReportById (reportId) {
+  return getRequest('/api/get-report-by-id?reportId=' + reportId)
 }
 
-export async function generateEmbedToken (reportId) {
-  return getRequest('/api/generate-embed-token?reportId=' + reportId)
+export async function getReportByName (reportName) {
+  const response = await fetch('/api/get-report-by-name', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      reportName
+    })
+  })
+  const responseJson = await response.json()
+  return responseJson
 }
 
 async function getRequest (url) {

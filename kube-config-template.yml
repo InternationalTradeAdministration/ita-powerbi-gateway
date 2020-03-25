@@ -1,10 +1,10 @@
 kind: Deployment
-apiVersion: v1
+apiVersion: apps/v1beta1
 metadata:
-  name: ita-dataloader-reporting
+  name: ita-power-bi-gateway
   namespace: mdsnamespace
   labels:
-    app: ita-dataloader-reporting
+    app: ita-power-bi-gateway
 spec:
   replicas: 1
   strategy:
@@ -15,11 +15,11 @@ spec:
   template:
     metadata:
       labels:
-        app: ita-dataloader-reporting
+        app: ita-power-bi-gateway
     spec:
       containers:
-      - name: ita-dataloader-reporting
-        image: dataservices.azurecr.io/ita-dataloader-reporting:latest
+      - name: ita-power-bi-gateway
+        image: dataservices.azurecr.io/ita-power-bi-gateway:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 80
@@ -38,7 +38,7 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: ita-dataloader-reporting
+  name: ita-power-bi-gateway
   namespace: mdsnamespace
 spec:
   type: ClusterIP
@@ -46,7 +46,7 @@ spec:
   - name: http
     port: 80
   selector:
-    app: ita-dataloader-reporting
+    app: ita-power-bi-gateway
 ---
 
 apiVersion: extensions/v1beta1
@@ -54,7 +54,7 @@ kind: Ingress
 metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
-  name: ita-dataloader-reporting
+  name: ita-power-bi-gateway
   namespace: mdsnamespace
 spec:
   rules:
@@ -63,7 +63,7 @@ spec:
         paths:
           - path: /
             backend:
-              serviceName: ita-dataloader-reporting
+              serviceName: ita-power-bi-gateway
               servicePort: 80
   tls:
     - hosts:

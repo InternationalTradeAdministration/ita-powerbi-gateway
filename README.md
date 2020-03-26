@@ -34,7 +34,7 @@ The following links can help configure Azure and Power BI:
 
 ## AKS Deployment
 
-**Prerequisites*
+**Prerequisites**
 
 - Azure CLI <https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest>
 - Docker CLI <https://docs.docker.com/engine/reference/commandline/cli/>
@@ -42,9 +42,9 @@ The following links can help configure Azure and Power BI:
 - Azure Subscription
 - Azure Container Registry (ACR)
 - Azure Kubernetes Service (AKS)
-- A Static IP Address in Azure confiured with a DNS Name
+- A DNS Zone has been configured with a sub-domain that points to an ingress controller in AKS
 - An AKS Ingess Controller with TLS
-- Additional documentaion: <https://docs.microsoft.com/en-us/azure/aks/ingress-static-ip>
+  - Additional documentaion: <https://docs.microsoft.com/en-us/azure/aks/ingress-static-ip>
 
 ### Scripts & Configuration Files
 

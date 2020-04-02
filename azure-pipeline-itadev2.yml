@@ -1,0 +1,43 @@
+trigger:
+  - master
+
+pool:
+  vmImage: 'ubuntu-16.04'
+
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '8.x'
+    displayName: Install Node
+  - script: |
+      ./build.sh
+    displayName: Build project artifacts
+  - task: CopyFiles@2
+    inputs:
+      Contents: 'kube-config-itadev2.yml'
+      TargetFolder: '$(build.artifactstagingdirectory)'
+    displayName: 'Copy Kube Config'
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: 'manifest'
+      publishLocation: 'Container'
+    displayName: 'Publish Kube Config'
+  - task: DockerCompose@0
+    inputs:
+      containerregistrytype: 'Azure Container Registry'
+      azureSubscription: 'ITADEV2-MSDataServicesAzure'
+      azureContainerRegistry: '{"loginServer":"itadevacr.azurecr.io", "id" : "/subscriptions/675d7977-79af-4b94-b0bd-26d4095a4ffb/resourceGroups/ITA-SharedAppSvc-Dev-East1/providers/Microsoft.ContainerRegistry/registries/itadevacr"}'
+      dockerComposeFile: '**/docker-compose.yml'
+      action: 'Build services'
+      additionalImageTags: '$(Build.BuildId)'
+    displayName: 'Build Docker image'
+  - task: DockerCompose@0
+    inputs:
+      containerregistrytype: 'Azure Container Registry'
+      azureSubscription: 'ITADEV2-MSDataServicesAzure'
+      azureContainerRegistry: '{"loginServer":"itadevacr.azurecr.io", "id" : "/subscriptions/675d7977-79af-4b94-b0bd-26d4095a4ffb/resourceGroups/ITA-SharedAppSvc-Dev-East1/providers/Microsoft.ContainerRegistry/registries/itadevacr"}'
+      dockerComposeFile: '**/docker-compose.yml'
+      action: 'Push services'
+      additionalImageTags: '$(Build.BuildId)'
+    displayName: 'Push Docker image'

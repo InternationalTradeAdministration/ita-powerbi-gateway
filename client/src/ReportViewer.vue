@@ -42,6 +42,6 @@ export default {
 </script>
 <style scoped>
 #embed-container {
-  height: 800px;
+  height: 900px;
 }
 </style>

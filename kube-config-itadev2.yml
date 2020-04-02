@@ -6,12 +6,12 @@ metadata:
   labels:
     app: ita-power-bi-gateway
 spec:
-  replicas: 1
+  replicas: 5
   strategy:
-    rollingUpdate: 
-      maxSurge: 1 
-      maxUnavailable: 1 
-  minReadySeconds: 5  
+    rollingUpdate:
+      maxSurge: 10
+      maxUnavailable: 2
+  minReadySeconds: 5
   template:
     metadata:
       labels:
@@ -19,19 +19,19 @@ spec:
     spec:
       containers:
       - name: ita-power-bi-gateway
-        image: dataservices.azurecr.io/ita-power-bi-gateway:latest
+        image: itadevacr.azurecr.io/ita-powerbi-gateway:#{Release.Artifacts._InternationalTradeAdministration.ita-powerbi-gateway.BuildId}#
         imagePullPolicy: Always
         ports:
         - containerPort: 80
         env:
           - name: TENANT_ID
-            value: <Azure Tenant ID>
+            value: #{TENANT_ID}#
           - name: CLIENT_ID
-            value: <Application ID from the AD App Registration>
+            value: #{CLIENT_ID}#
           - name: CLIENT_SECRET
-            value: <Client secret from the AD App Registration>
+            value: #{CLIENT_SECRET}#
           - name: WORKSPACE_ID
-            value: <Power BI Workspace ID / Group>
+            value: #{WORKSPACE_ID}#
       restartPolicy: Always
 ---
 
@@ -58,7 +58,7 @@ metadata:
   namespace: mdsnamespace
 spec:
   rules:
-    - host: <ip-dns-name>.<location>.cloudapp.azure.com
+    - host: powerbi-gateway-itadev2.vangos-cloudapp.us
       http:
         paths:
           - path: /
@@ -67,5 +67,5 @@ spec:
               servicePort: 80
   tls:
     - hosts:
-        - <ip-dns-name>.<location>.cloudapp.azure.com
+        - powerbi-gateway-itadev2.vangos-cloudapp.us
       secretName: tls-secret

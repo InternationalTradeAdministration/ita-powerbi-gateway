@@ -1,4 +1,4 @@
-# ITA Dataloader Reporting
+# Power BI Gateway
 
 An app that will publicly display Embedded Power BI reports on GovCloud using a service principle.
 The following links can help configure Azure and Power BI:

@@ -1,5 +1,5 @@
 export async function getReports () {
-  return await getRequest('/api/list-reports')
+  return getRequest('/api/list-reports')
 }
 
 export async function getReportById (reportId) {
@@ -7,7 +7,7 @@ export async function getReportById (reportId) {
 }
 
 export async function getReportByName (reportName) {
-  const response = await fetch('/api/get-report-by-name', {
+  const response = await window.fetch('/api/get-report-by-name', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -21,7 +21,7 @@ export async function getReportByName (reportName) {
 }
 
 async function getRequest (url) {
-  const response = await fetch(url, {
+  const response = await window.fetch(url, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'

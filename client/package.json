@@ -5,10 +5,13 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "preinstall": "npx npm-force-resolutions"
   },
   "dependencies": {
     "core-js": "^3.3.2",
+    "debug": "^4.1.1",
+    "npm-force-resolutions": "0.0.3",
     "powerbi-client": "^2.8.0",
     "vue": "^2.6.10",
     "vue-material": "^1.0.0-beta-11",
@@ -21,6 +24,9 @@
     "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "kind-of": "^6.0.3",
+    "minimist": "^1.2.5",
+    "serialize-javascript": "^3.0.0",
     "vue-template-compiler": "^2.6.10"
   },
   "eslintConfig": {
@@ -45,5 +51,10 @@
   "browserslist": [
     "> 1%",
     "last 2 versions"
-  ]
+  ],
+  "resolutions": {
+    "minimist": "^1.2.5",
+    "kind-of": "^6.0.3",
+    "serialize-javascript": "^2.1.1"
+  }
 }

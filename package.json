@@ -17,7 +17,8 @@
     "https": "^1.0.0"
   },
   "devDependencies": {
-    "standard": "^14.3.1"
+    "minimist": "^1.2.5",
+    "standard": "^14.3.3"
   },
   "standard": {
     "ignore": [

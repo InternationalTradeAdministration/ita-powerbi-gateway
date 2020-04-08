@@ -6,11 +6,7 @@ metadata:
   labels:
     app: ita-power-bi-gateway
 spec:
-  replicas: 5
-  strategy:
-    rollingUpdate:
-      maxSurge: 10
-      maxUnavailable: 2
+  replicas: 1
   minReadySeconds: 5
   template:
     metadata:

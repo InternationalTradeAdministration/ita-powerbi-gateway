@@ -6,8 +6,6 @@ metadata:
   labels:
     app: ita-power-bi-gateway
 spec:
-  replicas: 1
-  minReadySeconds: 5
   template:
     metadata:
       labels:

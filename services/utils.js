@@ -2,7 +2,7 @@ const request = require('request')
 const config = require('../config/config.js')
 const guid = require('guid')
 
-function validateConfig () {
+function validateConfig() {
   if (!config.params.tenantId) {
     return 'TenantId is empty. please register your application as Native app in https://dev.powerbi.com/apps and fill client Id in config.js'
   }
@@ -23,38 +23,41 @@ function validateConfig () {
     return 'ClientId must be a Guid object. please register your application as Native app in https://dev.powerbi.com/apps and fill application Id in config.js'
   }
 
-  if (!config.params.workspaceId) {
-    return 'WorkspaceId is empty. Please select a group you own and fill its Id in config.js'
-  }
-
-  if (!guid.isGuid(config.params.workspaceId)) {
-    return 'WorkspaceId must be a Guid object. Please select a workspace you own and fill its Id in config.js'
-  }
-
   if (!config.params.authorityUrl) {
     return 'AuthorityUrl is empty. Please fill valid AuthorityUrl under config.js'
   }
 }
 
-async function createReportRequest (accessToken, reportId) {
-  const url = config.params.apiUrl + 'v1.0/myorg/groups/' + config.params.workspaceId + '/reports/' + reportId
+async function createListGroupsRequest(accessToken) {
+  const url =  buildBaseUrl()
   const requestParmas = buildHttpRequestParameters(url, accessToken, 'GET')
   return sendRequest(requestParmas)
 }
 
-async function createListReportsRequest (accessToken) {
-  const url = config.params.apiUrl + 'v1.0/myorg/groups/' + config.params.workspaceId + '/reports'
+async function createReportRequest(accessToken, workspaceId, reportId) {
+  const url = buildBaseUrl(workspaceId) + '/reports/' + reportId
   const requestParmas = buildHttpRequestParameters(url, accessToken, 'GET')
   return sendRequest(requestParmas)
 }
 
-async function createEmbedTokenRequest (accessToken, reportId) {
-  const url = config.params.apiUrl + 'v1.0/myorg/groups/' + config.params.workspaceId + '/reports/' + reportId + '/GenerateToken'
+async function createListReportsRequest(accessToken, workspaceId) {
+  const url = buildBaseUrl(workspaceId) + '/reports'
+  const requestParmas = buildHttpRequestParameters(url, accessToken, 'GET')
+  return sendRequest(requestParmas)
+}
+
+async function createEmbedTokenRequest(accessToken, workspaceId, reportId) {
+  const url = buildBaseUrl(workspaceId) + '/reports/' + reportId + '/GenerateToken'
   const requestParmas = buildHttpRequestParameters(url, accessToken, 'POST', JSON.stringify({ accessLevel: 'View' }))
   return sendRequest(requestParmas)
 }
 
-function buildHttpRequestParameters (url, accessToken, method, body) {
+function buildBaseUrl(workspaceId) {
+  const tmpWorkspaceId = workspaceId ? workspaceId : ''
+  return config.params.apiUrl + 'v1.0/myorg/groups/' + tmpWorkspaceId
+}
+
+function buildHttpRequestParameters(url, accessToken, method, body) {
   return {
     url,
     options: {
@@ -68,7 +71,7 @@ function buildHttpRequestParameters (url, accessToken, method, body) {
   }
 }
 
-async function sendRequest (requestParmas) {
+async function sendRequest(requestParmas) {
   return new Promise(
     (resolve, reject) => {
       request(requestParmas.url, requestParmas.options, function (error, response, body) {
@@ -83,6 +86,7 @@ async function sendRequest (requestParmas) {
 
 module.exports = {
   validateConfig: validateConfig,
+  createListGroupsRequest: createListGroupsRequest,
   createReportRequest: createReportRequest,
   createListReportsRequest: createListReportsRequest,
   createEmbedTokenRequest: createEmbedTokenRequest

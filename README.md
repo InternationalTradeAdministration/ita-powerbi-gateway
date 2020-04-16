@@ -35,6 +35,5 @@ The following links can help configure Azure and Power BI:
 - TENANT_ID: Azure Tenant ID
 - CLIENT_ID: Application ID from the AD App Registration
 - CLIENT_SECRET: Client secret from the AD App Registration
-- WORKSPACE_ID: Power BI Workspace ID / Group
 
 For detail related to the deployment of containerized applications in Azure, reference this [repo](https://github.com/InternationalTradeAdministration/azure-samples) with deployment scenarios

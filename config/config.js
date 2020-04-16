@@ -6,8 +6,7 @@ const params = {
   apiUrl: 'https://api.powerbigov.us/',
   tenantId: process.env.TENANT_ID,
   clientId: process.env.CLIENT_ID,
-  clientSecret: process.env.CLIENT_SECRET,
-  workspaceId: process.env.WORKSPACE_ID
+  clientSecret: process.env.CLIENT_SECRET
 }
 
 exports.params = params

@@ -1,12 +1,14 @@
 <template>
-  <div id="app">
-    <router-view />
-  </div>
+  <router-view />
 </template>
 
-<style scoped>
-#app {
-  margin: 10px;
+<style>
+.content {
+  display: flex;
+}
+
+.header {
+  padding: 12px;
 }
 </style>
 

@@ -1,33 +1,31 @@
-export async function getReports () {
-  return await getRequest('/api/list-reports')
+const axios = require('axios')
+
+export async function getGroups() {
+  return axios.get('/api/list-groups').then(response => response.data);
 }
 
-export async function getReportById (reportId) {
-  return getRequest('/api/get-report-by-id?reportId=' + reportId)
-}
-
-export async function getReportByName (reportName) {
-  const response = await fetch('/api/get-report-by-name', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      reportName
-    })
-  })
-  const responseJson = await response.json()
-  return responseJson
-}
-
-async function getRequest (url) {
-  const response = await fetch(url, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
+export async function getReports(workspaceId) {
+  return axios.get('/api/list-reports', {
+    params: {
+      workspaceId
     }
-  }
-  )
-  const responseJson = await response.json()
-  return responseJson
+  }).then(response => response.data);
+}
+
+export async function getReportById(workspaceId, reportId) {
+  return axios.get('/api/get-report-by-id', {
+    params: {
+      workspaceId, reportId
+    }
+  }).then(response => response.data)
+}
+
+export async function getReportByName(workspaceId, reportName) {
+  return axios.post('/api/get-report-by-name', {
+    reportName
+  }, {
+      params: {
+        workspaceId
+      }
+    }).then(response => response.data)
 }

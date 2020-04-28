@@ -9,6 +9,9 @@
           <md-table-cell md-label="Name">
             <router-link :to="buildReportIdUrl(item.id)">{{item.name}}</router-link>
           </md-table-cell>
+          <md-table-cell md-label="Full Screen">
+            <router-link :to="buildReportNameUrl(item.name)+'?fullscreen=true'">URL</router-link>
+          </md-table-cell>
           <md-table-cell md-label="Stable URL">
             <router-link :to="buildReportNameUrl(item.name)">URL</router-link>
           </md-table-cell>

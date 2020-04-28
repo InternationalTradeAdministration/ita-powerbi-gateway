@@ -42,11 +42,23 @@ export default {
 
     let embedContainer = this.$refs["embed-container"];
     window.powerbi.embed(embedContainer, config);
+
+    if (this.$route.query.fullscreen === 'true') {
+      this.fullscreen()
+    }
+
+  },
+  methods: {
+    fullscreen() {
+      let embedContainer = this.$refs["embed-container"];
+      let report = window.powerbi.get(embedContainer);
+      report.fullscreen();
+    }
   }
 };
 </script>
 <style scoped>
 #embed-container {
-  height: 98vh;
+  height: 100vh;
 }
 </style>

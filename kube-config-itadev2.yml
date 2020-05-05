@@ -59,6 +59,13 @@ spec:
             backend:
               serviceName: ita-power-bi-gateway
               servicePort: 80
+    - host: powerbi-gateway.devapps.trade.gov
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: ita-power-bi-gateway
+              servicePort: 80
   tls:
     - hosts:
         - powerbi-gateway-itadev2.vangos-cloudapp.us

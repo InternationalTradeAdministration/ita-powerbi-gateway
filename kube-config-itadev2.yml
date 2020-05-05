@@ -69,4 +69,5 @@ spec:
   tls:
     - hosts:
         - powerbi-gateway-itadev2.vangos-cloudapp.us
+        - powerbi-gateway.devapps.trade.gov
       secretName: tls-secret

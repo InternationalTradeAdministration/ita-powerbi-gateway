@@ -48,6 +48,8 @@ kind: Ingress
 metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
   name: ita-power-bi-gateway
   namespace: mdsnamespace
 spec:
@@ -59,7 +61,7 @@ spec:
             backend:
               serviceName: ita-power-bi-gateway
               servicePort: 80
-    - host: powerbi-gateway.devapps.trade.gov
+    - host: powerbi-dev.trade.gov
       http:
         paths:
           - path: /
@@ -67,7 +69,4 @@ spec:
               serviceName: ita-power-bi-gateway
               servicePort: 80
   tls:
-    - hosts:
-        - powerbi-gateway-itadev2.vangos-cloudapp.us
-        - powerbi-gateway.devapps.trade.gov
-      secretName: tls-secret
+    - secretName: trade-gov-tls-secret

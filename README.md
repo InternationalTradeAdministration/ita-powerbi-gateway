@@ -20,7 +20,7 @@ The following links can help configure Azure and Power BI:
 
 ### Backend
 
-`node app.js`, <http://localhost:8080>
+`node server.js`, <http://localhost:8080>
 
 ### Frontend
 

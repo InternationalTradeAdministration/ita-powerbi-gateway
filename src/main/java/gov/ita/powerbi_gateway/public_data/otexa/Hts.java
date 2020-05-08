@@ -1,8 +1,8 @@
 package gov.ita.powerbi_gateway.public_data.otexa;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -21,8 +21,8 @@ public class Hts {
   public Long catId;
 
   @OneToOne
-  @JoinColumn(name = "hts")
   @JsonIgnore
+  @JoinColumn(name = "hts")
   public HtsChapter htsChapter;
 
   public Hts(String hts, String longHts) {

@@ -19,7 +19,7 @@
 import { listReports } from "@/utils/Repository";
 
 export default {
-  name: "Reports",
+  name: "ReportList",
   data: () => ({
     loading: true,
     workspaceName: null,

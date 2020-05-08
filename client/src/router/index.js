@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Groups from '@/Groups'
-import Reports from '@/Reports'
-import ReportViewer from '@/ReportViewer'
+import GroupList from '@/GroupList'
+import ReportList from '@/ReportList'
+import ReportFactory from '@/ReportFactory'
 
 Vue.use(Router)
 
@@ -10,16 +10,16 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Groups',
-      component: Groups
+      name: 'GroupList',
+      component: GroupList
     }, {
       path: '/workspace/:workspaceName',
-      name: 'Reports',
-      component: Reports
+      name: 'ReportList',
+      component: ReportList
     }, {
       path: '/workspace/:workspaceName/report/:reportName',
-      name: 'ReportViewerByName',
-      component: ReportViewer
+      name: 'ReportFactory',
+      component: ReportFactory
     }
   ]
 })

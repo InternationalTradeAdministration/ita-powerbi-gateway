@@ -23,7 +23,7 @@
 import { listGroups } from "@/utils/Repository";
 
 export default {
-  name: "Reports",
+  name: "GroupList",
   data: () => ({
     groups: null,
     version: null,

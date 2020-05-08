@@ -9,7 +9,7 @@ import * as pbi from "powerbi-client";
 import { getReport } from "@/utils/Repository";
 
 export default {
-  name: "ReportViewer",
+  name: "Default",
   data: () => ({
     loading: true
   }),

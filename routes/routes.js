@@ -3,8 +3,7 @@ const router = express.Router()
 const reporingController = require('./controllers/reporting.js')
 
 router.get('/list-groups', reporingController.listGroups)
-router.get('/list-reports', reporingController.listReports)
-router.get('/get-report-by-id', reporingController.getReportById)
-router.post('/get-report-by-name', reporingController.getReportByName)
+router.post('/list-reports', reporingController.listReports)
+router.post('/get-report', reporingController.getReport)
 
 module.exports = router

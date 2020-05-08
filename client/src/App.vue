@@ -3,12 +3,8 @@
 </template>
 
 <style>
-.content {
-  display: flex;
-}
-
 .header {
-  padding: 12px;
+  padding: 16px;
 }
 </style>
 
@@ -17,4 +13,3 @@ export default {
   name: "App"
 };
 </script>
-

@@ -3,38 +3,46 @@ const auth = require('../../services/authentication.js')
 
 exports.listGroups = async (req, res, next) => {
   const tokenResponse = await auth.getAuthenticationToken()
-  const response = await utils.createListGroupsRequest(tokenResponse.accessToken)
-  return res.json(response.value)
+  const groups = await utils.listGroups(tokenResponse.accessToken)
+  return res.json(groups.value)
 }
 
 exports.listReports = async (req, res, next) => {
-  const tokenResponse = await auth.getAuthenticationToken()
-  const response = await utils.createListReportsRequest(tokenResponse.accessToken, req.query.workspaceId)
-  return res.json(response.value)
-}
-
-exports.getReportById = async (req, res, next) => {
-  if (!req.query.reportId) {
-    return res.json('Please pass a reportId on the query string')
+  if (!req.body.workspaceName) {
+    return res.json('Please pass a workspaceName in the body of the request')
   }
 
   const tokenResponse = await auth.getAuthenticationToken()
-  const response = await utils.createReportRequest(tokenResponse.accessToken, req.query.workspaceId, req.query.reportId)
-  const embedTokenReposnse = await utils.createEmbedTokenRequest(tokenResponse.accessToken, req.query.workspaceId, req.query.reportId)
-  response.embedToken = embedTokenReposnse.token
-  return res.json(response)
+  const groups = await utils.listGroups(tokenResponse.accessToken, buildFilter(req.body.workspaceName))
+  const workspaceId = groups.value[0].id
+  const reports = await utils.listReports(tokenResponse.accessToken, workspaceId)
+  return res.json(reports.value)
 }
 
-exports.getReportByName = async (req, res) => {
+exports.getReport = async (req, res) => {
+  if (!req.body.workspaceName) {
+    return res.json('Please pass a workspaceName in the body of the request')
+  }
+
   if (!req.body.reportName) {
     return res.json('Please pass a reportName in the body of the request')
   }
 
-  const tokenResponse = await auth.getAuthenticationToken()
-  const reports = await utils.createListReportsRequest(tokenResponse.accessToken, req.query.workspaceId)
-  const report = reports.value.find(r => r.name === req.body.reportName)
-  const response = await utils.createReportRequest(tokenResponse.accessToken, req.query.workspaceId, report.id)
-  const embedTokenReposnse = await utils.createEmbedTokenRequest(tokenResponse.accessToken, req.query.workspaceId, report.id)
-  response.embedToken = embedTokenReposnse.token
-  return res.json(response)
+  const accessToken = await auth.getAuthenticationToken().then(response => response.accessToken)
+
+  const groups = await utils.listGroups(accessToken, buildFilter(req.body.workspaceName))
+  const workspaceId = groups.value[0].id
+
+  const reports = await utils.listReports(accessToken, workspaceId, buildFilter(req.body.reportName))
+  const reportId = reports.value[0].id
+
+  const report = await utils.getReport(accessToken, workspaceId, reportId)
+  const embedTokenReposnse = await utils.getEmbedToken(accessToken, workspaceId, reportId)
+  report.embedToken = embedTokenReposnse.token
+
+  return res.json(report)
+}
+
+function buildFilter(name) {
+  return "?$filter=name%20eq%20'" + name + "'"
 }

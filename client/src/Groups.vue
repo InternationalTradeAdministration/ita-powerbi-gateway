@@ -1,16 +1,14 @@
 <template>
   <div class="container">
-    <div class="header">
-      <span class="md-title">Power BI Workspaces</span>
+    <span v-if="loading">loading...</span>
+    <div v-else class="header">
+      <span class="md-title">Workspaces</span>
     </div>
     <div class="content">
-      <md-table v-model="groups">
-        <md-table-row slot-scope="{ item }" slot="md-table-row">
-          <md-table-cell md-label="Workspace ID">
-            <router-link :to="'/workspace/'+item.id">{{item.name}}</router-link>
-          </md-table-cell>
-          <md-table-cell md-label="On Dedicated Capacity">
-            <span>{{item.isOnDedicatedCapacity}}</span>
+      <md-table v-model="groups" md-sort="name" md-sort-order="asc" md-card>
+        <md-table-row slot-scope="{ item }" slot="md-table-row"  :id="item.id">
+          <md-table-cell md-label="Name" md-sort-by="name">
+            <router-link :to="'/workspace/'+item.name">{{item.name}}</router-link>
           </md-table-cell>
         </md-table-row>
       </md-table>
@@ -23,10 +21,13 @@ import { getGroups } from "@/utils/Repository";
 export default {
   name: "Reports",
   data: () => ({
+    loading: true,
     groups: []
   }),
   async created() {
-    this.groups = await getGroups();
+    let groups = await getGroups();
+    this.groups = groups.sort((a, b) => (a.name > b.name) ? 1 : -1)
+    this.loading = false;
   }
 };
 </script>

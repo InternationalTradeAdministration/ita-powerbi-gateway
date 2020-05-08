@@ -28,25 +28,26 @@ function validateConfig() {
   }
 }
 
-async function createListGroupsRequest(accessToken) {
-  const url =  buildBaseUrl()
+async function listGroups(accessToken, filter) {
+  const url = (filter) ? buildBaseUrl() + filter : buildBaseUrl()
   const requestParmas = buildHttpRequestParameters(url, accessToken, 'GET')
   return sendRequest(requestParmas)
 }
 
-async function createReportRequest(accessToken, workspaceId, reportId) {
+async function listReports(accessToken, workspaceId, filter) {
+  let url = buildBaseUrl(workspaceId) + '/reports'
+  if (filter) url = url + filter
+  const requestParmas = buildHttpRequestParameters(url, accessToken, 'GET')
+  return sendRequest(requestParmas)
+}
+
+async function getReport(accessToken, workspaceId, reportId) {
   const url = buildBaseUrl(workspaceId) + '/reports/' + reportId
   const requestParmas = buildHttpRequestParameters(url, accessToken, 'GET')
   return sendRequest(requestParmas)
 }
 
-async function createListReportsRequest(accessToken, workspaceId) {
-  const url = buildBaseUrl(workspaceId) + '/reports'
-  const requestParmas = buildHttpRequestParameters(url, accessToken, 'GET')
-  return sendRequest(requestParmas)
-}
-
-async function createEmbedTokenRequest(accessToken, workspaceId, reportId) {
+async function getEmbedToken(accessToken, workspaceId, reportId) {
   const url = buildBaseUrl(workspaceId) + '/reports/' + reportId + '/GenerateToken'
   const requestParmas = buildHttpRequestParameters(url, accessToken, 'POST', JSON.stringify({ accessLevel: 'View' }))
   return sendRequest(requestParmas)
@@ -86,8 +87,8 @@ async function sendRequest(requestParmas) {
 
 module.exports = {
   validateConfig: validateConfig,
-  createListGroupsRequest: createListGroupsRequest,
-  createReportRequest: createReportRequest,
-  createListReportsRequest: createListReportsRequest,
-  createEmbedTokenRequest: createEmbedTokenRequest
+  listGroups: listGroups,
+  listReports: listReports,
+  getReport: getReport,
+  getEmbedToken: getEmbedToken
 }

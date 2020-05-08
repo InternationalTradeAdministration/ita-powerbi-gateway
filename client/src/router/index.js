@@ -13,15 +13,11 @@ export default new Router({
       name: 'Groups',
       component: Groups
     }, {
-      path: '/workspace/:workspaceId',
+      path: '/workspace/:workspaceName',
       name: 'Reports',
       component: Reports
     }, {
-      path: '/workspace/:workspaceId/report/:reportId',
-      name: 'ReportViewerById',
-      component: ReportViewer
-    }, {
-      path: '/workspace/:workspaceId/reportName/:reportName',
+      path: '/workspace/:workspaceName/report/:reportName',
       name: 'ReportViewerByName',
       component: ReportViewer
     }

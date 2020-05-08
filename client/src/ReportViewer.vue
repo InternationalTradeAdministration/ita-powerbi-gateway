@@ -1,14 +1,12 @@
 <template>
   <div>
-    <div v-if="loading">
-      <span>loading...</span>
-    </div>
+    <span v-if="loading">loading...</span>
     <div id="embed-container" ref="embed-container"></div>
   </div>
 </template>
 <script>
 import * as pbi from "powerbi-client";
-import { getReportById, getReportByName } from "@/utils/Repository";
+import { getReport } from "@/utils/Repository";
 
 export default {
   name: "ReportViewer",
@@ -16,18 +14,10 @@ export default {
     loading: true
   }),
   async created() {
-    let report;
-    if (this.$route.params.reportId) {
-      report = await getReportById(
-        this.$route.params.workspaceId,
-        this.$route.params.reportId
-      );
-    } else {
-      report = await getReportByName(
-        this.$route.params.workspaceId,
-        this.$route.params.reportName
-      );
-    }
+    let report = await getReport(
+      this.$route.params.workspaceName,
+      this.$route.params.reportName
+    );
 
     this.loading = false;
 
@@ -43,10 +33,9 @@ export default {
     let embedContainer = this.$refs["embed-container"];
     window.powerbi.embed(embedContainer, config);
 
-    if (this.$route.query.fullscreen === 'true') {
-      this.fullscreen()
+    if (this.$route.query.fullscreen === "true") {
+      this.fullscreen();
     }
-
   },
   methods: {
     fullscreen() {

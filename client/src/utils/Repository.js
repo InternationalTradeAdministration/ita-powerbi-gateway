@@ -40,3 +40,15 @@ export async function getReport(workspaceName, reportName) {
     }
   }).then(response => response.data)
 }
+
+export async function getOtexaCountries() {
+  return await axios.get('/api/otexa/countries').then(response => response.data)
+}
+
+export async function getOtexaCategories() {
+  return await axios.get('/api/otexa/categories').then(response => response.data)
+}
+
+export async function getOtexaChapters() {
+  return await axios.get('/api/otexa/chapters').then(response => response.data)
+}

@@ -10,8 +10,8 @@ import javax.persistence.Table;
 
 @Data
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "OtexaCategoryRefVw")
 public class Category {
   @Id

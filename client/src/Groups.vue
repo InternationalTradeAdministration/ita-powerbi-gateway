@@ -6,10 +6,11 @@
     </div>
     <div class="content">
       <md-table v-model="groups" md-sort="name" md-sort-order="asc" md-card>
-        <md-table-row slot-scope="{ item }" slot="md-table-row"  :id="item.id">
+        <md-table-row slot-scope="{ item }" slot="md-table-row" :id="item.id">
           <md-table-cell md-label="Name" md-sort-by="name">
             <router-link :to="'/workspace/'+item.name">{{item.name}}</router-link>
           </md-table-cell>
+          <md-table-cell md-label="isOnDedicatedCapacity">{{item.isOnDedicatedCapacity}}</md-table-cell>
         </md-table-row>
       </md-table>
     </div>
@@ -26,7 +27,7 @@ export default {
   }),
   async created() {
     let groups = await getGroups();
-    this.groups = groups.sort((a, b) => (a.name > b.name) ? 1 : -1)
+    this.groups = groups.sort((a, b) => (a.name > b.name ? 1 : -1));
     this.loading = false;
   }
 };

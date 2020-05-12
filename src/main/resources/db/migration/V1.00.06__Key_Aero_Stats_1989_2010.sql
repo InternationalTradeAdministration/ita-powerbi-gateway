@@ -1,0 +1,45 @@
+IF OBJECT_ID('dbo.KEY_AERO_INDUSTRY_STATS_1989_2010', 'U') is not null
+drop TABLE dbo.KEY_AERO_INDUSTRY_STATS_1989_2010
+go
+
+create TABLE KEY_AERO_INDUSTRY_STATS_1989_2010 (
+    Year varchar(255),
+    "Industry Data Value of Aerospace Shipments: Current dollars" varchar(255),
+    "Industry Data Value of Aerospace Shipments: Constant dollars (2002=100)" varchar(255),
+    "Industry Data Value of Aerospace Shipments: Real Growth" varchar(255),
+    "Value of Aircraft & Parts Shipments: Current dollars" varchar(255),
+    "Value of Aircraft & Parts Shipments: Constant dollars (2002=100)" varchar(255),
+    "Value of Aircraft & Parts Shipments: Real Growth" varchar(255),
+    "Industrial Production Index (2007=100)2: Aerospace Products & Parts" varchar(255),
+    "Industrial Production Index (2007=100)2: Aircraft & Parts" varchar(255),
+    "Indusrtial Production Index (2007=100)2: Defense & Space Equipment" varchar(255),
+    "Employment (annual average)3: Total Employment (000s)" varchar(255),
+    "Employment (annual average)3: Total Employment (000s) Growth" varchar(255),
+    "Employment (annual average)3: Production Workers (000s)" varchar(255),
+    "Employment (annual average)3: Production Workers (000s) Growth" varchar(255),
+    "Product Data Value of Aerospace Shipments: Current dollars" varchar(255),
+    "Product Data Value of Aerospace Shipments: Constant dollars (2002=100)" varchar(255),
+    "Product Data Value of Aerospace Shipments: Real Growth" varchar(255),
+    "Trade: value of Domestic Exports*" varchar(255),
+    "Trade: Exports/Shipments" varchar(255),
+    "Value of Imports for Consumption" varchar(255),
+    "Apparent Domestic Consumption" varchar(255),
+    "Imports/Apparent Consumption" varchar(255),
+    "Balance of Trade" varchar(255),
+    "TOTAL AEROSPACE TRADE4: Value of Domestic Exports*" varchar(255),
+    "TOTAL AEROSPACE TRADE4: Value of Imports for Consumption" varchar(255),
+    "Balance of Total Aerospace Trade" varchar(255),
+    "#1 Foreign Market" varchar(255),
+    "#2 Foreign Market" varchar(255),
+    "#3 Foreign Market" varchar(255),
+    "#4 Foreign Market" varchar(255),
+    "#5 Foreign Market" varchar(255),
+    "% Total Exports" varchar(255),
+    "Top Supplier to United States" varchar(255),
+    "2nd Top Supplier to United States" varchar(255),
+    "3rd Top Supplier to United States" varchar(255),
+    "4th Top Supplier to United States" varchar(255),
+    "5th Top Supplier to United States" varchar(255),
+    "% Total Imports" varchar(255)
+);
+go

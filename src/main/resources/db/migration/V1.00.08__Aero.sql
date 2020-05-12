@@ -1,0 +1,69 @@
+IF OBJECT_ID('dbo.AERO_TOP_SUPPLIERS_ANNUAL_2015', 'U') IS NOT NULL
+DROP TABLE dbo.AERO_TOP_SUPPLIERS_ANNUAL_2015
+GO
+
+CREATE TABLE AERO_TOP_SUPPLIERS_ANNUAL_2015 (
+    "Rank" int,
+    "Supplier" varchar(255),
+    "Value" decimal(10,2),
+    "% Total" decimal(10,4),
+);
+GO
+
+IF OBJECT_ID('dbo.AERO_TOP_SUPPLIERS_ANNUAL_2016', 'U') IS NOT NULL
+DROP TABLE dbo.AERO_TOP_SUPPLIERS_ANNUAL_2016
+GO
+
+CREATE TABLE AERO_TOP_SUPPLIERS_ANNUAL_2016 (
+    "Rank" int,
+    "Supplier" varchar(255),
+    "Value" decimal(10,2),
+    "% Total" decimal(10,4),
+);
+GO
+
+IF OBJECT_ID('dbo.AERO_TOP_SUPPLIERS_ANNUAL_2017', 'U') IS NOT NULL
+DROP TABLE dbo.AERO_TOP_SUPPLIERS_ANNUAL_2017
+GO
+
+CREATE TABLE AERO_TOP_SUPPLIERS_ANNUAL_2017 (
+    "Rank" int,
+    "Supplier" varchar(255),
+    "Value" decimal(10,2),
+    "% Total" decimal(10,4),
+);
+GO
+
+IF OBJECT_ID('dbo.AERO_TOP_SUPPLIERS_ANNUAL_2018', 'U') IS NOT NULL
+DROP TABLE dbo.AERO_TOP_SUPPLIERS_ANNUAL_2018
+GO
+
+CREATE TABLE AERO_TOP_SUPPLIERS_ANNUAL_2018 (
+    "Rank" int,
+    "Supplier" varchar(255),
+    "Value" decimal(10,2),
+    "% Total" decimal(10,4),
+);
+GO
+
+IF OBJECT_ID('dbo.AERO_TOP_SUPPLIERS_ANNUAL_2019', 'U') IS NOT NULL
+DROP TABLE dbo.AERO_TOP_SUPPLIERS_ANNUAL_2019
+GO
+
+CREATE TABLE AERO_TOP_SUPPLIERS_ANNUAL_2019 (
+    "Rank" int,
+    "Supplier" varchar(255),
+    "Value" decimal(10,2),
+    "% Total" decimal(10,4),
+);
+GO
+
+IF OBJECT_ID('dbo.AERO_TOP_SUPPLIERS_ANNUAL_TOTALS', 'U') IS NOT NULL
+DROP TABLE dbo.AERO_TOP_SUPPLIERS_ANNUAL_TOTALS
+GO
+
+CREATE TABLE AERO_TOP_SUPPLIERS_ANNUAL_TOTALS (
+    "Year" int,
+    "General Aerospace Imports Value" decimal(10,2),
+);
+GO

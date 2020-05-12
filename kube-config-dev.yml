@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: ita-power-bi-gateway
-        image: itasharedappregistryprodeast1.azurecr.io/ita-powerbi-gateway:#{Release.Artifacts._InternationalTradeAdministration.ita-powerbi-gateway.BuildId}#
+        image: itadevacr.azurecr.io/ita-powerbi-gateway:#{Release.Artifacts._InternationalTradeAdministration.ita-powerbi-gateway.BuildId}#
         imagePullPolicy: Always
         ports:
         - containerPort: 80
@@ -54,11 +54,13 @@ kind: Ingress
 metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
   name: ita-power-bi-gateway
   namespace: mdsnamespace
 spec:
   rules:
-    - host: powerbi.trade.gov
+    - host: powerbi-dev.trade.gov
       http:
         paths:
           - path: /

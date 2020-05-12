@@ -14,7 +14,7 @@ export default {
     loading: true
   }),
   async created() {
-    let report = await getReport(
+    let r = await getReport(
       this.$route.params.workspaceName,
       this.$route.params.reportName
     );
@@ -22,9 +22,9 @@ export default {
     this.loading = false;
 
     var config = {
-      id: report.id,
-      embedUrl: report.embedUrl,
-      accessToken: report.embedToken,
+      id: r.powerBiReport.id,
+      embedUrl: r.powerBiReport.embedUrl,
+      accessToken: r.powerBiToken.token,
       type: "report",
       tokenType: pbi.models.TokenType.Embed,
       permissions: pbi.models.Permissions.All

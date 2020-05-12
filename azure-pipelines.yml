@@ -1,0 +1,49 @@
+trigger:
+  - master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - script: |
+        curl https://cdn.azul.com/zulu/bin/zulu14.27.1-ca-jdk14-linux_x64.tar.gz --output $(Agent.TempDirectory)/jdk-latest-linux_x64.tar.gz
+  - task: JavaToolInstaller@0
+    inputs:
+      versionSpec: "14"
+      jdkArchitectureOption: x64
+      jdkSourceOption: LocalDirectory
+      jdkFile: $(Agent.TempDirectory)/jdk-latest-linux_x64.tar.gz
+      jdkDestinationDirectory: $(Agent.ToolsDirectory)/binaries/openjdk
+      cleanDestinationDirectory: true
+  - script: |
+      ./build.sh
+    displayName: 'Build project artifacts'
+  - task: CopyFiles@2
+    inputs:
+      Contents: 'kube-config-*.yml'
+      TargetFolder: '$(build.artifactstagingdirectory)'
+    displayName: 'Copy Kube Config'
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: 'manifest'
+      publishLocation: 'Container'
+    displayName: 'Publish Kube Config Files'
+  - task: DockerCompose@0
+    inputs:
+      containerregistrytype: 'Azure Container Registry'
+      azureSubscription: 'ITADEV2-MSDataServicesAzure'
+      azureContainerRegistry: '{"loginServer":"itadevacr.azurecr.io", "id" : "/subscriptions/675d7977-79af-4b94-b0bd-26d4095a4ffb/resourceGroups/ITA-SharedAppSvc-Dev-East1/providers/Microsoft.ContainerRegistry/registries/itadevacr"}'
+      dockerComposeFile: '**/docker-compose.yml'
+      action: 'Build services'
+      additionalImageTags: '$(Build.BuildId)'
+    displayName: 'Build Docker image'
+  - task: DockerCompose@0
+    inputs:
+      containerregistrytype: 'Azure Container Registry'
+      azureSubscription: 'ITADEV2-MSDataServicesAzure'
+      azureContainerRegistry: '{"loginServer":"itadevacr.azurecr.io", "id" : "/subscriptions/675d7977-79af-4b94-b0bd-26d4095a4ffb/resourceGroups/ITA-SharedAppSvc-Dev-East1/providers/Microsoft.ContainerRegistry/registries/itadevacr"}'
+      dockerComposeFile: '**/docker-compose.yml'
+      action: 'Push services'
+      additionalImageTags: '$(Build.BuildId)'
+    displayName: 'Push Docker image'

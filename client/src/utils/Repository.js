@@ -1,18 +1,42 @@
 const axios = require('axios')
 
-export async function getGroups() {
-  return axios.get('/api/list-groups').then(response => response.data);
+export async function getBearerToken() {
+  const tokenResponse = await axios.get('/api/pbi-admin/get-access-token').then(response => response.data)
+  localStorage.accessToken = tokenResponse.access_token
+}
+
+export async function listGroups() {
+  return axios.get('/api/pbi-admin/list-groups', {
+    params: {
+      accessToken: localStorage.accessToken
+    }
+  }).then(response => response.data);
 }
 
 export async function listReports(workspaceName) {
-  return axios.post('/api/list-reports', {
-    workspaceName
+  let groups = await listGroups()
+  let groupId = groups.find(g => g.name == workspaceName).id
+
+  return axios.get('/api/pbi-admin/list-reports', {
+    params: {
+      groupId,
+      accessToken: localStorage.accessToken
+    }
   }).then(response => response.data);
 }
 
 export async function getReport(workspaceName, reportName) {
-  return axios.post('/api/get-report', {
-    workspaceName,
-    reportName
+  let groups = await listGroups(workspaceName)
+  let groupId = groups.find(g => g.name == workspaceName).id
+
+  let reports = await listReports(workspaceName)
+  let reportId = reports.find(r => r.name == reportName).id
+
+  return axios.get('/api/pbi-admin/get-report', {
+    params: {
+      groupId,
+      reportId,
+      accessToken: localStorage.accessToken
+    }
   }).then(response => response.data)
 }

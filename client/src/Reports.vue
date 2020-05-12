@@ -1,10 +1,10 @@
 <template>
   <div class="container">
-    <span v-if="loading">loading...</span>
-    <div v-else class="header">
+    <div class="header">
       <span class="md-title">{{workspaceName}}</span>
     </div>
-    <div class="content">
+    <span v-if="loading">loading...</span>
+    <div v-else class="content">
       <md-table v-model="reports" md-sort="name" md-sort-order="asc" md-card>
         <md-table-row slot-scope="{ item }" slot="md-table-row">
           <md-table-cell md-label="Name" md-sort-by="name">

@@ -1,5 +1,7 @@
 <template>
-  <router-view />
+  <div>
+    <router-view v-if="!loading" />
+  </div>
 </template>
 
 <style>
@@ -9,7 +11,16 @@
 </style>
 
 <script>
+import { getBearerToken } from "@/utils/Repository";
+
 export default {
-  name: "App"
+  name: "App",
+  data: () => ({
+    loading: true
+  }),
+  async created() {
+    await getBearerToken()
+    this.loading = false;
+  }
 };
 </script>

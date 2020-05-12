@@ -1,11 +1,14 @@
 <template>
   <div class="container">
-    <span v-if="loading">loading...</span>
-    <div v-else class="header">
+    <div class="header">
       <span class="md-title">Workspaces</span>
+      <div class="swagger">
+        <a href="/swagger-ui.html" target="_blank">Swagger UI</a>
+      </div>
     </div>
     <div class="content">
-      <md-table v-model="groups" md-sort="name" md-sort-order="asc" md-card>
+      <span v-if="loading">loading...</span>
+      <md-table v-else v-model="groups" md-sort="name" md-sort-order="asc" md-card>
         <md-table-row slot-scope="{ item }" slot="md-table-row" :id="item.id">
           <md-table-cell md-label="Name" md-sort-by="name">
             <router-link :to="'/workspace/'+item.name">{{item.name}}</router-link>
@@ -17,18 +20,25 @@
   </div>
 </template>
 <script>
-import { getGroups } from "@/utils/Repository";
+import { listGroups } from "@/utils/Repository";
 
 export default {
   name: "Reports",
   data: () => ({
-    loading: true,
-    groups: []
+    groups: null,
+    version: null,
+    loading: true
   }),
   async created() {
-    let groups = await getGroups();
+    let groups = await listGroups();
     this.groups = groups.sort((a, b) => (a.name > b.name ? 1 : -1));
     this.loading = false;
   }
 };
 </script>
+<style scoped>
+.swagger {
+  display: flex;
+  justify-content: flex-end;
+}
+</style>

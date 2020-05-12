@@ -35,5 +35,12 @@ The following links can help configure Azure and Power BI:
 - TENANT_ID: Azure Tenant ID
 - CLIENT_ID: Application ID from the AD App Registration
 - CLIENT_SECRET: Client secret from the AD App Registration
+- FLYWAY_URL: The jdbc connection to a AZURE SQL Database
+- FLYWAY_USER: Username to the AZURE SQL Database
+- FLYWAY_PASSWORD: Password to the AZURE SQL Database
 
 For detail related to the deployment of containerized applications in Azure, reference this [repo](https://github.com/InternationalTradeAdministration/azure-samples) with deployment scenarios
+
+## Database Notes
+
+- SQL Scripts for updating the Database can be found here:  /src/main/resources/db/migration

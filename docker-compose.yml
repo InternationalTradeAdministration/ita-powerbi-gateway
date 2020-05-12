@@ -3,5 +3,5 @@ services:
   ita-powerbi-gateway:
     image: itadevacr.azurecr.io/ita-powerbi-gateway:latest
     build:
-      context: .
+      context: docker
       dockerfile: Dockerfile

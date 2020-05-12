@@ -1,0 +1,45 @@
+plugins {
+    id 'org.springframework.boot' version '2.2.6.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'java'
+	id 'org.flywaydb.flyway' version '6.4.1'
+}
+
+group = 'gov.ita'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '14'
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    set('azureVersion', "2.2.0")
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    runtimeOnly 'com.microsoft.sqlserver:mssql-jdbc:8.3.0.jre14-preview'
+    implementation 'org.projectlombok:lombok:1.18.8'
+    annotationProcessor 'org.projectlombok:lombok:1.18.8'
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'io.springfox:springfox-swagger2:2.9.2'
+    implementation 'io.springfox:springfox-swagger-ui:2.9.2'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "com.microsoft.azure:azure-spring-boot-bom:${azureVersion}"
+    }
+}
+
+task buildJarAndCopyToDocker(dependsOn: build) {
+    doLast {
+        copy {
+            from 'build/libs/ita-powerbi-gateway-0.0.1-SNAPSHOT.jar'
+            into 'docker'
+        }
+    }
+}

@@ -3,3 +3,42 @@ node_modules
 /public
 .vscode
 kube-config.yml
+.grade
+HELP.md
+.gradle
+/build/
+!gradle/wrapper/gradle-wrapper.jar
+.DS_Store
+/client/node_modules/
+/client/dist/
+/src/main/resources/public/
+/client/test/unit/coverage/
+/docker/*.jar
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+deploy.sh
+/bin/

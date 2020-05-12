@@ -24,8 +24,6 @@ spec:
             value: #{CLIENT_ID}#
           - name: CLIENT_SECRET
             value: #{CLIENT_SECRET}#
-          - name: WORKSPACE_ID
-            value: #{WORKSPACE_ID}#
       restartPolicy: Always
 ---
 

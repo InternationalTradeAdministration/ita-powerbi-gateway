@@ -43,5 +43,5 @@ public class DevelopmentMetadataService implements MetadataService {
   public List<Hts> getHtsByChapters(List<Long> chapters) {
     return Collections.singletonList(new Hts("123321", "123321 - Hats"));
   }
-
+  
 }

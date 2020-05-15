@@ -5,40 +5,60 @@ export async function getBearerToken() {
   localStorage.accessToken = tokenResponse.access_token
 }
 
-export async function listGroups() {
-  return axios.get('/api/pbi-admin/list-groups', {
-    params: {
-      accessToken: localStorage.accessToken
-    }
-  }).then(response => response.data);
-}
-
 export async function listReports(workspaceName) {
-  let groups = await listGroups()
-  let groupId = groups.find(g => g.name == workspaceName).id
-
-  return axios.get('/api/pbi-admin/list-reports', {
-    params: {
-      groupId,
-      accessToken: localStorage.accessToken
-    }
-  }).then(response => response.data);
+  let groups = await pbiAdminListGroups('?$filter=name eq \'' + workspaceName + '\'')
+  return pbiAdminListReports(groups[0].id, null)
 }
 
 export async function getReport(workspaceName, reportName) {
-  let groups = await listGroups(workspaceName)
-  let groupId = groups.find(g => g.name == workspaceName).id
+  let groups = await pbiAdminListGroups('?$filter=name eq \'' + workspaceName + '\'')
+  let reports = await pbiAdminListReports(groups[0].id, '?$filter=name eq \'' + reportName + '\'')
+  let report = await pbiAdminGetReport(groups[0].id, reports[0].id)
+  let token = await pbiAdminGenerateToken(groups[0].id, reports[0].id)
 
-  let reports = await listReports(workspaceName)
-  let reportId = reports.find(r => r.name == reportName).id
+  return {
+    powerBiReport: report,
+    powerBiToken: token
+  }
+}
 
-  return axios.get('/api/pbi-admin/get-report', {
-    params: {
-      groupId,
-      reportId,
-      accessToken: localStorage.accessToken
-    }
+export async function pbiAdminListGroups(filter) {
+  let baseUrl = 'https://api.powerbigov.us/v1.0/myorg/groups'
+  let url = (filter !== null) ? baseUrl + filter : baseUrl
+
+  return await axios.get(url, {
+    headers: buildHeaders()
+  }).then(response => response.data.value);
+}
+
+async function pbiAdminGetReport(groupId, reportId) {
+  return axios.get('https://api.powerbigov.us/v1.0/myorg/groups/' + groupId + '/reports/' + reportId, {
+    headers: buildHeaders()
   }).then(response => response.data)
+}
+
+async function pbiAdminGenerateToken(groupId, reportId) {
+  return axios.post('https://api.powerbigov.us/v1.0/myorg/groups/' + groupId + '/reports/' + reportId + '/GenerateToken', {
+    accessLevel: 'View'
+  },
+    {
+      headers: buildHeaders()
+    }).then(response => response.data)
+}
+
+
+async function pbiAdminListReports(groupId, filter) {
+  let baseUrl = 'https://api.powerbigov.us/v1.0/myorg/groups/' + groupId + '/reports'
+  let url = (filter !== null) ? baseUrl + filter : baseUrl
+  return axios.get(url, {
+    headers: buildHeaders()
+  }).then(response => response.data.value);
+}
+
+function buildHeaders() {
+  return {
+    Authorization: 'Bearer ' + localStorage.accessToken
+  }
 }
 
 export async function getOtexaCountries() {
@@ -51,4 +71,8 @@ export async function getOtexaCategories() {
 
 export async function getOtexaChapters() {
   return await axios.get('/api/otexa/chapters').then(response => response.data)
+}
+
+export async function getOtexaHts(categoryIds, chapterIds) {
+  return await axios.get('/api/otexa/hts?categories=' + categoryIds+'&chapters=' + chapterIds).then(response => response.data)
 }

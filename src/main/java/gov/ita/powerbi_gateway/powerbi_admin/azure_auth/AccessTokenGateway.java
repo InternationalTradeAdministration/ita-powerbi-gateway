@@ -17,7 +17,7 @@ public class AccessTokenGateway {
   @Autowired
   private RestTemplate restTemplate;
 
-  public AccessTokenResponse getAccessToken(String clientId, String clientSecret, String resource) {
+  public byte[] getAccessToken(String clientId, String clientSecret, String resource) {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
@@ -33,8 +33,8 @@ public class AccessTokenGateway {
 
     String authUrl = String.format("https://login.microsoftonline.com/%s/oauth2/token", tenantId);
 
-    ResponseEntity<AccessTokenResponse> accessTokenResponseEntity =
-      restTemplate.exchange(authUrl, HttpMethod.POST, tokenRequest, AccessTokenResponse.class);
+    ResponseEntity<byte[]> accessTokenResponseEntity =
+      restTemplate.exchange(authUrl, HttpMethod.POST, tokenRequest, byte[].class);
     return accessTokenResponseEntity.getBody();
   }
 }

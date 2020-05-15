@@ -8,27 +8,41 @@
           <md-option
             v-for="item in countries"
             :key="item.ctryId"
-            :value="item.ctryDescription"
+            :value="item.ctryId"
           >{{item.ctryDescription}}</md-option>
         </md-select>
       </md-field>
       <md-field>
         <label for="categories">Categories</label>
-        <md-select v-model="selectedCategories" name="categories" id="categories" md-dense multiple>
+        <md-select
+          v-model="selectedCategories"
+          name="categories"
+          id="categories"
+          md-dense
+          multiple
+          @blur="updateHts()"
+        >
           <md-option
             v-for="item in categories"
             :key="item.catId"
-            :value="item.longCategory"
+            :value="item.catId"
           >{{item.longCategory}}</md-option>
         </md-select>
       </md-field>
       <md-field>
         <label for="chapters">Chapters</label>
-        <md-select v-model="selectedChapters" name="chapters" id="chapters" md-dense multiple>
+        <md-select
+          v-model="selectedChapters"
+          name="chapters"
+          id="chapters"
+          md-dense
+          multiple
+          @blur="updateHts()"
+        >
           <md-option
             v-for="item in chapters"
             :key="item.chapter"
-            :value="item.longChapter"
+            :value="item.chapter"
           >{{item.longChapter}}</md-option>
         </md-select>
       </md-field>
@@ -40,9 +54,8 @@
           id="hts"
           md-dense
           multiple
-          :disabled="htsDisabled()"
         >
-          <md-option v-for="item in hts" :key="item.hts" :value="item.longHts">{{item.longHts}}</md-option>
+          <md-option v-for="item in hts" :key="item.hts" :value="item.hts">{{item.longHts}}</md-option>
         </md-select>
       </md-field>
       <md-button @click="viewReport()" class="md-dense md-raised md-primary">View Report</md-button>
@@ -57,7 +70,8 @@ import {
   getReport,
   getOtexaCountries,
   getOtexaCategories,
-  getOtexaChapters
+  getOtexaChapters,
+  getOtexaHts
 } from "@/utils/Repository";
 
 export default {
@@ -79,7 +93,7 @@ export default {
     this.countries = await getOtexaCountries();
     this.categories = await getOtexaCategories();
     this.chapters = await getOtexaChapters();
-
+    this.hts = await getOtexaHts();
     this.report = await getReport(
       this.$route.params.workspaceName,
       this.$route.params.reportName
@@ -87,12 +101,6 @@ export default {
     this.loading = false;
   },
   methods: {
-    htsDisabled() {
-      return (
-        this.selectedCategories.length === 0 &&
-        this.selectedChapters.length === 0
-      );
-    },
     getReportClass() {
       return this.isReportVisible ? "visible" : "hidden";
     },
@@ -103,19 +111,31 @@ export default {
       let filters = [];
 
       if (this.selectedCountries.length > 0) {
-        filters.push(this.filter("Country", this.selectedCountries));
+        let selectedCountries = this.countries
+          .filter(c => this.selectedCountries.includes(c.ctryId))
+          .map(c => c.ctryDescription);
+        filters.push(this.filter("Country", selectedCountries));
       }
 
       if (this.selectedCategories.length > 0) {
-        filters.push(this.filter("Category", this.selectedCategories));
+        let selectedCategories = this.categories
+          .filter(c => this.selectedCategories.includes(c.catId))
+          .map(c => c.longCategory);
+        filters.push(this.filter("Category", selectedCategories));
       }
 
       if (this.selectedChapters.length > 0) {
-        filters.push(this.filter("Chapter", this.selectedChapters));
+        let selectedChapters = this.chapters
+          .filter(c => this.selectedChapters.includes(c.chapter))
+          .map(c => c.longChapter);
+        filters.push(this.filter("Chapter", selectedChapters));
       }
 
       if (this.selectedHts.length > 0) {
-        filters.push(this.filter("HTS", this.selectedHts));
+        let selectedHts = this.hts
+          .filter(c => this.selectedHts.includes(c.hts))
+          .map(c => c.longHts);
+        filters.push(this.filter("HTS", selectedHts));
       }
 
       var config = {

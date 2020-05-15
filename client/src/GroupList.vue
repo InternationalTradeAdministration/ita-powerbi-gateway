@@ -20,7 +20,7 @@
   </div>
 </template>
 <script>
-import { listGroups } from "@/utils/Repository";
+import { pbiAdminListGroups } from "@/utils/Repository";
 
 export default {
   name: "GroupList",
@@ -30,7 +30,7 @@ export default {
     loading: true
   }),
   async created() {
-    let groups = await listGroups();
+    let groups = await pbiAdminListGroups(null);
     this.groups = groups.sort((a, b) => (a.name > b.name ? 1 : -1));
     this.loading = false;
   }

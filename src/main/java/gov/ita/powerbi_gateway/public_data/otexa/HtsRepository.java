@@ -7,7 +7,5 @@ import java.util.List;
 
 @Repository
 interface HtsRepository extends JpaRepository<Hts, String> {
-  List<Hts> findByCatIdIn(List<Long> categories);
-  List<Hts> findByHtsChapterChapterIn(List<Long> chapters);
   List<Hts> findByCatIdInAndHtsChapterChapterIn(List<Long> categories, List<Long> chapters);
 }

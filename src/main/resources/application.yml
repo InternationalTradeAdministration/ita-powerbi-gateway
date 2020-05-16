@@ -4,9 +4,6 @@ spring:
     exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
 build-id: n/a
 powerbi:
-  authority-url: https://login.microsoftonline.com/common/
-  resource-url: https://analysis.usgovcloudapi.net/powerbi/api
-  api-url: https://api.powerbigov.us
   client-id: ${POWERBI_CLIENT_ID}
   client-secret: ${POWERBI_CLIENT_SECRET}
   tenant-id: ${POWERBI_TENANT_ID}
@@ -19,9 +16,6 @@ spring:
     password: ${FLYWAY_PASSWORD}
 build-id: ${BUILD_ID}
 powerbi:
-  authority-url: https://login.microsoftonline.com/common/
-  resource-url: https://analysis.usgovcloudapi.net/powerbi/api
-  api-url: https://api.powerbigov.us
   client-id: ${POWERBI_CLIENT_ID}
   client-secret: ${POWERBI_CLIENT_SECRET}
   tenant-id: ${POWERBI_TENANT_ID}

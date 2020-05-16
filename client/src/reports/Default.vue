@@ -21,7 +21,7 @@ export default {
 
     this.loading = false;
 
-    var config = {
+    var embedConfig = {
       id: r.powerBiReport.id,
       embedUrl: r.powerBiReport.embedUrl,
       accessToken: r.powerBiToken.token,
@@ -31,18 +31,7 @@ export default {
     };
 
     let embedContainer = this.$refs["embed-container"];
-    window.powerbi.embed(embedContainer, config);
-
-    if (this.$route.query.fullscreen === "true") {
-      this.fullscreen();
-    }
-  },
-  methods: {
-    fullscreen() {
-      let embedContainer = this.$refs["embed-container"];
-      let report = window.powerbi.get(embedContainer);
-      report.fullscreen();
-    }
+    window.powerbi.embed(embedContainer, embedConfig);
   }
 };
 </script>

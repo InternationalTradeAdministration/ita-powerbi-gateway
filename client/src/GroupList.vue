@@ -1,22 +1,27 @@
 <template>
   <div class="container">
-    <div class="header">
-      <span class="md-title">Workspaces</span>
-      <div class="swagger">
-        <a href="/swagger-ui.html" target="_blank">Swagger UI</a>
-      </div>
+    <div>
+      <h1>Workspaces</h1>
     </div>
-    <div class="content">
+    <div>
       <span v-if="loading">loading...</span>
-      <md-table v-else v-model="groups" md-sort="name" md-sort-order="asc" md-card>
-        <md-table-row slot-scope="{ item }" slot="md-table-row" :id="item.id">
-          <md-table-cell md-label="Name" md-sort-by="name">
-            <router-link :to="'/workspace/'+item.name">{{item.name}}</router-link>
-          </md-table-cell>
-          <md-table-cell md-label="isOnDedicatedCapacity">{{item.isOnDedicatedCapacity}}</md-table-cell>
-        </md-table-row>
-      </md-table>
+      <table v-else>
+        <tr>
+          <th></th>
+          <th>On Dedicated Capacity</th>
+        </tr>
+        <tr v-for="g in groups" :key="g.id">
+          <td>
+            <router-link :to="'/workspace/'+g.name">{{g.name}}</router-link>
+          </td>
+          <td class="dedicated-capacity">
+            <span v-if="g.isOnDedicatedCapacity">✔</span>
+            <span v-else>✖</span>
+          </td>
+        </tr>
+      </table>
     </div>
+    <a class="swagger" href="/swagger-ui.html" target="_blank">Swagger UI</a>
   </div>
 </template>
 <script>
@@ -38,7 +43,12 @@ export default {
 </script>
 <style scoped>
 .swagger {
-  display: flex;
-  justify-content: flex-end;
+  position: absolute;
+  bottom: 10px;
+  right: 20px;
+}
+
+.dedicated-capacity {
+  text-align: center;
 }
 </style>

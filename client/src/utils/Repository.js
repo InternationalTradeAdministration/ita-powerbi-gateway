@@ -1,8 +1,12 @@
 const axios = require('axios')
 
 export async function getBearerToken() {
-  const tokenResponse = await axios.get('/api/pbi-admin/get-access-token').then(response => response.data)
-  localStorage.accessToken = tokenResponse.access_token
+  const expiresOn = localStorage.expiresOn;
+  if (!expiresOn || (expiresOn && (Date.now() / 1000) > expiresOn)) {
+    const tokenResponse = await axios.get('/api/pbi-admin/get-access-token').then(response => response.data)
+    localStorage.expiresOn = tokenResponse.expires_on
+    localStorage.accessToken = tokenResponse.access_token
+  }
 }
 
 export async function listReports(workspaceName) {
@@ -74,5 +78,5 @@ export async function getOtexaChapters() {
 }
 
 export async function getOtexaHts(categoryIds, chapterIds) {
-  return await axios.get('/api/otexa/hts?categories=' + categoryIds+'&chapters=' + chapterIds).then(response => response.data)
+  return await axios.get('/api/otexa/hts?categories=' + categoryIds + '&chapters=' + chapterIds).then(response => response.data)
 }

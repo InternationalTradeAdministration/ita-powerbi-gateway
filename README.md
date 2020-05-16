@@ -1,6 +1,6 @@
-[![Build Status](https://dev.azure.com/InternationalTradeAdministration/Data%20Services/_apis/build/status/Power%20BI%20Gateway%20-%20Dev2?branchName=master)](https://dev.azure.com/InternationalTradeAdministration/Data%20Services/_build/latest?definitionId=99&branchName=master)
+# Power BI Public (Gateway)
 
-# Power BI Gateway
+[![Build Status](https://dev.azure.com/InternationalTradeAdministration/Data%20Services/_apis/build/status/Power%20BI%20Gateway%20-%20Dev2?branchName=master)](https://dev.azure.com/InternationalTradeAdministration/Data%20Services/_build/latest?definitionId=99&branchName=master)
 
 An app that will publicly display Embedded Power BI reports on GovCloud using a service principle.
 The following links can help configure Azure and Power BI:
@@ -10,27 +10,27 @@ The following links can help configure Azure and Power BI:
 
 ## Local Development
 
+Steps to run this application on your local machine for development purposes.
+
 ### Deveoper Prerequisites
 
-- .NET Core
+- Java 14
 - [NPM](https://www.npmjs.com/get-npm) (`cd client` then `npm install`)
 - [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
 - [Docker CLI](https://docs.docker.com/engine/reference/commandline/cli)
 - [KUBECTL CLI](https://kubernetes.io/docs/tasks/tools/install-kubectl) (if deploying to AKS)
 
-### Backend
+#### Running Locally
 
-`node server.js`, <http://localhost:8080>
+- Backend: `gradle bootRun`, [](http://localhost:8080)
+- Frontend: `cd client && npm start`, [](http://localhost:8081)
 
-### Frontend
+## Build Scripts
 
-`cd client && npm run serve`, <http://localhost:8081>
+- Application: `./build.sh`
+- Container: `./build-push-docker-image.sh`
 
-## Build
-
-- CI/CD build script ```./build.sh```
-
-## Required Environment Variables
+### Required Environment Variables
 
 - TENANT_ID: Azure Tenant ID
 - CLIENT_ID: Application ID from the AD App Registration

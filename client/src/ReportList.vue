@@ -1,17 +1,15 @@
 <template>
   <div class="container">
-    <div class="header">
-      <span class="md-title">{{workspaceName}}</span>
-    </div>
+    <h1>{{workspaceName}}</h1>
     <span v-if="loading">loading...</span>
-    <div v-else class="content">
-      <md-table v-model="reports" md-sort="name" md-sort-order="asc" md-card>
-        <md-table-row slot-scope="{ item }" slot="md-table-row">
-          <md-table-cell md-label="Name" md-sort-by="name">
-            <router-link :to="buildReportUrl(item.name)">{{item.name}}</router-link>
-          </md-table-cell>
-        </md-table-row>
-      </md-table>
+    <div v-else>
+      <table>
+        <tr v-for="r in reports" :key="r.id">
+          <td>
+            <router-link :to="buildReportUrl(r.name)">{{r.name}}</router-link>
+          </td>
+        </tr>
+      </table>
     </div>
   </div>
 </template>

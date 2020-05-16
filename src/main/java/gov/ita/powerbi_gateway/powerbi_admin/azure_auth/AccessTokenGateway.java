@@ -11,13 +11,17 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class AccessTokenGateway {
 
+  @Value("${powerbi.client-id}")
+  private String clientId;
+  @Value("${powerbi.client-secret}")
+  private String clientSecret;
   @Value("${powerbi.tenant-id}")
   private String tenantId;
 
   @Autowired
   private RestTemplate restTemplate;
 
-  public byte[] getAccessToken(String clientId, String clientSecret, String resource) {
+  public byte[] getAccessToken() {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
@@ -27,7 +31,7 @@ public class AccessTokenGateway {
     tokenBody.add("cache-control", "no-cache");
     tokenBody.add("client_id", clientId);
     tokenBody.add("client_secret", clientSecret);
-    tokenBody.add("Resource", resource);
+    tokenBody.add("Resource", "https://analysis.usgovcloudapi.net/powerbi/api");
 
     HttpEntity<MultiValueMap<String, String>> tokenRequest = new HttpEntity<>(tokenBody, headers);
 

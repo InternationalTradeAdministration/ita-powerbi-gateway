@@ -1,68 +1,70 @@
 <template>
   <div>
     <span v-if="loading">loading...</span>
-    <div v-else :class="getFiltersPaneClass()">
-      <md-field>
-        <label for="countries">Countries</label>
-        <md-select v-model="selectedCountries" name="countries" id="countries" md-dense multiple>
-          <md-option
-            v-for="item in countries"
-            :key="item.ctryId"
-            :value="item.ctryId"
-          >{{item.ctryDescription}}</md-option>
-        </md-select>
-      </md-field>
-      <md-field>
-        <label for="categories">Categories</label>
-        <md-select
-          v-model="selectedCategories"
-          name="categories"
-          id="categories"
-          md-dense
-          multiple
-          @blur="updateHts()"
-        >
-          <md-option
-            v-for="item in categories"
-            :key="item.catId"
-            :value="item.catId"
-          >{{item.longCategory}}</md-option>
-        </md-select>
-      </md-field>
-      <md-field>
-        <label for="chapters">Chapters</label>
-        <md-select
-          v-model="selectedChapters"
-          name="chapters"
-          id="chapters"
-          md-dense
-          multiple
-          @blur="updateHts()"
-        >
-          <md-option
-            v-for="item in chapters"
-            :key="item.chapter"
-            :value="item.chapter"
-          >{{item.longChapter}}</md-option>
-        </md-select>
-      </md-field>
-      <md-field>
-        <label for="hts">HTS</label>
-        <md-select
-          v-model="selectedHts"
-          name="hts"
-          id="hts"
-          md-dense
-          multiple
-          :disabled="htsDisabled()"
-        >
-          <md-option v-for="item in hts" :key="item.hts" :value="item.hts">{{item.longHts}}</md-option>
-        </md-select>
-      </md-field>
-      <md-button @click="viewReport()" class="md-dense md-raised md-primary">View Report</md-button>
-      <md-button @click="reset()">Reset</md-button>
+    <div v-else-if="!isReportVisible">
+      <div class="filter-pane">
+        <div class="filter-field">
+          <label for="countries">Countries</label>
+          <select v-model="selectedCountries" name="countries" id="countries" multiple>
+            <option
+              v-for="item in countries"
+              :key="item.ctryId"
+              :value="item.ctryId"
+            >{{item.ctryDescription}}</option>
+          </select>
+        </div>
+        <div class="filter-field">
+          <label for="categories">Categories</label>
+          <select
+            v-model="selectedCategories"
+            name="categories"
+            id="categories"
+            multiple
+            @change="updateHts()"
+          >
+            <option
+              v-for="item in categories"
+              :key="item.catId"
+              :value="item.catId"
+            >{{item.longCategory}}</option>
+          </select>
+        </div>
+        <div class="filter-field">
+          <label for="chapters">Chapters</label>
+          <select
+            v-model="selectedChapters"
+            name="chapters"
+            id="chapters"
+            multiple
+            @change="updateHts()"
+          >
+            <option
+              v-for="item in chapters"
+              :key="item.chapter"
+              :value="item.chapter"
+            >{{item.longChapter}}</option>
+          </select>
+        </div>
+        <div class="filter-field">
+          <label for="hts">HTS</label>
+          <span v-if="loadingHts">loading...</span>
+          <select v-else v-model="selectedHts" name="hts" id="hts" multiple>
+            <option v-for="item in hts" :key="item.hts" :value="item.hts">{{item.longHts}}</option>
+          </select>
+        </div>
+        <div class="filter-buttons">
+          <button @click="viewReport()">Submit</button>
+          <button @click="reset()">Reset</button>
+        </div>
+      </div>
+      <p>*Multiple selections will be added together (use the Shift key for sequential selections and the Ctrl key for non-sequential ones).</p>
     </div>
-    <div :class="getReportClass()" id="embed-container" ref="embed-container"></div>
+    <div :class="getReportClass()">
+      <button class="back-button" @click="back()">
+        <img src="/images/back-arrow.svg" />
+      </button>
+      <div id="embed-container" ref="embed-container"></div>
+    </div>
   </div>
 </template>
 <script>
@@ -79,16 +81,17 @@ export default {
   name: "OtexaAnnual",
   data: () => ({
     report: null,
-    countries: null,
-    categories: null,
-    chapters: null,
-    hts: null,
+    countries: [],
+    categories: [],
+    chapters: [],
+    hts: [],
     selectedCountries: [],
     selectedCategories: [],
     selectedChapters: [],
     selectedHts: [],
     isReportVisible: false,
-    loading: true
+    loading: true,
+    loadingHts: false
   }),
   async created() {
     this.countries = await getOtexaCountries();
@@ -105,18 +108,22 @@ export default {
     getReportClass() {
       return this.isReportVisible ? "visible" : "hidden";
     },
-    getFiltersPaneClass() {
-      return this.isReportVisible ? "not-rendered" : "";
+    getHtsClass() {
+      return this.hts.length === 0 ? "not-rendered" : "";
     },
     async updateHts() {
-      this.hts = await getOtexaHts(
-        this.selectedCategories,
-        this.selectedChapters
-      );
+      if (!this.htsDisabled()) {
+        this.loadingHts = true;
+        this.hts = await getOtexaHts(
+          this.selectedCategories,
+          this.selectedChapters
+        );
+        this.loadingHts = false;
+      }
     },
     htsDisabled() {
       return (
-        this.selectedCategories.length === 0 &&
+        this.selectedCategories.length === 0 ||
         this.selectedChapters.length === 0
       );
     },
@@ -151,18 +158,21 @@ export default {
         filters.push(this.filter("HTS", selectedHts));
       }
 
-      var config = {
+      var embedConfig = {
         id: this.report.powerBiReport.id,
         embedUrl: this.report.powerBiReport.embedUrl,
         accessToken: this.report.powerBiToken.token,
         type: "report",
         tokenType: pbi.models.TokenType.Embed,
         permissions: pbi.models.Permissions.All,
+        settings: {
+          filterPaneEnabled: true
+        },
         filters
       };
 
       let embedContainer = this.$refs["embed-container"];
-      window.powerbi.embed(embedContainer, config);
+      window.powerbi.embed(embedContainer, embedConfig);
 
       this.isReportVisible = true;
     },
@@ -170,7 +180,9 @@ export default {
       this.selectedCountries = [];
       this.selectedCategories = [];
       this.selectedChapters = [];
-      this.viewReport = false;
+      this.selectedHts = [];
+      this.hts = [];
+      this.isReportVisible = false;
     },
     filter(column, values) {
       return {
@@ -183,13 +195,16 @@ export default {
         },
         filterType: 1
       };
+    },
+    back() {
+      this.isReportVisible = false;
     }
   }
 };
 </script>
 <style scoped>
 #embed-container {
-  height: 100vh;
+  height: 95vh;
 }
 
 .not-rendered {
@@ -202,5 +217,31 @@ export default {
 
 .hidden {
   visibility: hidden;
+}
+
+.filter-pane {
+  display: flex;
+}
+
+.filter-field label {
+  font-weight: bold;
+}
+
+.filter-field {
+  display: grid;
+}
+
+.filter-field select {
+  height: 148px;
+}
+
+.filter-buttons button {
+  margin: 20px 0 0 20px;
+}
+
+.back-button {
+  border: none;
+  background: white;
+  cursor: pointer;
 }
 </style>

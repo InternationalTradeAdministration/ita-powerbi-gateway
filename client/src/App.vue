@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { getBearerToken } from "@/utils/Repository";
+import Repository from '@/utils/Repository'
 
 export default {
   name: "App",
@@ -11,7 +11,8 @@ export default {
     loading: true
   }),
   async created() {
-    await getBearerToken();
+    let repo = new Repository()
+    await repo.getBearerToken();
     this.loading = false;
   }
 };

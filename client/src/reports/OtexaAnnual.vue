@@ -69,16 +69,10 @@
 </template>
 <script>
 import * as pbi from "powerbi-client";
-import {
-  getReport,
-  getOtexaCountries,
-  getOtexaCategories,
-  getOtexaChapters,
-  getOtexaHts
-} from "@/utils/Repository";
 
 export default {
   name: "OtexaAnnual",
+  props: ['repository'],
   data: () => ({
     report: null,
     countries: [],
@@ -94,11 +88,11 @@ export default {
     loadingHts: false
   }),
   async created() {
-    this.countries = await getOtexaCountries();
-    this.categories = await getOtexaCategories();
-    this.chapters = await getOtexaChapters();
+    this.countries = await this.repository.getOtexaCountries();
+    this.categories = await this.repository.getOtexaCategories();
+    this.chapters = await this.repository.getOtexaChapters();
 
-    this.report = await getReport(
+    this.report = await this.repository.getReport(
       this.$route.params.workspaceName,
       this.$route.params.reportName
     );
@@ -114,7 +108,7 @@ export default {
     async updateHts() {
       if (!this.htsDisabled()) {
         this.loadingHts = true;
-        this.hts = await getOtexaHts(
+        this.hts = await this.repository.getOtexaHts(
           this.selectedCategories,
           this.selectedChapters
         );

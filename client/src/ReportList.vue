@@ -14,10 +14,9 @@
   </div>
 </template>
 <script>
-import { listReports } from "@/utils/Repository";
-
 export default {
   name: "ReportList",
+  props: ['repository'],
   data: () => ({
     loading: true,
     workspaceName: null,
@@ -25,7 +24,7 @@ export default {
   }),
   async created() {
     this.workspaceName = this.$route.params.workspaceName;
-    let reports = await listReports(this.workspaceName);
+    let reports = await this.repository.listReports(this.workspaceName);
     this.reports = reports.sort((a, b) => (a.name > b.name ? 1 : -1));
     this.loading = false;
   },

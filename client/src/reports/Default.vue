@@ -6,15 +6,15 @@
 </template>
 <script>
 import * as pbi from "powerbi-client";
-import { getReport } from "@/utils/Repository";
 
 export default {
   name: "Default",
+  props: ['repository'],
   data: () => ({
     loading: true
   }),
   async created() {
-    let r = await getReport(
+    let r = await this.repository.getReport(
       this.$route.params.workspaceName,
       this.$route.params.reportName
     );

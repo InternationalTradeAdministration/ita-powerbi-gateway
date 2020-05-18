@@ -1,8 +1,8 @@
 package gov.ita.powerbi_gateway.public_data.otexa;
 
-import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor

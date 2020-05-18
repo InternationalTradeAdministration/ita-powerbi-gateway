@@ -15,6 +15,18 @@ steps:
       jdkFile: $(Agent.TempDirectory)/jdk-latest-linux_x64.tar.gz
       jdkDestinationDirectory: $(Agent.ToolsDirectory)/binaries/openjdk
       cleanDestinationDirectory: true
+  - task: Gradle@2
+    condition: succeeded()
+    inputs:
+      gradleWrapperFile: 'gradlew'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.14'
+      jdkArchitectureOption: 'x64'
+      tasks: 'test'
+    displayName: 'Backend Unit Tests'
+  - script: |
+      ./ui-test.sh
+    displayName: 'Frontend Unit Tests'
   - script: |
       ./build.sh
     displayName: 'Build project artifacts'

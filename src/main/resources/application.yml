@@ -9,6 +9,21 @@ powerbi:
   tenant-id: ${POWERBI_TENANT_ID}
 ---
 spring:
+  profiles: test
+  datasource:
+    url: jdbc:h2:mem:ita
+    username: SA
+    password:
+    driver-class-name: org.h2.Driver
+  flyway:
+    enabled: false
+build-id: n/a
+powerbi:
+  client-id: "fake-client-id"
+  client-secret: "fake-client-secret"
+  tenant-id: "fake-tenant-id"
+---
+spring:
   profiles: staging
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration

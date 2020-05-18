@@ -34,9 +34,9 @@ public class OtexaController {
 
   @GetMapping(value = "/hts", produces = MediaType.APPLICATION_JSON_VALUE)
   public List<Hts> getHts(@RequestParam List<String> categories, @RequestParam List<String> chapters) {
-      List<Long> categoryIds = categories.stream().map(Long::parseLong).collect(Collectors.toList());
-      List<Long> chapterIds = chapters.stream().map(Long::parseLong).collect(Collectors.toList());
-      return metadataService.getHtsByCategoriesAndChapters(categoryIds, chapterIds);
+    List<Long> categoryIds = categories.stream().map(Long::parseLong).collect(Collectors.toList());
+    List<Long> chapterIds = chapters.stream().map(Long::parseLong).collect(Collectors.toList());
+    return metadataService.getHtsByCategoriesAndChapters(categoryIds, chapterIds);
   }
 
 }

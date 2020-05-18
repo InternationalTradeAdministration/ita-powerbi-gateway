@@ -32,5 +32,5 @@ public class DevelopmentMetadataService implements MetadataService {
   public List<Hts> getHtsByCategoriesAndChapters(List<Long> categories, List<Long> chapters) {
     return Arrays.asList(new Hts("123456", "123456 - Socks"), new Hts("123321", "123321 - Hats"));
   }
-  
+
 }

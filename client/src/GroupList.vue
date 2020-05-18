@@ -25,17 +25,16 @@
   </div>
 </template>
 <script>
-import { pbiAdminListGroups } from "@/utils/Repository";
-
 export default {
   name: "GroupList",
+  props: ['repository'],
   data: () => ({
     groups: null,
     version: null,
     loading: true
   }),
   async created() {
-    let groups = await pbiAdminListGroups(null);
+    let groups = await this.repository.pbiAdminListGroups(null);
     this.groups = groups.sort((a, b) => (a.name > b.name ? 1 : -1));
     this.loading = false;
   }

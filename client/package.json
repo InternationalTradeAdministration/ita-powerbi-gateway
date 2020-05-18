@@ -1,12 +1,14 @@
 {
   "name": "ita-powerbi-gateway-client",
   "version": "1.0.0",
-  "description": "self explanatory",
   "private": true,
+  "description": "self explanatory",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "test:unit": "vue-cli-service test:unit",
+    "lint": "vue-cli-service lint",
+    "test": "vue-cli-service test:unit --timeout 10000"
   },
   "dependencies": {
     "axios": "^0.19.2",
@@ -21,10 +23,14 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.0.0",
     "@vue/cli-plugin-eslint": "^4.0.0",
+    "@vue/cli-plugin-unit-mocha": "^4.3.1",
     "@vue/cli-service": "^4.0.0",
+    "@vue/test-utils": "1.0.0-beta.31",
     "babel-eslint": "^10.0.3",
+    "chai": "^4.1.2",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "sinon": "^7.5.0",
     "vue-template-compiler": "^2.6.10"
   },
   "eslintConfig": {
@@ -39,7 +45,18 @@
     "rules": {
       "no-console": "off"
     },
-    "parserOptions": {}
+    "parserOptions": {},
+    "overrides": [
+      {
+        "files": [
+          "**/__tests__/*.{j,t}s?(x)",
+          "**/tests/unit/**/*.spec.{j,t}s?(x)"
+        ],
+        "env": {
+          "mocha": true
+        }
+      }
+    ]
   },
   "postcss": {
     "plugins": {

@@ -27,11 +27,11 @@ spec:
           - name: POWERBI_CLIENT_SECRET
             value: #{CLIENT_SECRET}#
           - name: FLYWAY_URL
-            value: #{FLYWAY_URL}#
+            value: #{FLYWAY_URL_DEV}#
           - name: FLYWAY_USER
-            value: #{FLYWAY_USER}#
+            value: #{FLYWAY_USER_DEV}#
           - name: FLYWAY_PASSWORD
-            value: #{FLYWAY_PASSWORD}#
+            value: #{FLYWAY_PASSWORD_DEV}#
           - name: BUILD_ID
             value: "#{Release.Artifacts._InternationalTradeAdministration.ita-powerbi-gateway.BuildId}#"
       restartPolicy: Always
@@ -56,8 +56,6 @@ kind: Ingress
 metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
   name: ita-power-bi-gateway
   namespace: mdsnamespace
 spec:

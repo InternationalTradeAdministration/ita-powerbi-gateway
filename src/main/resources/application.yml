@@ -9,6 +9,16 @@ powerbi:
   tenant-id: ${POWERBI_TENANT_ID}
 ---
 spring:
+  profiles: staging
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+build-id: ${BUILD_ID}
+powerbi:
+  client-id: ${POWERBI_CLIENT_ID}
+  client-secret: ${POWERBI_CLIENT_SECRET}
+  tenant-id: ${POWERBI_TENANT_ID}
+---
+spring:
   profiles: production
   datasource:
     url: ${FLYWAY_URL}

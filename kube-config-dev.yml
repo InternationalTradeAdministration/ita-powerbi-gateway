@@ -18,6 +18,8 @@ spec:
         ports:
         - containerPort: 80
         env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: production
           - name: POWERBI_TENANT_ID
             value: #{TENANT_ID}#
           - name: POWERBI_CLIENT_ID

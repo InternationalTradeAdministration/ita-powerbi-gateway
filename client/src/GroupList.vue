@@ -21,7 +21,6 @@
         </tr>
       </table>
     </div>
-    <a class="swagger" href="/swagger-ui.html" target="_blank">Swagger UI</a>
   </div>
 </template>
 <script>
@@ -41,12 +40,6 @@ export default {
 };
 </script>
 <style scoped>
-.swagger {
-  position: absolute;
-  bottom: 10px;
-  right: 20px;
-}
-
 .dedicated-capacity {
   text-align: center;
 }

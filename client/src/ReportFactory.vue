@@ -1,6 +1,6 @@
 <template>
   <div>
-    <otexa-annual v-if="workspaceName === 'OTEXA' && reportName === 'Annual Data v2'" :repository="repository" />
+    <otexa-annual v-if="workspaceName.includes('OTEXA') && reportName === 'Annual Data v2'" :repository="repository" />
     <default v-else :repository="repository" />
   </div>
 </template>

@@ -29,8 +29,6 @@ dependencies {
     implementation 'org.projectlombok:lombok:1.18.8'
     annotationProcessor 'org.projectlombok:lombok:1.18.8'
     implementation 'org.flywaydb:flyway-core'
-    implementation 'io.springfox:springfox-swagger2:2.9.2'
-    implementation 'io.springfox:springfox-swagger-ui:2.9.2'
     testImplementation 'com.h2database:h2:1.4.199'
 }
 

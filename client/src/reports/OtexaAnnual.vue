@@ -68,11 +68,9 @@
   </div>
 </template>
 <script>
-import * as pbi from "powerbi-client";
-
 export default {
   name: "OtexaAnnual",
-  props: ['repository'],
+  props: ['repository', 'pbi'],
   data: () => ({
     report: null,
     countries: [],
@@ -157,8 +155,8 @@ export default {
         embedUrl: this.report.powerBiReport.embedUrl,
         accessToken: this.report.powerBiToken.token,
         type: "report",
-        tokenType: pbi.models.TokenType.Embed,
-        permissions: pbi.models.Permissions.All,
+        tokenType: this.pbi.models.TokenType.Embed,
+        permissions: this.pbi.models.Permissions.All,
         settings: {
           filterPaneEnabled: true
         },

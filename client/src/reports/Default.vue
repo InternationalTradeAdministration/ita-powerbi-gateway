@@ -5,11 +5,9 @@
   </div>
 </template>
 <script>
-import * as pbi from "powerbi-client";
-
 export default {
   name: "Default",
-  props: ['repository'],
+  props: ['repository', 'pbi'],
   data: () => ({
     loading: true
   }),
@@ -26,8 +24,8 @@ export default {
       embedUrl: r.powerBiReport.embedUrl,
       accessToken: r.powerBiToken.token,
       type: "report",
-      tokenType: pbi.models.TokenType.Embed,
-      permissions: pbi.models.Permissions.All
+      tokenType: this.pbi.models.TokenType.Embed,
+      permissions: this.pbi.models.Permissions.All
     };
 
     let embedContainer = this.$refs["embed-container"];

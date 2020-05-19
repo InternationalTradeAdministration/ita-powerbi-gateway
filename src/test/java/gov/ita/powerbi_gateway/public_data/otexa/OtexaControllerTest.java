@@ -30,7 +30,7 @@ class OtexaControllerTest {
   private MockMvc mockMvc;
 
   @Test
-  public void returns_countries() throws Exception {
+  public void otexa_controller_returns_countries() throws Exception {
     countryRepository.save(new Country(1L, "GREECE"));
     countryRepository.save(new Country(2L, "JAPAN"));
     mockMvc.perform(get("/api/otexa/countries"))
@@ -44,7 +44,7 @@ class OtexaControllerTest {
   }
 
   @Test
-  public void returns_categories() throws Exception {
+  public void otexa_controller_returns_categories() throws Exception {
     categoryRepository.save(new Category(1L, "Awesome"));
     categoryRepository.save(new Category(2L, "Cool"));
     mockMvc.perform(get("/api/otexa/categories"))
@@ -58,7 +58,7 @@ class OtexaControllerTest {
   }
 
   @Test
-  public void returns_chapters() throws Exception {
+  public void otexa_controller_returns_chapters() throws Exception {
     htsChapterRepository.save(new HtsChapter("123123", 11L, "Very Awesome"));
     htsChapterRepository.save(new HtsChapter("333333", 22L, "Very Cool"));
     mockMvc.perform(get("/api/otexa/chapters"))

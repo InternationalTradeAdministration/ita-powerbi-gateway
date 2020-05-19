@@ -4,6 +4,7 @@ import GroupList from '@/GroupList'
 import ReportList from '@/ReportList'
 import ReportFactory from '@/ReportFactory'
 import Repository from '@/utils/Repository'
+import * as pbi from "powerbi-client";
 
 Vue.use(Router)
 
@@ -28,6 +29,7 @@ export default new Router({
       name: 'ReportFactory',
       component: ReportFactory,
       props: {
+        pbi,
         repository: new Repository()
       }
     }

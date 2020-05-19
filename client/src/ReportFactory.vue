@@ -1,7 +1,7 @@
 <template>
   <div>
-    <otexa-annual v-if="workspaceName.includes('OTEXA') && reportName === 'Annual Data v2'" :repository="repository" />
-    <default v-else :repository="repository" />
+    <otexa-annual v-if="workspaceName.includes('OTEXA') && reportName === 'Annual Data v2'" :repository="repository" :pbi="pbi"/>
+    <default v-else :repository="repository" :pbi="pbi" />
   </div>
 </template>
 <script>
@@ -10,7 +10,7 @@ import OtexaAnnual from "@/reports/OtexaAnnual";
 
 export default {
   name: "ReportFactory",
-  props: ["repository"],
+  props: ["repository", "pbi"],
   components: {
     "default": Default,
     "otexa-annual": OtexaAnnual

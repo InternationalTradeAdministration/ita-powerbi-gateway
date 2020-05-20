@@ -53,8 +53,8 @@
           </select>
         </div>
         <div class="filter-buttons">
-          <button @click="viewReport()">Submit</button>
-          <button @click="reset()">Reset</button>
+          <button @click="viewReport()" id="submit-button">Submit</button>
+          <button @click="reset()" id="reset-button">Reset</button>
         </div>
       </div>
       <p>*Multiple selections will be added together (use the Shift key for sequential selections and the Ctrl key for non-sequential ones).</p>
@@ -94,6 +94,7 @@ export default {
       this.$route.params.workspaceName,
       this.$route.params.reportName
     );
+
     this.loading = false;
   },
   methods: {
@@ -114,10 +115,7 @@ export default {
       }
     },
     htsDisabled() {
-      return (
-        this.selectedCategories.length === 0 ||
-        this.selectedChapters.length === 0
-      );
+      return (this.selectedCategories.length === 0);
     },
     viewReport() {
       let filters = [];
@@ -164,6 +162,7 @@ export default {
       };
 
       let embedContainer = this.$refs["embed-container"];
+      
       window.powerbi.embed(embedContainer, embedConfig);
 
       this.isReportVisible = true;

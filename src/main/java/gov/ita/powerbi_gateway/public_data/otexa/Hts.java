@@ -20,8 +20,8 @@ public class Hts {
   @JsonIgnore
   public Long catId;
 
-  @OneToOne
   @JsonIgnore
+  @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "hts")
   public HtsChapter htsChapter;
 

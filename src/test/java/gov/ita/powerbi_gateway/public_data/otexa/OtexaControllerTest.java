@@ -27,6 +27,9 @@ class OtexaControllerTest {
   private HtsChapterRepository htsChapterRepository;
 
   @Autowired
+  private HtsRepository htsRepository;
+
+  @Autowired
   private MockMvc mockMvc;
 
   @Test
@@ -58,9 +61,10 @@ class OtexaControllerTest {
   }
 
   @Test
-  public void otexa_controller_returns_chapters() throws Exception {
+  public void otexa_controller_returns_distinct_chapters() throws Exception {
     htsChapterRepository.save(new HtsChapter("123123", 11L, "Very Awesome"));
     htsChapterRepository.save(new HtsChapter("333333", 22L, "Very Cool"));
+    htsChapterRepository.save(new HtsChapter("133334", 22L, "Very Cool"));
     mockMvc.perform(get("/api/otexa/chapters"))
       .andExpect(status().isOk())
       .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -69,6 +73,33 @@ class OtexaControllerTest {
       .andExpect(jsonPath("$[0].longChapter", is("Very Awesome")))
       .andExpect(jsonPath("$[1].chapter", is(22)))
       .andExpect(jsonPath("$[1].longChapter", is("Very Cool")));
+  }
+
+  @Test
+  public void otexa_controller_returns_hts_by_category() throws Exception {
+    HtsChapter awesomeChapter = new HtsChapter("123123", 11L, "Very Awesome");
+    Hts anAwesomeHts = new Hts("123123", "An Awesome HTS", 88L, awesomeChapter);
+    htsRepository.save(anAwesomeHts);
+
+    HtsChapter coolChapter = new HtsChapter("333333", 22L, "Very Cool");
+    Hts aCoolHts = new Hts("333333", "A Cool HTS", 99L, coolChapter);
+    htsRepository.save(aCoolHts);
+
+    mockMvc.perform(get("/api/otexa/hts?categories=88"))
+      .andExpect(status().isOk())
+      .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+      .andExpect(jsonPath("$", hasSize(1)))
+      .andExpect(jsonPath("$[0].hts", is("123123")))
+      .andExpect(jsonPath("$[0].longHts", is("An Awesome HTS")));
+
+    mockMvc.perform(get("/api/otexa/hts?categories=88,99&chapters=11,22"))
+      .andExpect(status().isOk())
+      .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+      .andExpect(jsonPath("$", hasSize(2)))
+      .andExpect(jsonPath("$[0].hts", is("123123")))
+      .andExpect(jsonPath("$[0].longHts", is("An Awesome HTS")))
+      .andExpect(jsonPath("$[1].hts", is("333333")))
+      .andExpect(jsonPath("$[1].longHts", is("A Cool HTS")));
   }
 
 }

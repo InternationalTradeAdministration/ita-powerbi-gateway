@@ -33,4 +33,13 @@ public class DevelopmentMetadataService implements MetadataService {
     return Arrays.asList(new Hts("123456", "123456 - Socks"), new Hts("123321", "123321 - Hats"));
   }
 
+  @Override
+  public List<Hts> getHtsByCategories(List<Long> categoryIds) {
+    return Arrays.asList(
+      new Hts("123456", "123456 - Socks"),
+      new Hts("123321", "123321 - Hats"),
+      new Hts("123323", "123323 - Shoes")
+    );
+  }
+
 }

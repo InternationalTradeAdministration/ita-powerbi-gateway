@@ -41,4 +41,9 @@ public class ProductionMetadataService implements MetadataService {
   public List<Hts> getHtsByCategoriesAndChapters(List<Long> categories, List<Long> chapters) {
     return htsRepository.findByCatIdInAndHtsChapterChapterIn(categories, chapters);
   }
+
+  @Override
+  public List<Hts> getHtsByCategories(List<Long> categoryIds) {
+    return htsRepository.findByCatIdIn(categoryIds);
+  }
 }

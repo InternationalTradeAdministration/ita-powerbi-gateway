@@ -90,7 +90,7 @@ export default {
     this.categories = await this.repository.getOtexaCategories();
     this.chapters = await this.repository.getOtexaChapters();
 
-    this.report = await this.repository.getReport(
+    this.report = await this.repository.generateToken(
       this.$route.params.workspaceName,
       this.$route.params.reportName
     );

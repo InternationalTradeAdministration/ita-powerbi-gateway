@@ -33,7 +33,7 @@ export default {
     loading: true
   }),
   async created() {
-    let groups = await this.repository.pbiAdminListGroups(null);
+    let groups = await this.repository.listGroups();
     this.groups = groups.sort((a, b) => (a.name > b.name ? 1 : -1));
     this.loading = false;
   }

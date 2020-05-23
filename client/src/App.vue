@@ -1,20 +1,10 @@
 <template>
-  <router-view v-if="!loading" />
+  <router-view />
 </template>
 
 <script>
-import Repository from '@/utils/Repository'
-
 export default {
-  name: "App",
-  data: () => ({
-    loading: true
-  }),
-  async created() {
-    let repo = new Repository()
-    await repo.getBearerToken();
-    this.loading = false;
-  }
+  name: "App"
 };
 </script>
 <style>

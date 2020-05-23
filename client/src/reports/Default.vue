@@ -12,7 +12,7 @@ export default {
     loading: true
   }),
   async created() {
-    let r = await this.repository.getReport(
+    let r = await this.repository.generateToken(
       this.$route.params.workspaceName,
       this.$route.params.reportName
     );

@@ -4,7 +4,7 @@ import GroupList from '@/GroupList.vue'
 
 describe('GroupList.vue', () => {
   let repository = {
-    pbiAdminListGroups: () => ([{
+    listGroups: () => ([{
       name: 'John Wick',
       onDedicatedCapacity: true
     }])

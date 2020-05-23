@@ -7,7 +7,7 @@ import Sinon from 'sinon'
 describe('Default.vue', () => {
 
   let repository = {
-    getReport: (workspaceName, reportName) => ({
+    generateToken: (workspaceName, reportName) => ({
       powerBiReport: {
         id: 'fake-report-id',
         name: reportName,

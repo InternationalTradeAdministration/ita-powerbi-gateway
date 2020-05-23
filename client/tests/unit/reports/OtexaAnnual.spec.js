@@ -43,7 +43,7 @@ describe('OtexaAnnual.vue', () => {
       }
     ]),
     getOtexaHts: htsRepositoryStub,
-    getReport: (workspaceName, reportName) => ({
+    generateToken: (workspaceName, reportName) => ({
       powerBiReport: {
         id: 'fake-report-id',
         name: reportName,

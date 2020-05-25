@@ -1,76 +1,53 @@
 package gov.ita.powerbi_gateway.powerbi_admin;
 
-import gov.ita.powerbi_gateway.powerbi_admin.azure_auth.AccessTokenGateway;
-import gov.ita.powerbi_gateway.powerbi_admin.azure_auth.AccessTokenResponse;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
+
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api/pbi-admin", produces = MediaType.APPLICATION_JSON_VALUE)
 public class PowerBiAdminController {
 
-  private final AccessTokenGateway accessTokenGateway;
-  private final RestTemplate restTemplate;
-  private final String apiUrl = "https://api.powerbigov.us/v1.0/myorg";
-  private AccessTokenResponse accessTokenResponse;
+  private final PowerBiAdminService powerBiAdminService;
+  private final Map<String, ReportToken> embedTokens;
 
-  public PowerBiAdminController(AccessTokenGateway accessTokenGateway, RestTemplate restTemplate) {
-    this.accessTokenGateway = accessTokenGateway;
-    this.restTemplate = restTemplate;
+  public PowerBiAdminController(PowerBiAdminService powerBiAdminService) {
+    this.powerBiAdminService = powerBiAdminService;
+    this.embedTokens = new HashMap<>();
   }
 
   @GetMapping("/groups")
   public Groups getGroups(@RequestParam(required = false) String workspaceName) {
-    checkAccessTokenExpiration();
-    String groupsUrl = buildUrl("/groups", workspaceName);
-    return restTemplate.exchange(groupsUrl, HttpMethod.GET, new HttpEntity<>(buildHeaders()), Groups.class).getBody();
+    return powerBiAdminService.getPbiGroups(workspaceName);
   }
 
   @GetMapping("/reports")
-  public Reports getReportsByGroupName(@RequestParam String workspaceName) {
-    Group group = getGroups(workspaceName).getValue().get(0);
-    return getReports(group.getId(), null);
+  public Reports getReports(@RequestParam String workspaceName) {
+    Group group = powerBiAdminService.getPbiGroups(workspaceName).getValue().get(0);
+    return powerBiAdminService.getPbiReports(group.getId(), null);
   }
 
   @GetMapping("/generate-token")
   public ReportToken generateToken(@RequestParam String workspaceName, @RequestParam String reportName) {
-    Group group = getGroups(workspaceName).getValue().get(0);
-    Report report = getReports(group.getId(), reportName).getValue().get(0);
-    String url = apiUrl + "/groups/" + group.getId() + "/reports/" + report.getId() + "/GenerateToken";
-    Token token = restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>("{ \"accessLevel\": \"view\" }", buildHeaders()), Token.class).getBody();
-    return new ReportToken(report, token);
-  }
-
-  private Reports getReports(String groupId, String reportName) {
-    String url = buildUrl("/groups/" + groupId + "/reports", reportName);
-    return restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<>(buildHeaders()), Reports.class).getBody();
-  }
-
-  private String buildUrl(String endPoint, String filterParam) {
-    return apiUrl + endPoint + buildFilter(filterParam);
-  }
-
-  private String buildFilter(String filterParam) {
-    return (filterParam != null) ? "?$filter=name eq '" + filterParam + "'" : "";
-  }
-
-  private void checkAccessTokenExpiration() {
-    if (accessTokenResponse == null || (accessTokenResponse.getExpiresOn() < System.currentTimeMillis() / 1000)) {
-      accessTokenResponse = accessTokenGateway.getAccessToken();
+    Group group = powerBiAdminService.getPbiGroups(workspaceName).getValue().get(0);
+    Report report = powerBiAdminService.getPbiReports(group.getId(), reportName).getValue().get(0);
+    String reportTokenKey = group.getId() + "#" + report.getId();
+    ReportToken existingReportToken = embedTokens.get(reportTokenKey);
+    if (existingReportToken != null && existingReportToken.getPowerBiToken().getExpiration().isAfter(LocalDateTime.now(ZoneOffset.UTC))) {
+      return existingReportToken;
+    } else {
+      Token token = powerBiAdminService.generatePbiEmbedToken(group.getId(), report.getId());
+      ReportToken value = new ReportToken(report, token);
+      embedTokens.put(reportTokenKey, value);
+      return value;
     }
   }
 
-  private HttpHeaders buildHeaders() {
-    HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(MediaType.APPLICATION_JSON);
-    headers.add("Authorization", "Bearer " + accessTokenResponse.getAccessToken());
-    return headers;
-  }
 }

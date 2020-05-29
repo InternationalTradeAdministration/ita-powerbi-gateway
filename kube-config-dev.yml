@@ -21,17 +21,17 @@ spec:
           - name: SPRING_PROFILES_ACTIVE
             value: production
           - name: POWERBI_TENANT_ID
-            value: #{TENANT_ID}#
+            value: #{POWERBI-TENANT-ID}#
           - name: POWERBI_CLIENT_ID
-            value: #{CLIENT_ID}#
+            value: #{POWERBI-CLIENT-ID}#
           - name: POWERBI_CLIENT_SECRET
-            value: #{CLIENT_SECRET}#
+            value: #{POWERBI-CLIENT-SECRET}#
           - name: FLYWAY_URL
-            value: #{FLYWAY_URL_DEV}#
+            value: #{FLYWAY-URL-DEV}#
           - name: FLYWAY_USER
-            value: #{FLYWAY_USER_DEV}#
+            value: #{FLYWAY-USER-DEV}#
           - name: FLYWAY_PASSWORD
-            value: #{FLYWAY_PASSWORD_DEV}#
+            value: #{FLYWAY-PASSWORD-DEV}#
           - name: BUILD_ID
             value: "#{Release.Artifacts._InternationalTradeAdministration.ita-powerbi-gateway.BuildId}#"
       restartPolicy: Always

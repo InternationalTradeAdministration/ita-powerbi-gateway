@@ -17,22 +17,22 @@ public class OtexaController {
   @Autowired
   private MetadataService metadataService;
 
-  @GetMapping(value = "/countries", produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping("/countries")
   public List<Country> getCountries() {
     return metadataService.getCountries();
   }
 
-  @GetMapping(value = "/categories", produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping("/categories")
   public List<Category> getCategories() {
     return metadataService.getCategories();
   }
 
-  @GetMapping(value = "/chapters", produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping("/chapters")
   public List<Chapter> getChapters() {
     return metadataService.getChapters();
   }
 
-  @GetMapping(value = "/hts", produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping("/hts")
   public List<Hts> getHts(@RequestParam List<String> categories, @RequestParam(required = false) List<String> chapters) {
     List<Long> categoryIds = categories.stream().map(Long::parseLong).collect(Collectors.toList());
     if (chapters != null && chapters.size() > 0) {

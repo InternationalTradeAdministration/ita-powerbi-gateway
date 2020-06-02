@@ -115,7 +115,7 @@ export default {
       }
     },
     htsDisabled() {
-      return (this.selectedCategories.length === 0);
+      return !(this.selectedCategories.length > 0 || this.selectedChapters.length > 0);
     },
     viewReport() {
       let filters = [];

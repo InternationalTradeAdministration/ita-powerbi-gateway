@@ -12,4 +12,6 @@ public interface MetadataService {
   List<Hts> getHtsByCategoriesAndChapters(List<Long> categories, List<Long> chapters);
 
   List<Hts> getHtsByCategories(List<Long> categoryIds);
+
+  List<Hts> getHtsByChapters(List<Long> chapters);
 }

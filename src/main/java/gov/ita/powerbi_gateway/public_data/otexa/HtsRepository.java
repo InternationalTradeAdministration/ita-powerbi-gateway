@@ -10,4 +10,6 @@ interface HtsRepository extends JpaRepository<Hts, String> {
   List<Hts> findByCatIdInAndHtsChapterChapterIn(List<Long> categories, List<Long> chapters);
 
   List<Hts> findByCatIdIn(List<Long> categoryIds);
+
+  List<Hts> findByHtsChapterChapterIn(List<Long> chapters);
 }

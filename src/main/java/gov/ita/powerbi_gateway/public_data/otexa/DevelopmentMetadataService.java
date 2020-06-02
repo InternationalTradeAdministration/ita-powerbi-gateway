@@ -42,4 +42,11 @@ public class DevelopmentMetadataService implements MetadataService {
     );
   }
 
+  @Override
+  public List<Hts> getHtsByChapters(List<Long> chapters) {
+    return Arrays.asList(
+      new Hts("123456", "123456 - Socks"),
+      new Hts("123323", "123323 - Shoes")
+    );
+  }
 }

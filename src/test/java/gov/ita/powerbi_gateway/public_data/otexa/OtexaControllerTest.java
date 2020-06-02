@@ -102,4 +102,21 @@ class OtexaControllerTest {
       .andExpect(jsonPath("$[1].longHts", is("A Cool HTS")));
   }
 
+  @Test
+  public void otexa_controller_returns_hts_by_chapter() throws Exception {
+    HtsChapter awesomeChapter = new HtsChapter("123123", 11L, "Very Awesome");
+    Hts anAwesomeHts = new Hts("123123", "An Awesome HTS", 88L, awesomeChapter);
+    htsRepository.save(anAwesomeHts);
+
+    HtsChapter coolChapter = new HtsChapter("333333", 22L, "Very Cool");
+    Hts aCoolHts = new Hts("333333", "A Cool HTS", 99L, coolChapter);
+    htsRepository.save(aCoolHts);
+
+    mockMvc.perform(get("/api/otexa/hts?chapters=11"))
+      .andExpect(status().isOk())
+      .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+      .andExpect(jsonPath("$", hasSize(1)))
+      .andExpect(jsonPath("$[0].hts", is("123123")))
+      .andExpect(jsonPath("$[0].longHts", is("An Awesome HTS")));
+  }
 }

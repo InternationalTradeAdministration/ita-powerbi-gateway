@@ -34,4 +34,9 @@ public class StagingMetadataService implements MetadataService {
   public List<Hts> getHtsByCategories(List<Long> categoryIds) {
     return Collections.emptyList();
   }
+
+  @Override
+  public List<Hts> getHtsByChapters(List<Long> chapters) {
+    return Collections.emptyList();
+  }
 }

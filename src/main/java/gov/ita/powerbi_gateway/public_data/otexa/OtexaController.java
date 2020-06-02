@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,14 +34,24 @@ public class OtexaController {
   }
 
   @GetMapping("/hts")
-  public List<Hts> getHts(@RequestParam List<String> categories, @RequestParam(required = false) List<String> chapters) {
-    List<Long> categoryIds = categories.stream().map(Long::parseLong).collect(Collectors.toList());
-    if (chapters != null && chapters.size() > 0) {
+  public List<Hts> getHts(@RequestParam(required = false) List<String> categories, @RequestParam(required = false) List<String> chapters) {
+    if ((categories != null && categories.size() > 0) && (chapters != null && chapters.size() > 0)) {
+      List<Long> categoryIds = categories.stream().map(Long::parseLong).collect(Collectors.toList());
       List<Long> chapterIds = chapters.stream().map(Long::parseLong).collect(Collectors.toList());
       return metadataService.getHtsByCategoriesAndChapters(categoryIds, chapterIds);
-    } else {
+    }
+
+    if (categories != null && categories.size() > 0) {
+      List<Long> categoryIds = categories.stream().map(Long::parseLong).collect(Collectors.toList());
       return metadataService.getHtsByCategories(categoryIds);
     }
+
+    if (chapters != null && chapters.size() > 0) {
+      List<Long> chapterIds = chapters.stream().map(Long::parseLong).collect(Collectors.toList());
+      return metadataService.getHtsByChapters(chapterIds);
+    }
+
+    return Collections.emptyList();
   }
 
 }

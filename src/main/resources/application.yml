@@ -22,6 +22,8 @@ powerbi:
   client-id: "fake-client-id"
   client-secret: "fake-client-secret"
   tenant-id: "fake-tenant-id"
+api:
+  token: "fake-token"
 ---
 spring:
   profiles: staging
@@ -32,6 +34,8 @@ powerbi:
   client-id: ${POWERBI_CLIENT_ID}
   client-secret: ${POWERBI_CLIENT_SECRET}
   tenant-id: ${POWERBI_TENANT_ID}
+api:
+  token: ${GATEWAY_API_TOKEN}
 ---
 spring:
   profiles: production
@@ -44,3 +48,5 @@ powerbi:
   client-id: ${POWERBI_CLIENT_ID}
   client-secret: ${POWERBI_CLIENT_SECRET}
   tenant-id: ${POWERBI_TENANT_ID}
+api:
+  token: ${GATEWAY_API_TOKEN}

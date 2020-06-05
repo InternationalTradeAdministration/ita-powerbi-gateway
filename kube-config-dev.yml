@@ -32,6 +32,8 @@ spec:
             value: #{FLYWAY-USER-DEV}#
           - name: FLYWAY_PASSWORD
             value: #{FLYWAY-PASSWORD-DEV}#
+          - name: GATEWAY_API_TOKEN
+            value: #{GATEWAY-API-TOKEN}#
           - name: BUILD_ID
             value: "#{Release.Artifacts._InternationalTradeAdministration.ita-powerbi-gateway.BuildId}#"
       restartPolicy: Always

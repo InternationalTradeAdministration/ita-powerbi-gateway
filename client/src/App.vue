@@ -4,13 +4,12 @@
 
 <script>
 export default {
-  name: "App"
-};
+  name: 'App'
+}
 </script>
 <style>
-
 html {
-  font-family:  Arial, Verdana, sans-serif;
+  font-family: Arial, Verdana, sans-serif;
 }
 
 body {
@@ -28,5 +27,4 @@ h1 {
 iframe {
   border: none;
 }
-
 </style>

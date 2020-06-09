@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="report-factory">
     <otexa-annual v-if="workspaceName.includes('OTEXA') && reportName === 'Annual Data v2'" :repository="repository" :pbi="pbi"/>
     <default v-else :repository="repository" :pbi="pbi" />
   </div>
@@ -25,3 +25,8 @@ export default {
   }
 };
 </script>
+<style scoped>
+.report-factory {
+  height: 100vh;
+}
+</style>

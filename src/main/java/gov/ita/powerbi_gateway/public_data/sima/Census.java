@@ -36,7 +36,7 @@ public class Census implements Serializable {
 
   @JsonProperty("hts_10_codes")
   String getHts10Codes() {
-    return steelMillProductHts.stream().map(SteelMillProductHts::getHtsCode).collect(Collectors.joining(","));
+    return steelMillProductHts.stream().map(SteelMillProductHts::getHtsCode).collect(Collectors.joining(", "));
   }
 
   @Override

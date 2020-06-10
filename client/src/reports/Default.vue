@@ -1,23 +1,21 @@
 <template>
   <div class="content">
     <span v-if="loading">loading...</span>
-    <div v-else class="toolbar">
-      <button class="toolbar-btn">
-        <img src="/images/download.svg" @click="exportData" />
-      </button>
-      <button class="toolbar-btn">
-        <img src="/images/fullscreen.svg" @click="fullscreen" />
-      </button>
-    </div>
+    <toolbar v-else :loadingReport="loadingReport" :pbi="pbi" />
     <div id="embed-container" ref="embed-container"></div>
   </div>
 </template>
 <script>
+import Toolbar from '@/Toolbar'
 export default {
   name: 'Default',
   props: ['repository', 'pbi'],
+  components: {
+    'toolbar': Toolbar
+  },
   data: () => ({
-    loading: true
+    loading: true,
+    loadingReport: true
   }),
   async created () {
     let r = await this.repository.generateToken(
@@ -38,31 +36,10 @@ export default {
 
     let embedContainer = this.$refs['embed-container']
     window.powerbi.embed(embedContainer, embedConfig)
-  },
-  methods: {
-    fullscreen () {
-      let embedContainer = this.$refs['embed-container']
-      const report = window.powerbi.get(embedContainer)
-      report.fullscreen()
-    },
-    async exportData () {
-      let embedContainer = this.$refs['embed-container']
-      const report = window.powerbi.get(embedContainer)
-      const pages = await report.getPages()
-      const firstPage = pages[0]
-      const visuals = await firstPage.getVisuals()
-      const firstVisual = visuals[0]
-      const visualData = await firstVisual.exportData(
-        this.pbi.models.ExportDataType.Summarized
-      )
-      var encodedUri =
-        'data:text/csv;charset=utf-8,' + encodeURI(visualData.data)
-      var link = document.createElement('a')
-      link.setAttribute('href', encodedUri)
-      link.setAttribute('download', 'data.csv')
-      document.body.appendChild(link)
-      link.click()
-    }
+    const report = window.powerbi.get(embedContainer)
+    report.on('loaded', () => {
+      this.loadingReport = false
+    })
   }
 }
 </script>
@@ -71,24 +48,6 @@ export default {
   display: flex;
   flex-flow: column;
   height: 100%;
-}
-
-.toolbar {
-  background-color: #eaeaea;
-  height: 36px;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.toolbar-btn {
-  border: none;
-  background: none;
-  cursor: pointer;
-  padding: 8px;
-}
-
-.toolbar-btn:hover {
-  background-color: white;
 }
 
 #embed-container {

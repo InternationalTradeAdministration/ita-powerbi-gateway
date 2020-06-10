@@ -33,7 +33,12 @@ describe('Default.vue', () => {
   it('user may view a power bi report', async () => {
     let powerbiEmbedSpy = Sinon.spy();
     window.powerbi = {
-      embed: powerbiEmbedSpy
+      embed: powerbiEmbedSpy,
+      get: () => {
+        return {
+          on: () => {}
+        }
+      }
     };
 
     const wrapper = shallowMount(Default, {

@@ -43,14 +43,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-.content {
-  display: flex;
-  flex-flow: column;
-  height: 100%;
-}
-
-#embed-container {
-  flex-grow: 1;
-}
-</style>

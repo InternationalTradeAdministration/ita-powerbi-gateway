@@ -1,20 +1,25 @@
 <template>
   <div>
     <div class="toolbar">
-      <button v-if="!loadingReport">
-        <img
-          src="/images/download.svg"
-          alt="Export Data"
-          @click="displayExportDialog"
-        />
-      </button>
-      <button>
-        <img
-          src="/images/fullscreen.svg"
-          alt="Full Screen"
-          @click="fullscreen"
-        />
-      </button>
+      <div class="toolbar-btns">
+        <slot />
+      </div>
+      <div class="toolbar-btns">
+        <button v-if="!loadingReport">
+          <img
+            src="/images/download.svg"
+            alt="Export Data"
+            @click="displayExportDialog"
+          />
+        </button>
+        <button>
+          <img
+            src="/images/fullscreen.svg"
+            alt="Full Screen"
+            @click="fullscreen"
+          />
+        </button>
+      </div>
     </div>
     <dialog ref="export-dialog">
       <header>
@@ -100,8 +105,17 @@ export default {
       this.$refs['export-dialog'].close()
     },
     getVisualsWithData () {
-      return this.activePageVisuals.filter(
-        v => !['image', 'textbox', 'card', 'slicer'].includes(v.type)
+      return this.activePageVisuals.filter(v =>
+        [
+          'barChart',
+          'columnChart',
+          'clusteredColumnChart',
+          'lineChart',
+          'lineStackedColumnComboChart',
+          'pieChart',
+          'pivotTable',
+          'tableEx'
+        ].includes(v.type)
       )
     }
   }
@@ -112,21 +126,21 @@ export default {
   display: flex;
   height: 34px;
   background-color: #eaeaea;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 
-.toolbar > button {
+.toolbar-btns > button {
   border: none;
   background: none;
   cursor: pointer;
   padding: 0;
 }
 
-.toolbar > button > img {
+.toolbar-btns > button > img {
   padding: 8px 10px;
 }
 
-.toolbar > button > img:hover {
+.toolbar-btns > button > img:hover {
   background-color: white;
 }
 
@@ -178,5 +192,4 @@ dialog {
 .dialog-btns > button {
   margin: 4px;
 }
-
 </style>

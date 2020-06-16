@@ -28,7 +28,7 @@ api:
 spring:
   profiles: staging
   datasource:
-    url: jdbc:sqlserver://inta-sqla-01.database.windows.net:1433;database=Inta-dataloader-01;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
+    url: ${FLYWAY_URL}
     username: ${FLYWAY_USER}
     password: ${FLYWAY_PASSWORD}
   security:
@@ -52,8 +52,10 @@ api:
 ---
 spring:
   profiles: production
-  autoconfigure:
-    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+  datasource:
+    url: ${FLYWAY_URL}
+    username: ${FLYWAY_USER}
+    password: ${FLYWAY_PASSWORD}
 build-id: ${BUILD_ID}
 powerbi:
   client-id: ${POWERBI_CLIENT_ID}

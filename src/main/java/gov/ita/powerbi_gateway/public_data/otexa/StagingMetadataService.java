@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-@Profile({"staging"})
+@Profile({"production"})
 public class StagingMetadataService implements MetadataService {
 
   @Override

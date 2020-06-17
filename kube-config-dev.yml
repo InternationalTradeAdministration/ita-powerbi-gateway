@@ -31,7 +31,7 @@ spec:
           - name: FLYWAY_USER
             value: #{FLYWAY-USER-DEV}#
           - name: FLYWAY_PASSWORD
-            value: #{FLYWAY-PASSWORD-DEV}#
+            value: "#{FLYWAY-PASSWORD-DEV}#"
           - name: GATEWAY_API_TOKEN
             value: #{GATEWAY-API-TOKEN}#
           - name: AZURE_OAUTH_CLIENT_ID

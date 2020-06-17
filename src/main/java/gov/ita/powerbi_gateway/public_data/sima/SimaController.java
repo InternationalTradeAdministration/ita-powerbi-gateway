@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/sima")
-@Profile("staging")
+@Profile({"staging", "production"})
 public class SimaController {
 
   @Value("${GATEWAY_API_TOKEN}")

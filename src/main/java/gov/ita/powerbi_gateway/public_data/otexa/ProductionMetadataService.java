@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@Profile({"staging", "test"})
+@Profile({"production", "staging", "test"})
 public class ProductionMetadataService implements MetadataService {
 
   @Autowired

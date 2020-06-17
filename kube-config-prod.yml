@@ -32,7 +32,7 @@ spec:
           - name: FLYWAY_USER
             value: #{FLYWAY-USER-PROD}#
           - name: FLYWAY_PASSWORD
-            value: #{FLYWAY-PASSWORD-PROD}#
+            value: "#{FLYWAY-PASSWORD-PROD}#"
           - name: GATEWAY_API_TOKEN
             value: #{GATEWAY-API-TOKEN}#
           - name: BUILD_ID

@@ -23,13 +23,13 @@ public class ProductionMetadataService implements MetadataService {
   private HtsRepository htsRepository;
 
   @Override
-  public List<Country> getCountries() {
-    return countryRepository.findAll();
+  public List<Country> getCountries(String source) {
+    return countryRepository.findBySource(source);
   }
 
   @Override
-  public List<Category> getCategories() {
-    return categoryRepository.findAll();
+  public List<Category> getCategories(String source) {
+    return categoryRepository.findBySource(source);
   }
 
   @Override

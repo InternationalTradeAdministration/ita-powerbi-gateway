@@ -17,4 +17,5 @@ public class Country {
   @Id
   private Long ctryId;
   private String ctryDescription;
+  private String source;
 }

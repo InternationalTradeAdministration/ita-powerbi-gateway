@@ -105,7 +105,7 @@
 import Toolbar from '@/Toolbar'
 export default {
   name: 'OtexaAnnual',
-  props: ['repository', 'pbi'],
+  props: ['repository', 'pbi', 'reportName'],
   components: {
     toolbar: Toolbar
   },
@@ -130,8 +130,11 @@ export default {
       ? this.$route.query.onlyCountry === 'true'
       : true
 
-    this.countries = await this.repository.getOtexaCountries()
-    this.categories = await this.repository.getOtexaCategories()
+    let source = this.reportName.includes('Footwear')
+      ? 'ANNUAL_FOOTWEAR'
+      : 'ANNUAL'
+    this.countries = await this.repository.getOtexaCountries(source)
+    this.categories = await this.repository.getOtexaCategories(source)
     this.chapters = await this.repository.getOtexaChapters()
 
     this.report = await this.repository.generateToken(
@@ -201,6 +204,10 @@ export default {
         filters.push(this.filter('HTS', 'All', [], false))
       }
 
+      if (this.reportName.includes('Historical')) {
+        filters.push(this.filter('Year', 'All', [], false))
+      }
+
       var embedConfig = {
         id: this.report.powerBiReport.id,
         embedUrl: this.report.powerBiReport.embedUrl,
@@ -223,6 +230,8 @@ export default {
 
         report.setFilters(filters)
 
+        console.log(filters)
+
         if (!this.onlyCountry) {
           let pages = await report.getPages()
           pages.filter(p => p.displayName === 'Country')[0].setActive()
@@ -240,6 +249,9 @@ export default {
       this.isReportVisible = false
     },
     filter (column, operator, values, requireSingleSelection) {
+      let table = this.reportName.includes('Footwear')
+        ? 'OTEXA_ANNUAL_FOOTWEAR_VW'
+        : 'OTEXA_ANNUAL_VW'
       return {
         requireSingleSelection,
         operator,
@@ -247,7 +259,7 @@ export default {
         $schema: 'http://powerbi.com/product/schema#basic',
         target: {
           column,
-          table: 'OTEXA_EXE_HTS_VW2'
+          table
         },
         filterType: 1
       }

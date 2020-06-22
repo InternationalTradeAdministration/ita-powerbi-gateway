@@ -19,13 +19,13 @@ public class OtexaController {
   private MetadataService metadataService;
 
   @GetMapping("/countries")
-  public List<Country> getCountries() {
-    return metadataService.getCountries();
+  public List<Country> getCountries(@RequestParam String source) {
+    return metadataService.getCountries(source);
   }
 
   @GetMapping("/categories")
-  public List<Category> getCategories() {
-    return metadataService.getCategories();
+  public List<Category> getCategories(@RequestParam String source) {
+    return metadataService.getCategories(source);
   }
 
   @GetMapping("/chapters")

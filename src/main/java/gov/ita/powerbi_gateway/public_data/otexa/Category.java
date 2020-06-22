@@ -17,4 +17,5 @@ public class Category {
   @Id
   private Long catId;
   private String longCategory;
+  private String source;
 }

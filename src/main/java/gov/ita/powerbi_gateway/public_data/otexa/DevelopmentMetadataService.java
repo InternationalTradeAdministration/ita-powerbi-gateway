@@ -10,13 +10,19 @@ import java.util.List;
 @Profile("development")
 public class DevelopmentMetadataService implements MetadataService {
   @Override
-  public List<Country> getCountries() {
-    return Arrays.asList(new Country(1L, "WORLD"), new Country(2L, "GREECE"));
+  public List<Country> getCountries(String source) {
+    return Arrays.asList(
+      new Country(1L, "WORLD", "ANNUAL"),
+      new Country(2L, "GREECE", "ANNUAL")
+    );
   }
 
   @Override
-  public List<Category> getCategories() {
-    return Arrays.asList(new Category(1L, "1 - Frogs"), new Category(2L, "2 - Cows"));
+  public List<Category> getCategories(String source) {
+    return Arrays.asList(
+      new Category(1L, "1 - Frogs", "ANNUAL"),
+      new Category(2L, "2 - Cows", "ANNUAL")
+    );
   }
 
   @Override

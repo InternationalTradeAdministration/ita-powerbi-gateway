@@ -21,12 +21,20 @@ export default class Repository {
     }).then(response => response.data)
   }
 
-  async getOtexaCountries() {
-    return await axios.get('/api/otexa/countries').then(response => response.data)
+  async getOtexaCountries(source) {
+    return await axios.get('/api/otexa/countries',  {
+      params: {
+        source
+      }
+    }).then(response => response.data)
   }
 
-  async getOtexaCategories() {
-    return await axios.get('/api/otexa/categories').then(response => response.data)
+  async getOtexaCategories(source) {
+    return await axios.get('/api/otexa/categories', {
+      params: {
+        source
+      }
+    }).then(response => response.data)
   }
 
   async getOtexaChapters() {

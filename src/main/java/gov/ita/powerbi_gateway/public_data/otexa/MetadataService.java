@@ -3,9 +3,9 @@ package gov.ita.powerbi_gateway.public_data.otexa;
 import java.util.List;
 
 public interface MetadataService {
-  List<Country> getCountries();
+  List<Country> getCountries(String source);
 
-  List<Category> getCategories();
+  List<Category> getCategories(String source);
 
   List<Chapter> getChapters();
 

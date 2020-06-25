@@ -230,8 +230,6 @@ export default {
 
         report.setFilters(filters)
 
-        console.log(filters)
-
         if (!this.onlyCountry) {
           let pages = await report.getPages()
           pages.filter(p => p.displayName === 'Country')[0].setActive()

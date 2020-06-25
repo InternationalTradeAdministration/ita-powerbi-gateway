@@ -1,7 +1,7 @@
 <template>
   <div class="report-factory">
     <otexa-annual
-      v-if="workspaceName.includes('OTEXA')"
+      v-if="workspaceName === 'OTEXA-PUBLIC'"
       :repository="repository"
       :pbi="pbi"
       :reportName="reportName"

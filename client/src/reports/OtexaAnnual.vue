@@ -21,7 +21,7 @@
               size="20"
             >
               <option
-                v-for="item in sortedCountries()"
+                v-for="item in countries"
                 :key="item.ctryId"
                 :value="item.ctryId"
                 >{{ item.ctryDescription }}</option
@@ -39,7 +39,7 @@
               @change="updateHts()"
             >
               <option
-                v-for="item in sortedCategories()"
+                v-for="item in categories"
                 :key="item.catId"
                 :value="item.catId"
                 >{{ item.longCategory }}</option
@@ -57,7 +57,7 @@
               @change="updateHts()"
             >
               <option
-                v-for="item in sortedChapters()"
+                v-for="item in chapters"
                 :key="item.chapter"
                 :value="item.chapter"
                 >{{ item.longChapter }}</option
@@ -75,7 +75,7 @@
               multiple
               size="20"
             >
-              <option v-for="item in sortedHts()" :key="item.hts" :value="item.hts">{{
+              <option v-for="item in hts" :key="item.hts" :value="item.hts">{{
                 item.longHts
               }}</option>
             </select>
@@ -261,31 +261,7 @@ export default {
         },
         filterType: 1
       }
-    },
-    sortedCountries () {
-      let newArr = this.countries
-      return newArr.sort((a, b) => {
-        return a.ctryDescription - b.ctryDescription
-      })
-    },
-    sortedCategories () {
-      let newArr = this.categories
-      return newArr.sort((a, b) => {
-        return a.longCategory - b.longCategory
-      })
-    },
-    sortedChapters () {
-      let newArr = this.chapters
-      return newArr.sort((a, b) => {
-        return a.longChapter - b.longChapter
-      })
-    },
-    sortedHts () {
-      let newArr = this.hts
-      return newArr.sort((a, b) => {
-        return a.hts - b.hts
-      })
-    },
+    }
   }
 }
 </script>

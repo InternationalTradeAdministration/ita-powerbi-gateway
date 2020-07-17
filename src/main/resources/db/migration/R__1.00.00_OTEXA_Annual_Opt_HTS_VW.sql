@@ -15,7 +15,7 @@ INNER JOIN [dbo].[OTEXA_CATEGORY_REF_VW] category
 FULL OUTER JOIN [dbo].[OTEXA_HTS_REF_VW] hts
     ON hts.[HTS] = details.[HTS]
     AND hts.[CAT_ID] = details.[CAT_ID]
-INNER JOIN [dbo].[OTEXA_HTS_CHAPTER_REF_VW] chapter
+FULL OUTER JOIN [dbo].[OTEXA_HTS_CHAPTER_REF_VW] chapter
     ON hts.[HTS] = chapter.[HTS]
     AND hts.[CAT_ID] = chapter.[CAT_ID]
 
@@ -36,7 +36,7 @@ INNER JOIN [dbo].[OTEXA_CATEGORY_REF_VW] category
 FULL OUTER JOIN [dbo].[OTEXA_HTS_REF_VW] hts
     ON hts.[HTS] = details.[HTS]
     AND hts.[CAT_ID] = details.[CAT_ID]
-INNER JOIN [dbo].[OTEXA_HTS_CHAPTER_REF_VW] chapter
+FULL OUTER JOIN [dbo].[OTEXA_HTS_CHAPTER_REF_VW] chapter
     ON hts.[HTS] = chapter.[HTS]
     AND hts.[CAT_ID] = chapter.[CAT_ID]
 WHERE hdr.[HEADER_TYPE] = 'SME'
@@ -58,7 +58,7 @@ INNER JOIN [dbo].[OTEXA_CATEGORY_REF_VW] category
 FULL OUTER JOIN [dbo].[OTEXA_HTS_REF_VW] hts
     ON hts.[HTS] = details.[HTS]
     AND hts.[CAT_ID] = details.[CAT_ID]
-INNER JOIN [dbo].[OTEXA_HTS_CHAPTER_REF_VW] chapter
+FULL OUTER JOIN [dbo].[OTEXA_HTS_CHAPTER_REF_VW] chapter
     ON hts.[HTS] = chapter.[HTS]
     AND hts.[CAT_ID] = chapter.[CAT_ID]
 WHERE hdr.[HEADER_TYPE] = 'UNITS'

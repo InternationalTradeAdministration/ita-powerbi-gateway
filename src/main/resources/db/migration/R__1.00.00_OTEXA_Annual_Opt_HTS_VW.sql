@@ -1,4 +1,4 @@
-CREATE VIEW [dbo].[OTEXA_ANNUAL_OPT_HTS_VW]
+CREATE OR ALTER VIEW [dbo].[OTEXA_ANNUAL_OPT_HTS_VW]
 AS
 SELECT details.[Country]
     , category.[LONG_CATEGORY] as 'Category'
@@ -18,6 +18,7 @@ FULL OUTER JOIN [dbo].[OTEXA_HTS_REF_VW] hts
 FULL OUTER JOIN [dbo].[OTEXA_HTS_CHAPTER_REF_VW] chapter
     ON hts.[HTS] = chapter.[HTS]
     AND hts.[CAT_ID] = chapter.[CAT_ID]
+WHERE hdr.[HEADER_DESCRIPTION] IS NOT NULL
 
 UNION ALL
 
@@ -40,6 +41,7 @@ FULL OUTER JOIN [dbo].[OTEXA_HTS_CHAPTER_REF_VW] chapter
     ON hts.[HTS] = chapter.[HTS]
     AND hts.[CAT_ID] = chapter.[CAT_ID]
 WHERE hdr.[HEADER_TYPE] = 'SME'
+AND hdr.[HEADER_DESCRIPTION] IS NOT NULL
 
 UNION ALL
 
@@ -62,5 +64,6 @@ FULL OUTER JOIN [dbo].[OTEXA_HTS_CHAPTER_REF_VW] chapter
     ON hts.[HTS] = chapter.[HTS]
     AND hts.[CAT_ID] = chapter.[CAT_ID]
 WHERE hdr.[HEADER_TYPE] = 'UNITS'
+AND hdr.[HEADER_DESCRIPTION] IS NOT NULL
 
 GO

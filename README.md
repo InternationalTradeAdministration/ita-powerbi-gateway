@@ -12,18 +12,19 @@ The following links can help configure Azure and Power BI:
 
 Steps to run this application on your local machine for development purposes.
 
-### Deveoper Prerequisites
+### Developer Prerequisites
 
 - Java 14
-- [NPM](https://www.npmjs.com/get-npm) (`cd client` then `npm install`)
+- [NPM](https://www.npmjs.com/get-npm) ~v12
 - [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
 - [Docker CLI](https://docs.docker.com/engine/reference/commandline/cli)
 - [KUBECTL CLI](https://kubernetes.io/docs/tasks/tools/install-kubectl) (if deploying to AKS)
 
 #### Running Locally
 
-- Backend: `gradle bootRun`, [](http://localhost:8080)
-- Frontend: `cd client && npm start`, [](http://localhost:8081)
+- Backend: `env SPRING_PROFILES_ACTIVE=development ./gradlew bootRun`; [http://localhost:8080](http://localhost:8080) 
+  - or for staging environment: `env SPRING_PROFILES_ACTIVE=staging ./gradlew bootRun`
+- Frontend: `cd client && npm run serve`; [http://localhost:8081](http://localhost:8081)
 
 ## Build Scripts
 
@@ -32,15 +33,22 @@ Steps to run this application on your local machine for development purposes.
 
 ### Required Environment Variables
 
-- TENANT_ID: Azure Tenant ID
-- CLIENT_ID: Application ID from the AD App Registration
-- CLIENT_SECRET: Client secret from the AD App Registration
-- FLYWAY_URL: The jdbc connection to a AZURE SQL Database
-- FLYWAY_USER: Username to the AZURE SQL Database
-- FLYWAY_PASSWORD: Password to the AZURE SQL Database
+- `POWERBI_TENANT_ID`: Azure Tenant ID
+- `POWERBI_CLIENT_ID`: Application ID from the AD App Registration
+- `POWERBI_CLIENT_SECRET`: Client secret from the AD App Registration
+- `FLYWAY_URL`: The jdbc connection to the AZURE SQL Database. This string must be in quotes if using MacOS.
+- `FLYWAY_USER`: Username to the AZURE SQL Database
+- `FLYWAY_PASSWORD`: Password to the AZURE SQL Database
 
-For detail related to the deployment of containerized applications in Azure, reference this [repo](https://github.com/InternationalTradeAdministration/azure-samples) with deployment scenarios
+If running in staging environment, add these additional variables:
+- `AZURE_OAUTH_TENANT_ID`
+- `AZURE_OAUTH_CLIENT_SECRET`
+- `BUILD_ID=100` (or some placeholder number)
+- `GATEWAY_API_TOKEN=faketoken` (or some placeholder string)
+
+For details related to the deployment of containerized applications in Azure, reference this [repo](https://github.com/InternationalTradeAdministration/azure-samples) with deployment scenarios
 
 ## Database Notes
 
 - SQL Scripts for updating the Database can be found here:  /src/main/resources/db/migration
+- To print details and status information about all the migrations: `gradle flywayInfo` ([Flyway docs](https://flywaydb.org/documentation/gradle/info))

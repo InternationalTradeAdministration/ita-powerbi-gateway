@@ -247,9 +247,14 @@ export default {
       this.isReportVisible = false
     },
     filter (column, operator, values, requireSingleSelection) {
-      let table = this.reportName.includes('Footwear')
-        ? 'OTEXA_ANNUAL_FOOTWEAR_VW'
-        : 'OTEXA_ANNUAL_VW'
+      let table;
+      if (this.reportName.includes('Footwear')) {
+        table = 'OTEXA_ANNUAL_FOOTWEAR_VW'
+      } else if (this.reportName.includes('HTS')) {
+        table = 'OTEXA_ANNUAL_OPT_HTS_VW'
+      } else {
+        table = 'OTEXA_ANNUAL_VW'
+      }
       return {
         requireSingleSelection,
         operator,

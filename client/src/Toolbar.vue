@@ -9,6 +9,7 @@
           <img
             src="/images/download.svg"
             alt="Export Data"
+            title="Export Data"
             @click="displayExportDialog"
           />
         </button>
@@ -16,6 +17,7 @@
           <img
             src="/images/fullscreen.svg"
             alt="Full Screen"
+            title="Full Screen"
             @click="fullscreen"
           />
         </button>

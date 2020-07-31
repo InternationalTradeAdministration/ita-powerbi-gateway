@@ -45,4 +45,27 @@ export default class Repository {
     return await axios.get('/api/otexa/hts?categories=' + categoryIds + '&chapters=' + chapterIds).then(response => response.data)
   }
 
+  exportToFile(workspaceName, reportName, bookmarkState) {
+    return axios.get("/api/pbi-admin/export-to-file", {
+      params: {
+        workspaceName, reportName, bookmarkState
+      }
+    }).then(response => response.data)
+  }
+
+  getExportToFileStatus(workspaceName, reportName, exportStatusId) {
+    return axios.get("/api/pbi-admin/export-to-file-status", {
+      params: {
+        workspaceName, reportName, exportStatusId
+      }
+    }).then(response => response.data)
+  }
+
+  async getExportFile(workspaceName, reportName, exportStatusId) {
+    return await axios.get("/api/pbi-admin/export-file", {
+      params: {
+        workspaceName, reportName, exportStatusId
+      }
+    }).then(response => response.data)
+  }
 }

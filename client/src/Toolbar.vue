@@ -5,6 +5,13 @@
         <slot />
       </div>
       <div class="toolbar-btns">
+        <button v-show="!loadingReport" v-bind:disabled="isExportToPdfInProgress" @click="exportToPdf">
+          <img class="pdf"
+            src="/images/pdf.png"
+            alt="Export to PDF"
+            title="Export to PDF"
+          />
+        </button>
         <button v-if="!loadingReport">
           <img
             src="/images/download.svg"
@@ -59,13 +66,55 @@
         </button>
       </div>
     </dialog>
+
+    <dialog ref="export-to-pdf-dialog">
+      <div v-if="isExportToPdfInProgress">
+        <header>
+          <span class="dialog-title">Export To PDF in progress</span>
+          <span class="progress-indicator">
+            <img src="/images/three-dots.svg" alt="Spinner" />
+          </span>
+        </header>
+        <p>
+          Your report {{ this.$route.params.reportName }} is being exported to a PDF file. This might take a few minutes.
+        </p>
+      </div>
+      <template v-else>
+        <div v-if="isExportToPdfSuccessful">
+          <header>
+            <span class="dialog-title">PDF file is ready for download</span>
+          </header>
+          <p>
+            The report {{ this.$route.params.reportName }} was exported to a PDF file.
+          </p>
+        </div>
+        <div v-else>
+          <header>
+            <span class="dialog-title">PDF file export failed</span>
+          </header>
+          <p>
+            The report {{ this.$route.params.reportName }} was not exported to a PDF file.
+          </p>
+        </div>
+      </template>
+      <div class="dialog-btns">
+        <button @click="closeExportToPdfDialog">
+          Close
+        </button>
+      </div>
+    </dialog>
   </div>
 </template>
 <script>
+
+const querystring = require('querystring')
+
 export default {
   name: 'Toolbar',
-  props: ['loadingReport', 'pbi'],
+  props: ['repository', 'loadingReport', 'pbi'],
   data: () => ({
+    isExportToPdfInProgress: false,
+    isExportToPdfSuccessful: false,
     loadingExportDialog: false,
     activePageName: null,
     activePageIndex: 0,
@@ -119,7 +168,62 @@ export default {
           'tableEx'
         ].includes(v.type)
       )
+    },
+    exportToPdf () {
+      let workspaceName = this.$route.params.workspaceName
+      let reportName = this.$route.params.reportName
+      this.getReport().bookmarksManager.capture()
+      .then(bookmark => this.startExportToFile(workspaceName, reportName, bookmark.state))
+      .then(exportStatus => this.getFinalExportStatus(workspaceName, reportName, exportStatus.id))
+      .then(exportStatus => this.processFinalExportStatus(workspaceName, reportName, exportStatus))
+    },
+    closeExportToPdfDialog () {
+      this.$refs['export-to-pdf-dialog'].close()
+    },
+    startExportToFile(workspaceName, reportName, bookmarkState) {
+      this.isExportToPdfInProgress = true
+      this.isExportToPdfSuccessful = false
+      this.$refs['export-to-pdf-dialog'].showModal()
+      return this.repository.exportToFile(workspaceName, reportName, bookmarkState)
+    },
+    getFinalExportStatus(workspaceName, reportName, exportStatusId) {
+      let finalExportStates = ['Succeeded', 'Failed']
+      return new Promise((resolve) => {
+        setTimeout( () => {
+          this.repository.getExportToFileStatus(workspaceName, reportName, exportStatusId)
+          .then(exportStatus => {
+            if (finalExportStates.includes(exportStatus.status)) {
+              resolve(exportStatus)
+            } else {
+              resolve(this.getFinalExportStatus(workspaceName, reportName, exportStatus.id))
+            }
+          })
+        }, 1500)
+      })
+    },
+    processFinalExportStatus(workspaceName, reportName, exportStatus) {
+      if (exportStatus.status === 'Succeeded') {
+        let exportStatusId = exportStatus.id
+        let params = {
+          workspaceName, reportName, exportStatusId
+        }
+        var link = document.createElement('a')
+        link.setAttribute('href', '/api/pbi-admin/export-file?' + querystring.stringify(params))
+        link.setAttribute('download', reportName + '.pdf')
+        document.body.appendChild(link)
+        link.click()
+
+        this.isExportToPdfSuccessful = true
+        this.isExportToPdfInProgress = false
+      } else {
+        this.isExportToPdfSuccessful = false
+        this.isExportToPdfInProgress = false
+      }
+      if (!this.$refs['export-to-pdf-dialog'].open) {
+        this.$refs['export-to-pdf-dialog'].showModal()
+      }
     }
+
   }
 }
 </script>
@@ -138,12 +242,21 @@ export default {
   padding: 0;
 }
 
+.toolbar-btns > button:disabled {
+  cursor: default;
+}
+
 .toolbar-btns > button > img {
   padding: 8px 10px;
 }
 
-.toolbar-btns > button > img:hover {
+.toolbar-btns > button:not([disabled]) > img:hover {
   background-color: white;
+}
+
+.toolbar-btns > .pdf {
+  width: 18px;
+  height: 18px;
 }
 
 header {
@@ -193,5 +306,14 @@ dialog {
 
 .dialog-btns > button {
   margin: 4px;
+}
+
+.progress-indicator {
+  margin-left: 15px;
+}
+
+.progress-indicator img {
+  width: 80px;
+  height: 20px;
 }
 </style>

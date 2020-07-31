@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <span v-if="loading">loading...</span>
-    <toolbar v-else :loadingReport="loadingReport" :pbi="pbi" />
+    <toolbar v-else :loadingReport="loadingReport" :pbi="pbi" :repository="repository" />
     <div id="embed-container" ref="embed-container"></div>
   </div>
 </template>

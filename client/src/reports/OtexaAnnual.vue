@@ -171,7 +171,7 @@ export default {
       if (this.selectedCountries.length > 0) {
         let selectedCountries = this.countries
           .filter(c => this.selectedCountries.includes(c.ctryId))
-          .map(c => c.ctryDescription)
+          .map(c => c.ctryDescription.trim())
         filters.push(this.filter('Country', 'In', selectedCountries, false))
       } else {
         filters.push(this.filter('Country', 'All', [], false))
@@ -180,7 +180,7 @@ export default {
       if (this.selectedCategories.length > 0) {
         let selectedCategories = this.categories
           .filter(c => this.selectedCategories.includes(c.catId))
-          .map(c => c.longCategory)
+          .map(c => c.longCategory.trim())
         filters.push(this.filter('Category', 'In', selectedCategories, false))
       } else {
         filters.push(this.filter('Category', 'All', [], false))
@@ -189,7 +189,7 @@ export default {
       if (this.selectedChapters.length > 0) {
         let selectedChapters = this.chapters
           .filter(c => this.selectedChapters.includes(c.chapter))
-          .map(c => c.longChapter)
+          .map(c => c.longChapter.trim())
         filters.push(this.filter('Chapter', 'In', selectedChapters, false))
       } else {
         filters.push(this.filter('Chapter', 'All', [], false))
@@ -198,7 +198,7 @@ export default {
       if (this.selectedHts.length > 0) {
         let selectedHts = this.hts
           .filter(c => this.selectedHts.includes(c.hts))
-          .map(c => c.longHts)
+          .map(c => c.longHts.trim())
         filters.push(this.filter('HTS', 'In', selectedHts, false))
       } else {
         filters.push(this.filter('HTS', 'All', [], false))

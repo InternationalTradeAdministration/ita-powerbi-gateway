@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 @Data
@@ -13,9 +14,13 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "OtexaHtsChapterRefVw")
+@IdClass(CategoryHts.class)
 public class HtsChapter {
   @Id
+  public Long catId;
+  @Id
   public String hts;
+
   public Long chapter;
   public String longChapter;
 }

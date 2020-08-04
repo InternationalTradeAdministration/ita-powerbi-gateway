@@ -12,18 +12,26 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "OtexaHtsRefVw")
+@IdClass(CategoryHts.class)
 public class Hts {
   @Id
-  public String hts;
-  public String longHts;
-
   @JsonIgnore
   public Long catId;
 
+  @Id
+  public String hts;
+
+  public String longHts;
+
   @JsonIgnore
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "hts")
+  @MapsId
+  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @JoinColumns({
+      @JoinColumn(name = "catId"),
+      @JoinColumn(name = "hts")
+  })
   public HtsChapter htsChapter;
+
 
   public Hts(String hts, String longHts) {
     this.hts = hts;

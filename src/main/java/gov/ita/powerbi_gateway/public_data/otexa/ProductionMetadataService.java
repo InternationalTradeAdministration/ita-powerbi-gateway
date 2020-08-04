@@ -39,7 +39,7 @@ public class ProductionMetadataService implements MetadataService {
 
   @Override
   public List<Hts> getHtsByCategoriesAndChapters(List<Long> categories, List<Long> chapters) {
-    return htsRepository.findByCatIdInAndHtsChapterChapterIn(categories, chapters);
+    return htsRepository.findByCatIdInAndHtsChapterChapterInOrderByHts(categories, chapters);
   }
 
   @Override
@@ -49,6 +49,6 @@ public class ProductionMetadataService implements MetadataService {
 
   @Override
   public List<Hts> getHtsByChapters(List<Long> chapters) {
-    return htsRepository.findByHtsChapterChapterIn(chapters);
+    return htsRepository.findByHtsChapterChapterInOrderByHts(chapters);
   }
 }

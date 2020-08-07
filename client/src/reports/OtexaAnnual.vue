@@ -216,7 +216,7 @@ export default {
         tokenType: this.pbi.models.TokenType.Embed,
         permissions: this.pbi.models.Permissions.All,
         settings: {
-          filterPaneEnabled: true
+          filterPaneEnabled: (this.reportName.includes('No Filter')) ? false : true
         }
       }
 

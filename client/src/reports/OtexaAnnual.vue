@@ -80,6 +80,18 @@
               }}</option>
             </select>
           </div>
+          <div class="filter-field">
+            <label for="displayIn">Display In:</label>
+            <select
+              v-model="displayIn"
+              name="displayIn"
+              id="displayIn"
+            >
+              <option value='DOLLARS'>DOLLARS</option>
+              <option value='SME'>SME</option>
+              <option value='UNITS'>UNITS</option>
+            </select>
+          </div>
         </div>
         <p v-if="!onlyCountry">
           *Multiple selections will be added together (use the Shift key for
@@ -119,6 +131,7 @@ export default {
     selectedCategories: [],
     selectedChapters: [],
     selectedHts: [],
+    displayIn: [],
     isReportVisible: false,
     loading: true,
     loadingReport: true,
@@ -166,7 +179,11 @@ export default {
     async viewReport () {
       let filters = []
 
-      filters.push(this.filter('Display In', 'In', ['DOLLARS'], true))
+      if (this.displayIn.length === 0) {
+        filters.push(this.filter('Display In', 'In', ['DOLLARS'], true))
+      } else {
+        filters.push(this.filter('Display In', 'In', [this.displayIn], true))
+      }
 
       if (this.selectedCountries.length > 0) {
         let selectedCountries = this.countries
@@ -244,6 +261,7 @@ export default {
       this.selectedChapters = []
       this.selectedHts = []
       this.hts = []
+      this.displayIn = []
       this.isReportVisible = false
     },
     filter (column, operator, values, requireSingleSelection) {

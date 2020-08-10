@@ -155,6 +155,8 @@ export default {
       this.$route.params.reportName
     )
 
+    this.displayIn = 'DOLLARS'
+
     this.loading = false
   },
   methods: {
@@ -261,7 +263,7 @@ export default {
       this.selectedChapters = []
       this.selectedHts = []
       this.hts = []
-      this.displayIn = []
+      this.displayIn = 'DOLLARS'
       this.isReportVisible = false
     },
     filter (column, operator, values, requireSingleSelection) {

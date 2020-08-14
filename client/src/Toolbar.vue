@@ -5,11 +5,11 @@
         <slot />
       </div>
       <div class="toolbar-btns">
-        <button v-show="!loadingReport" v-bind:disabled="isExportToPdfInProgress" @click="exportToPdf">
-          <img class="pdf"
-            src="/images/pdf.png"
-            alt="Export to PDF"
-            title="Export to PDF"
+        <button v-show="!loadingReport" v-bind:disabled="isExportReportInProgress" @click="selectExportFormat">
+          <img class="bar-chart"
+            src="/images/bar-chart.svg"
+            alt="Export Report"
+            title="Export Report"
           />
         </button>
         <button v-if="!loadingReport">
@@ -67,25 +67,45 @@
       </div>
     </dialog>
 
-    <dialog ref="export-to-pdf-dialog">
-      <div v-if="isExportToPdfInProgress">
+    <dialog ref="export-report-dialog">
+      <div v-if="exportReportFileFormat === null" class="select-export-format">
         <header>
-          <span class="dialog-title">Export To PDF in progress</span>
+          <span class="dialog-title">Select Export Format</span>
+        </header>
+        <ul>
+          <li><button @click="exportReport('PPTX')">
+            <img src="/images/pptx.png"
+                 alt="PowerPoint"
+                 title="PowerPoint" />
+            PowerPoint</button>
+          </li>
+          <li><button @click="exportReport('PDF')">
+            <img src="/images/pdf.png"
+                 alt="PDF"
+                 title="PDF" />
+            PDF</button>
+          </li>
+        </ul>
+      </div>
+      <div v-else-if="isExportReportInProgress">
+        <header>
+          <span class="dialog-title">Export To {{ this.exportReportFileType }} in progress</span>
           <span class="progress-indicator">
             <img src="/images/three-dots.svg" alt="Spinner" />
           </span>
         </header>
         <p>
-          Your report {{ this.$route.params.reportName }} is being exported to a PDF file. This might take a few minutes.
+          Your report {{ this.$route.params.reportName }} is being exported to a {{ this.exportReportFileType }} file.
+          This might take a few minutes.
         </p>
       </div>
       <template v-else>
         <div v-if="isExportToPdfSuccessful">
           <header>
-            <span class="dialog-title">PDF file is ready for download</span>
+            <span class="dialog-title">{{ this.exportReportFileType }} file is ready for download</span>
           </header>
           <p>
-            The report {{ this.$route.params.reportName }} was exported to a PDF file.
+            The report {{ this.$route.params.reportName }} was exported to a {{ this.exportReportFileType }} file.
           </p>
         </div>
         <div v-else>
@@ -113,8 +133,15 @@ export default {
   name: 'Toolbar',
   props: ['repository', 'loadingReport', 'pbi'],
   data: () => ({
-    isExportToPdfInProgress: false,
+    exportReportFileFormat: null,
+    exportReportFileType: null,
+    exportReportFileTypes: {
+      PPTX: 'PowerPoint',
+      PDF: 'PDF'
+    },
+    isExportReportInProgress: false,
     isExportToPdfSuccessful: false,
+    isExportReportDone: true,
     loadingExportDialog: false,
     activePageName: null,
     activePageIndex: 0,
@@ -169,24 +196,32 @@ export default {
         ].includes(v.type)
       )
     },
-    exportToPdf () {
+    selectExportFormat() {
+      this.exportReportFileFormat = null
+      this.$refs['export-report-dialog'].showModal()
+    },
+    exportReport (format) {
+      this.exportReportFileFormat = format
+      this.exportReportFileType = this.exportReportFileTypes[this.exportReportFileFormat]
+      this.isExportReportInProgress = true
+      this.isExportToPdfSuccessful = false
       let workspaceName = this.$route.params.workspaceName
       let reportName = this.$route.params.reportName
       this.getReport().bookmarksManager.capture()
-      .then(bookmark => this.startExportToFile(workspaceName, reportName, bookmark.state))
-      .then(exportStatus => this.getFinalExportStatus(workspaceName, reportName, exportStatus.id))
+      .then(bookmark => this.startExportToFile(workspaceName, reportName, bookmark.state, this.exportReportFileFormat))
+      .then(exportStatus => this.getFinalExportStatus(workspaceName, reportName, exportStatus.id, 15000))
       .then(exportStatus => this.processFinalExportStatus(workspaceName, reportName, exportStatus))
     },
     closeExportToPdfDialog () {
-      this.$refs['export-to-pdf-dialog'].close()
+      this.$refs['export-report-dialog'].close()
     },
-    startExportToFile(workspaceName, reportName, bookmarkState) {
-      this.isExportToPdfInProgress = true
-      this.isExportToPdfSuccessful = false
-      this.$refs['export-to-pdf-dialog'].showModal()
-      return this.repository.exportToFile(workspaceName, reportName, bookmarkState)
+    startExportToFile(workspaceName, reportName, bookmarkState, format) {
+      if (!this.$refs['export-report-dialog'].open) {
+        this.$refs['export-report-dialog'].showModal()
+      }
+      return this.repository.exportToFile(workspaceName, reportName, bookmarkState, format)
     },
-    getFinalExportStatus(workspaceName, reportName, exportStatusId) {
+    getFinalExportStatus(workspaceName, reportName, exportStatusId, timeout = 2000) {
       let finalExportStates = ['Succeeded', 'Failed']
       return new Promise((resolve) => {
         setTimeout( () => {
@@ -198,7 +233,7 @@ export default {
               resolve(this.getFinalExportStatus(workspaceName, reportName, exportStatus.id))
             }
           })
-        }, 1500)
+        }, timeout)
       })
     },
     processFinalExportStatus(workspaceName, reportName, exportStatus) {
@@ -209,18 +244,18 @@ export default {
         }
         var link = document.createElement('a')
         link.setAttribute('href', '/api/pbi-admin/export-file?' + querystring.stringify(params))
-        link.setAttribute('download', reportName + '.pdf')
+        link.setAttribute('download', reportName + '.' + this.exportReportFileFormat.toLowerCase())
         document.body.appendChild(link)
         link.click()
 
         this.isExportToPdfSuccessful = true
-        this.isExportToPdfInProgress = false
+        this.isExportReportInProgress = false
       } else {
         this.isExportToPdfSuccessful = false
-        this.isExportToPdfInProgress = false
+        this.isExportReportInProgress = false
       }
-      if (!this.$refs['export-to-pdf-dialog'].open) {
-        this.$refs['export-to-pdf-dialog'].showModal()
+      if (!this.$refs['export-report-dialog'].open) {
+        this.$refs['export-report-dialog'].showModal()
       }
     }
 
@@ -254,13 +289,13 @@ export default {
   background-color: white;
 }
 
-.toolbar-btns > .pdf {
+.toolbar-btns .bar-chart {
   width: 18px;
   height: 18px;
 }
 
 header {
-  margin: 16px 0 26px 0px;
+  margin: 16px 0;
 }
 
 .active-page-name {
@@ -315,5 +350,32 @@ dialog {
 .progress-indicator img {
   width: 80px;
   height: 20px;
+}
+
+.select-export-format ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.select-export-format li {
+  margin-bottom: 0.5em;
+}
+
+.select-export-format button {
+  border: none;
+  cursor: pointer;
+  background: none;
+  outline: 0;
+  font-size: 0.875em;
+}
+
+.select-export-format button img {
+  width: 14px;
+  height: 14px;
+}
+
+.select-export-format button:hover {
+  text-decoration: underline;
 }
 </style>

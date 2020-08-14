@@ -44,9 +44,10 @@ public class PowerBiAdminService {
 
   public ExportStatus exportToFileInGroup(String groupId,
                                           String reportId,
-                                          String bookmarkState) throws JsonProcessingException {
+                                          String bookmarkState,
+                                          String format) throws JsonProcessingException {
     String url = apiUrl + "/groups/" + groupId + "/reports/" + reportId + "/ExportTo";
-    String requestBody = buildExportToFileRequestBody(bookmarkState);
+    String requestBody = buildExportToFileRequestBody(bookmarkState, format);
     return restTemplate.exchange(
         url,
         HttpMethod.POST,
@@ -97,10 +98,10 @@ public class PowerBiAdminService {
     }
   }
 
-  private String buildExportToFileRequestBody(String bookmarkState) throws JsonProcessingException {
+  private String buildExportToFileRequestBody(String bookmarkState, String format) throws JsonProcessingException {
     ObjectMapper mapper = new ObjectMapper();
     ObjectNode body = mapper.createObjectNode();
-    body.put("format", "PDF");
+    body.put("format", format);
 
     ObjectNode defaultBookmark = mapper.createObjectNode();
     defaultBookmark.put("state", bookmarkState);

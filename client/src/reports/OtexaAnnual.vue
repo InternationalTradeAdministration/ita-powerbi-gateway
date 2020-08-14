@@ -139,8 +139,8 @@ export default {
     onlyCountry: null
   }),
   async created () {
-    this.onlyCountry = this.$route.query.onlyCountry
-      ? this.$route.query.onlyCountry === 'true'
+    this.onlyCountry = (this.$route.query.onlyCountry || this.reportName.includes('Category'))
+      ? (this.$route.query.onlyCountry === 'true' || this.reportName.includes('Country'))
       : true
 
     let source = this.reportName.includes('Footwear')

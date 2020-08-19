@@ -2,17 +2,21 @@ package gov.ita.powerbi_gateway.powerbi_admin;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@Validated
 @RequestMapping(value = "/api/pbi-admin", produces = MediaType.APPLICATION_JSON_VALUE)
 public class PowerBiAdminController {
 
@@ -52,12 +56,14 @@ public class PowerBiAdminController {
   }
 
   @GetMapping("/export-to-file")
+  @Validated
   public ExportStatus exportToFile(@RequestParam String workspaceName,
                                    @RequestParam String reportName,
-                                   @RequestParam String bookmarkState) throws JsonProcessingException {
+                                   @RequestParam String bookmarkState,
+                                   @RequestParam @Pattern(regexp = "^(PDF|PPTX)$") String format) throws JsonProcessingException {
     Group group = powerBiAdminService.getPbiGroups(workspaceName).getValue().get(0);
     Report report = powerBiAdminService.getPbiReports(group.getId(), reportName).getValue().get(0);
-    return powerBiAdminService.exportToFileInGroup(group.getId(), report.getId(), bookmarkState);
+    return powerBiAdminService.exportToFileInGroup(group.getId(), report.getId(), bookmarkState, format);
   }
 
   @GetMapping("/export-to-file-status")

@@ -5,19 +5,11 @@
       <div class="filter-pane">
         <div class="filter-fields">
           <div class="filter-field">
-            <label>Data By:</label>
-            <select v-model="onlyCountry" @click="reset()">
-              <option :value="true">Country</option>
-              <option :value="false">Category</option>
-            </select>
-          </div>
-          <div class="filter-field" v-if="onlyCountry">
             <label for="countries">Countries:</label>
             <select
               v-model="selectedCountries"
               name="countries"
               id="countries"
-              multiple
               size="20"
             >
               <option
@@ -28,64 +20,13 @@
               >
             </select>
           </div>
-          <div class="filter-field" v-if="!onlyCountry">
-            <label for="categories">Categories:</label>
-            <select
-              v-model="selectedCategories"
-              name="categories"
-              id="categories"
-              multiple
-              size="20"
-              @change="updateHts()"
-            >
-              <option
-                v-for="item in categories"
-                :key="item.catId"
-                :value="item.catId"
-                >{{ item.longCategory }}</option
-              >
-            </select>
-          </div>
-          <div class="filter-field" v-if="!onlyCountry">
-            <label for="chapters">Chapters:</label>
-            <select
-              v-model="selectedChapters"
-              name="chapters"
-              id="chapters"
-              multiple
-              size="20"
-              @change="updateHts()"
-            >
-              <option
-                v-for="item in chapters"
-                :key="item.chapter"
-                :value="item.chapter"
-                >{{ item.longChapter }}</option
-              >
-            </select>
-          </div>
-          <div class="filter-field" v-if="!onlyCountry">
-            <label for="hts">HTS:</label>
-            <span v-if="loadingHts">loading...</span>
-            <select
-              v-else
-              v-model="selectedHts"
-              name="hts"
-              id="hts"
-              multiple
-              size="20"
-            >
-              <option v-for="item in hts" :key="item.hts" :value="item.hts">{{
-                item.longHts
-              }}</option>
-            </select>
-          </div>
           <div class="filter-field">
             <label for="displayIn">Display In:</label>
             <select
               v-model="displayIn"
               name="displayIn"
               id="displayIn"
+              size="3"
             >
               <option value='DOLLARS'>DOLLARS</option>
               <option value='SME'>SME</option>
@@ -93,10 +34,6 @@
             </select>
           </div>
         </div>
-        <p v-if="!onlyCountry">
-          *Multiple selections will be added together (use the Shift key for
-          sequential selections and the Ctrl key for non-sequential ones).
-        </p>
         <div class="filter-buttons">
           <button @click="viewReport()" id="submit-button">Submit</button>
           <button @click="reset()" id="reset-button">Reset</button>
@@ -116,7 +53,7 @@
 <script>
 import Toolbar from '@/Toolbar'
 export default {
-  name: 'OtexaAnnual',
+  name: 'OtexaMsrCountries',
   props: ['repository', 'pbi', 'reportName'],
   components: {
     toolbar: Toolbar
@@ -125,30 +62,18 @@ export default {
     report: null,
     countries: [],
     categories: [],
-    chapters: [],
-    hts: [],
     selectedCountries: [],
-    selectedCategories: [],
-    selectedChapters: [],
-    selectedHts: [],
     displayIn: [],
     isReportVisible: false,
     loading: true,
     loadingReport: true,
-    loadingHts: false,
-    onlyCountry: null
   }),
   async created () {
-    this.onlyCountry = (this.$route.query.onlyCountry || this.reportName.includes('Category'))
-      ? (this.$route.query.onlyCountry === 'true' || this.reportName.includes('Country'))
-      : true
-
     let source = this.reportName.includes('Footwear')
       ? 'ANNUAL_FOOTWEAR'
       : 'ANNUAL'
     this.countries = await this.repository.getOtexaCountries(source)
     this.categories = await this.repository.getOtexaCategories(source)
-    this.chapters = await this.repository.getOtexaChapters()
 
     this.report = await this.repository.generateToken(
       this.$route.params.workspaceName,
@@ -163,21 +88,6 @@ export default {
     getReportClass () {
       return this.isReportVisible ? 'sub-content visible' : 'hidden'
     },
-    async updateHts () {
-      if (!this.htsDisabled()) {
-        this.loadingHts = true
-        this.hts = await this.repository.getOtexaHts(
-          this.selectedCategories,
-          this.selectedChapters
-        )
-        this.loadingHts = false
-      }
-    },
-    htsDisabled () {
-      return !(
-        this.selectedCategories.length > 0 || this.selectedChapters.length > 0
-      )
-    },
     async viewReport () {
       let filters = []
 
@@ -187,41 +97,16 @@ export default {
         filters.push(this.filter('Display In', 'In', [this.displayIn], true))
       }
 
-      if (this.selectedCountries.length > 0) {
-        let selectedCountries = this.countries
-          .filter(c => this.selectedCountries.includes(c.ctryId))
-          .map(c => c.ctryDescription.trim())
-        filters.push(this.filter('Country', 'In', selectedCountries, false))
-      } else {
-        filters.push(this.filter('Country', 'All', [], false))
-      }
+      let selectedCountries = this.countries
+        .filter(c => [this.selectedCountries].includes(c.ctryId))
+        .map(c => c.ctryDescription.trim())
+      filters.push(this.filter('Country', 'In', selectedCountries, false))
 
-      if (this.selectedCategories.length > 0) {
-        let selectedCategories = this.categories
-          .filter(c => this.selectedCategories.includes(c.catId))
-          .map(c => c.longCategory.trim())
-        filters.push(this.filter('Category', 'In', selectedCategories, false))
-      } else {
-        filters.push(this.filter('Category', 'All', [], false))
-      }
+      filters.push(this.filter('Category', 'All', [], false))
 
-      if (this.selectedChapters.length > 0) {
-        let selectedChapters = this.chapters
-          .filter(c => this.selectedChapters.includes(c.chapter))
-          .map(c => c.longChapter.trim())
-        filters.push(this.filter('Chapter', 'In', selectedChapters, false))
-      } else {
-        filters.push(this.filter('Chapter', 'All', [], false))
-      }
+      filters.push(this.filter('Chapter', 'All', [], false))
 
-      if (this.selectedHts.length > 0) {
-        let selectedHts = this.hts
-          .filter(c => this.selectedHts.includes(c.hts))
-          .map(c => c.longHts.trim())
-        filters.push(this.filter('HTS', 'In', selectedHts, false))
-      } else {
-        filters.push(this.filter('HTS', 'All', [], false))
-      }
+      filters.push(this.filter('HTS', 'All', [], false))
 
       if (this.reportName.includes('Historical')) {
         filters.push(this.filter('Year', 'All', [], false))
@@ -235,7 +120,7 @@ export default {
         tokenType: this.pbi.models.TokenType.Embed,
         permissions: this.pbi.models.Permissions.All,
         settings: {
-          filterPaneEnabled: true
+          filterPaneEnabled: false
         }
       }
 
@@ -248,21 +133,12 @@ export default {
         this.loadingReport = false
 
         report.setFilters(filters)
-
-        if (!this.onlyCountry) {
-          let pages = await report.getPages()
-          pages.filter(p => p.displayName === 'Country')[0].setActive()
-        }
       })
 
       this.isReportVisible = true
     },
     reset () {
       this.selectedCountries = []
-      this.selectedCategories = []
-      this.selectedChapters = []
-      this.selectedHts = []
-      this.hts = []
       this.displayIn = 'DOLLARS'
       this.isReportVisible = false
     },

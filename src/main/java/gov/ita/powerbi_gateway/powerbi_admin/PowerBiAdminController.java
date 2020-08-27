@@ -60,7 +60,7 @@ public class PowerBiAdminController {
   public ExportStatus exportToFile(@RequestParam String workspaceName,
                                    @RequestParam String reportName,
                                    @RequestParam String bookmarkState,
-                                   @RequestParam @Pattern(regexp = "^(PDF|PPTX)$") String format) throws JsonProcessingException {
+                                   @RequestParam @Pattern(regexp = "^(PDF|PNG|PPTX)$") String format) throws JsonProcessingException {
     Group group = powerBiAdminService.getPbiGroups(workspaceName).getValue().get(0);
     Report report = powerBiAdminService.getPbiReports(group.getId(), reportName).getValue().get(0);
     return powerBiAdminService.exportToFileInGroup(group.getId(), report.getId(), bookmarkState, format);

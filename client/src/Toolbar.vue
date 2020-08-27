@@ -73,17 +73,23 @@
           <span class="dialog-title">Select Export Format</span>
         </header>
         <ul>
+          <li><button @click="exportReport('PDF')">
+            <img src="/images/pdf.png"
+                 alt="PDF"
+                 title="PDF" />
+            PDF</button>
+          </li>
           <li><button @click="exportReport('PPTX')">
             <img src="/images/pptx.png"
                  alt="PowerPoint"
                  title="PowerPoint" />
             PowerPoint</button>
           </li>
-          <li><button @click="exportReport('PDF')">
-            <img src="/images/pdf.png"
-                 alt="PDF"
-                 title="PDF" />
-            PDF</button>
+          <li><button @click="exportReport('PNG')">
+            <img src="/images/png.png"
+                 alt="PNG"
+                 title="PNG" />
+            PNG</button>
           </li>
         </ul>
       </div>
@@ -95,7 +101,7 @@
           </span>
         </header>
         <p>
-          Your report {{ this.$route.params.reportName }} is being exported to a {{ this.exportReportFileType }} file.
+          Your report {{ this.$route.params.reportName }} is being exported to {{ this.exportReportFileType }}.
           This might take a few minutes.
         </p>
       </div>
@@ -105,7 +111,7 @@
             <span class="dialog-title">{{ this.exportReportFileType }} file is ready for download</span>
           </header>
           <p>
-            The report {{ this.$route.params.reportName }} was exported to a {{ this.exportReportFileType }} file.
+            The report {{ this.$route.params.reportName }} was exported to {{ this.exportReportFileType }}.
           </p>
         </div>
         <div v-else>
@@ -113,7 +119,7 @@
             <span class="dialog-title">PDF file export failed</span>
           </header>
           <p>
-            The report {{ this.$route.params.reportName }} was not exported to a PDF file.
+            The report {{ this.$route.params.reportName }} was not exported to {{ this.exportReportFileType }}.
           </p>
         </div>
       </template>
@@ -137,7 +143,8 @@ export default {
     exportReportFileType: null,
     exportReportFileTypes: {
       PPTX: 'PowerPoint',
-      PDF: 'PDF'
+      PDF: 'PDF',
+      PNG: 'PNG'
     },
     isExportReportInProgress: false,
     isExportToPdfSuccessful: false,
@@ -236,7 +243,7 @@ export default {
         }, timeout)
       })
     },
-    processFinalExportStatus(workspaceName, reportName, exportStatus) {
+    async processFinalExportStatus(workspaceName, reportName, exportStatus) {
       if (exportStatus.status === 'Succeeded') {
         let exportStatusId = exportStatus.id
         let params = {
@@ -244,7 +251,8 @@ export default {
         }
         var link = document.createElement('a')
         link.setAttribute('href', '/api/pbi-admin/export-file?' + querystring.stringify(params))
-        link.setAttribute('download', reportName + '.' + this.exportReportFileFormat.toLowerCase())
+        let fileName = await this.getDownloadFileName(reportName, this.exportReportFileFormat)
+        link.setAttribute('download', fileName)
         document.body.appendChild(link)
         link.click()
 
@@ -257,6 +265,17 @@ export default {
       if (!this.$refs['export-report-dialog'].open) {
         this.$refs['export-report-dialog'].showModal()
       }
+    },
+    async getDownloadFileName(reportName, format) {
+      let extension = null
+      if (format === 'PNG') {
+        let report = this.getReport()
+        let pages = await report.getPages()
+        extension = pages.length > 1 ? 'zip' : 'png'
+      } else {
+        extension = format.toLowerCase()
+      }
+      return reportName + '.' + extension
     }
 
   }

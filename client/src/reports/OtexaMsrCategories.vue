@@ -4,22 +4,94 @@
     <div v-else-if="!isReportVisible">
       <div class="filter-pane">
         <div class="filter-fields">
+
           <div class="filter-field">
-            <label for="categories">Categories:</label>
+            <label for="categoryNotions">Notions:</label>
             <select
               v-model="selectedCategories"
-              name="categories"
-              id="categories"
+              name="categoryNotions"
+              id="categoryNotions"
               size="20"
             >
               <option
-                v-for="item in categories"
+                v-for="item in categoryNotions"
                 :key="item.catId"
                 :value="item.catId"
                 >{{ item.longCategory }}</option
               >
             </select>
           </div>
+
+          <div class="filter-field">
+            <label for="categoryYarn">Yarn:</label>
+            <select
+              v-model="selectedCategories"
+              name="categoryYarn"
+              id="categoryYarn"
+              size="20"
+            >
+              <option
+                v-for="item in categoryYarn"
+                :key="item.catId"
+                :value="item.catId"
+                >{{ item.longCategory }}</option
+              >
+            </select>
+          </div>
+
+          <div class="filter-field">
+            <label for="categoryFabric">Fabrics:</label>
+            <select
+              v-model="selectedCategories"
+              name="categoryFabric"
+              id="categoryFabric"
+              size="20"
+            >
+              <option
+                v-for="item in categoryFabric"
+                :key="item.catId"
+                :value="item.catId"
+                >{{ item.longCategory }}</option
+              >
+            </select>
+          </div>
+
+          <div class="filter-field">
+            <label for="categoryApparel">Apparel:</label>
+            <select
+              v-model="selectedCategories"
+              name="categoryApparel"
+              id="categoryApparel"
+              size="20"
+            >
+              <option
+                v-for="item in categoryApparel"
+                :key="item.catId"
+                :value="item.catId"
+                >{{ item.longCategory }}</option
+              >
+            </select>
+          </div>
+
+          <div class="filter-field">
+            <label for="categoryMadeUps">Made Ups:</label>
+            <select
+              v-model="selectedCategories"
+              name="categoryMadeUps"
+              id="categoryMadeUps"
+              size="20"
+            >
+              <option
+                v-for="item in categoryMadeUps"
+                :key="item.catId"
+                :value="item.catId"
+                >{{ item.longCategory }}</option
+              >
+            </select>
+          </div>
+        </div>
+
+        <div class="filter-pane">
           <div class="filter-field">
             <label for="displayIn">Display In:</label>
             <select
@@ -34,6 +106,7 @@
             </select>
           </div>
         </div>
+
         <div class="filter-buttons">
           <button @click="viewReport()" id="submit-button">Submit</button>
           <button @click="reset()" id="reset-button">Reset</button>
@@ -60,7 +133,12 @@ export default {
   },
   data: () => ({
     report: null,
-    categories: [],
+    categoryNotions: [],
+    categoryYarn: [],
+    categoryFabric: [],
+    categoryApparel: [],
+    categoryMadeUps: [],
+    allCategories: [],
     selectedCategories: [],
     displayIn: [],
     isReportVisible: false,
@@ -71,17 +149,20 @@ export default {
     let source = this.reportName.includes('Footwear')
       ? 'ANNUAL_FOOTWEAR'
       : 'ANNUAL'
-
     const MSR_CATEGORIES = {
-      'Annual Data (MSR Category Notions)': [0, 1, 2, 11, 12, 14, 30, 31, 32, 40, 41, 42, 60, 61, 62, 80, 81, 82],
-      'Annual Data (MSR Category Yarn)': [200, 201, 300, 301, 400, 600, 603, 604, 606, 607, 800],
-      'Annual Data (MSR Category Fabric)': [218, 219, 220, 222, 223, 224, 225, 226, 227, 229, 313, 314, 315, 317, 326, 410, 414, 611, 613, 614, 615, 617, 618, 619, 620, 621, 622, 624, 625, 626, 627, 628, 629, 810],
-      'Annual Data (MSR Category Apparel)': [237, 239, 330, 331, 332, 333, 334, 335, 336, 338, 339, 340, 341, 342, 345, 347, 348, 349, 350, 351, 352, 353, 359, 431, 432, 433, 434, 435, 436, 438, 439, 440, 442, 443, 444, 445, 446, 447, 448, 459, 630, 631, 632, 633, 634, 635, 636, 638, 639, 640, 641, 642, 643, 644, 645, 646, 647, 648, 649, 650, 651, 652, 653, 654, 659, 735, 736, 738, 739, 740, 741, 745, 751, 752, 758, 759, 831, 832, 833, 834, 835, 836, 838, 839, 840, 842, 843, 844, 845, 846, 847, 850, 851, 852, 858, 859],
-      'Annual Data (MSR Category Made Ups)': [360, 361, 362, 363, 369, 464, 465, 469, 665, 666, 669, 670, 863, 870, 871, 899]
+      'categoryNotions': [0, 1, 2, 11, 12, 14, 30, 31, 32, 40, 41, 42, 60, 61, 62, 80, 81, 82],
+      'categoryYarn': [200, 201, 300, 301, 400, 600, 603, 604, 606, 607, 800],
+      'categoryFabric': [218, 219, 220, 222, 223, 224, 225, 226, 227, 229, 313, 314, 315, 317, 326, 410, 414, 611, 613, 614, 615, 617, 618, 619, 620, 621, 622, 624, 625, 626, 627, 628, 629, 810],
+      'categoryApparel': [237, 239, 330, 331, 332, 333, 334, 335, 336, 338, 339, 340, 341, 342, 345, 347, 348, 349, 350, 351, 352, 353, 359, 431, 432, 433, 434, 435, 436, 438, 439, 440, 442, 443, 444, 445, 446, 447, 448, 459, 630, 631, 632, 633, 634, 635, 636, 638, 639, 640, 641, 642, 643, 644, 645, 646, 647, 648, 649, 650, 651, 652, 653, 654, 659, 735, 736, 738, 739, 740, 741, 745, 751, 752, 758, 759, 831, 832, 833, 834, 835, 836, 838, 839, 840, 842, 843, 844, 845, 846, 847, 850, 851, 852, 858, 859],
+      'categoryMadeUps': [360, 361, 362, 363, 369, 464, 465, 469, 665, 666, 669, 670, 863, 870, 871, 899]
     }
 
     let allCategories = await this.repository.getOtexaCategories(source)
-    this.categories = allCategories.filter(item => MSR_CATEGORIES[this.reportName].includes(item.catId))
+    this.allCategories = allCategories
+
+    Object.keys(MSR_CATEGORIES).forEach(cat => {
+      this[cat] = allCategories.filter(item => MSR_CATEGORIES[cat].includes(item.catId))
+    })
 
     this.report = await this.repository.generateToken(
       this.$route.params.workspaceName,
@@ -108,7 +189,7 @@ export default {
 
       filters.push(this.filter('Country', 'All', [], false))
 
-      let selectedCategories = this.categories
+      let selectedCategories = this.allCategories
         .filter(c => [this.selectedCategories].includes(c.catId))
         .map(c => c.longCategory.trim())
       filters.push(this.filter('Category', 'In', selectedCategories, false))

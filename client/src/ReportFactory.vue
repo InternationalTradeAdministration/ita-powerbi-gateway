@@ -7,7 +7,7 @@
       :reportName="reportName"
     />
     <otexa-msr-categories
-      v-else-if="reportName.includes('MSR Category')"
+      v-else-if="reportName.includes('MSR Categories')"
       :repository="repository"
       :pbi="pbi"
       :reportName="reportName"

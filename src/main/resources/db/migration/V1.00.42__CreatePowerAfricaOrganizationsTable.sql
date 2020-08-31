@@ -1,6 +1,6 @@
 CREATE TABLE [power_africa].[organizations]
 (
-    id           nvarchar(128)  NOT NULL,
+    id           nvarchar(128)  NOT NULL PRIMARY KEY,
     name         nvarchar(4000) NOT NULL,
     owner_name   nvarchar(4000) NOT NULL,
     owner_office nvarchar(4000) NOT NULL,

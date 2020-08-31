@@ -1,6 +1,6 @@
 CREATE TABLE [power_africa].[cases]
 (
-    id              nvarchar(128) NOT NULL,
+    id              nvarchar(128)  NOT NULL PRIMARY KEY,
     number          nvarchar(128) NOT NULL,
     subject         nvarchar(255) NOT NULL,
     status          nvarchar(128) NOT NULL,

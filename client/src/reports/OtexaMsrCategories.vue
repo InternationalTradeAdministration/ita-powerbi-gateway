@@ -125,12 +125,14 @@
 </template>
 <script>
 import Toolbar from '@/Toolbar'
+import TokenExpirationListenerMixin from '../TokenExpirationListenerMixin'
 export default {
   name: 'OtexaMsrCategories',
   props: ['repository', 'pbi', 'reportName'],
   components: {
     toolbar: Toolbar
   },
+  mixins: [TokenExpirationListenerMixin],
   data: () => ({
     report: null,
     categoryNotions: [],
@@ -164,11 +166,6 @@ export default {
       this[cat] = allCategories.filter(item => MSR_CATEGORIES[cat].includes(item.catId))
     })
 
-    this.report = await this.repository.generateToken(
-      this.$route.params.workspaceName,
-      this.$route.params.reportName
-    )
-
     this.displayIn = 'DOLLARS'
 
     this.loading = false
@@ -201,6 +198,11 @@ export default {
         filters.push(this.filter('Year', 'All', [], false))
       }
 
+      this.report = await this.repository.generateToken(
+        this.$route.params.workspaceName,
+        this.$route.params.reportName
+      )
+
       var embedConfig = {
         id: this.report.powerBiReport.id,
         embedUrl: this.report.powerBiReport.embedUrl,
@@ -220,13 +222,13 @@ export default {
       const report = window.powerbi.get(embedContainer)
       report.on('loaded', async () => {
         this.loadingReport = false
+        this.setTokenExpirationListener(this.report.powerBiToken.expiration)
 
         report.setFilters(filters)
 
         let pages = await report.getPages()
         pages.filter(p => p.displayName === 'Country')[0].setActive()
       })
-
       this.isReportVisible = true
     },
     reset () {

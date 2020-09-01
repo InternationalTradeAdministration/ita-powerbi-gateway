@@ -22,6 +22,7 @@ public class PowerBiAdminController {
 
   private final PowerBiAdminService powerBiAdminService;
   private final Map<String, ReportToken> embedTokens;
+  private static final int EMBED_TOKEN_REFRESH_THRESHOLD = 5 * 60;
 
   public PowerBiAdminController(PowerBiAdminService powerBiAdminService) {
     this.powerBiAdminService = powerBiAdminService;
@@ -45,7 +46,7 @@ public class PowerBiAdminController {
     Report report = powerBiAdminService.getPbiReports(group.getId(), reportName).getValue().get(0);
     String reportTokenKey = group.getId() + "#" + report.getId();
     ReportToken existingReportToken = embedTokens.get(reportTokenKey);
-    if (existingReportToken != null && existingReportToken.getPowerBiToken().getExpiration().isAfter(LocalDateTime.now(ZoneOffset.UTC))) {
+    if (existingReportToken != null && isTokenFresh(existingReportToken.getPowerBiToken())) {
       return existingReportToken;
     } else {
       Token token = powerBiAdminService.generatePbiEmbedToken(group.getId(), report.getId());
@@ -53,6 +54,11 @@ public class PowerBiAdminController {
       embedTokens.put(reportTokenKey, value);
       return value;
     }
+  }
+
+  private boolean isTokenFresh(Token token) {
+    long tokenRefreshThreshold = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) + EMBED_TOKEN_REFRESH_THRESHOLD;
+    return (token.getExpiration().toEpochSecond(ZoneOffset.UTC) > tokenRefreshThreshold);
   }
 
   @GetMapping("/export-to-file")

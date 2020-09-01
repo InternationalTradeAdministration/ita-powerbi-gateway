@@ -7,12 +7,14 @@
 </template>
 <script>
 import Toolbar from '@/Toolbar'
+import TokenExpirationListenerMixin from "../TokenExpirationListenerMixin"
 export default {
   name: 'Default',
   props: ['repository', 'pbi'],
   components: {
     'toolbar': Toolbar
   },
+  mixins: [TokenExpirationListenerMixin],
   data: () => ({
     loading: true,
     loadingReport: true
@@ -39,6 +41,7 @@ export default {
     const report = window.powerbi.get(embedContainer)
     report.on('loaded', () => {
       this.loadingReport = false
+      this.setTokenExpirationListener(r.powerBiToken.expiration)
     })
   }
 }

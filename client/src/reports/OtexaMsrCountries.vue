@@ -122,7 +122,8 @@ export default {
         tokenType: this.pbi.models.TokenType.Embed,
         permissions: this.pbi.models.Permissions.All,
         settings: {
-          filterPaneEnabled: false
+          filterPaneEnabled: false,
+          navContentPaneEnabled: false,
         }
       }
 

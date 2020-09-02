@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -22,7 +21,7 @@ public class PowerBiAdminController {
 
   private final PowerBiAdminService powerBiAdminService;
   private final Map<String, ReportToken> embedTokens;
-  private static final int EMBED_TOKEN_REFRESH_THRESHOLD = 5 * 60;
+  private static final int EMBED_TOKEN_REFRESH_WINDOW = PowerBiAdminService.ACCESS_TOKEN_REFRESH_WINDOW - 60;
 
   public PowerBiAdminController(PowerBiAdminService powerBiAdminService) {
     this.powerBiAdminService = powerBiAdminService;
@@ -57,7 +56,7 @@ public class PowerBiAdminController {
   }
 
   private boolean isTokenFresh(Token token) {
-    long tokenRefreshThreshold = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) + EMBED_TOKEN_REFRESH_THRESHOLD;
+    long tokenRefreshThreshold = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) + EMBED_TOKEN_REFRESH_WINDOW;
     return (token.getExpiration().toEpochSecond(ZoneOffset.UTC) > tokenRefreshThreshold);
   }
 

@@ -12,8 +12,12 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+
 @Service
 public class PowerBiAdminService {
+  public static final int ACCESS_TOKEN_REFRESH_WINDOW = 6 * 60;
   private final String apiUrl = "https://api.powerbigov.us/v1.0/myorg";
 
   private final RestTemplate restTemplate;
@@ -93,7 +97,7 @@ public class PowerBiAdminService {
   }
 
   private void checkAccessTokenExpiration() {
-    if (accessTokenResponse == null || (accessTokenResponse.getExpiresOn() <= System.currentTimeMillis() / 1000)) {
+    if (accessTokenResponse == null || (accessTokenResponse.getExpiresOn() <= (LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) + ACCESS_TOKEN_REFRESH_WINDOW))) {
       accessTokenResponse = accessTokenGateway.getAccessToken();
     }
   }

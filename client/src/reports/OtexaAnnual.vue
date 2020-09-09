@@ -80,7 +80,18 @@
               }}</option>
             </select>
           </div>
-          <div class="filter-field">
+          <div class="filter-field" v-if="reportName.includes('Footwear')">
+            <label for="displayIn">Display In:</label>
+            <select
+              v-model="displayIn"
+              name="displayIn"
+              id="displayIn"
+            >
+              <option value='DOLLARS'>DOLLARS</option>
+              <option value='QTY'>QTY</option>
+            </select>
+          </div>
+          <div class="filter-field" v-else>
             <label for="displayIn">Display In:</label>
             <select
               v-model="displayIn"

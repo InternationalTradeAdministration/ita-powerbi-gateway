@@ -80,6 +80,33 @@
               }}</option>
             </select>
           </div>
+          <div class="filter-field years" v-if="reportName.includes('Historical')">
+            <label for="years">*Years:</label>
+            <select
+              v-model="selectedYears"
+              name="years"
+              id="years"
+              multiple
+              size="20"
+            >
+              <option
+                v-for="n in 31"
+                :key="n+1988"
+                :value="n+1988"
+              >{{ n+1988 }}</option>
+
+              <option v-if="!reportName.includes('Footwear')" value="Apr-20">Apr-20</option>
+              <option v-if="!reportName.includes('Footwear')" value="Year Ending Apr/2019">Year Ending Apr/2019</option>
+              <option v-if="!reportName.includes('Footwear')" value="Year Ending Apr/2020">Year Ending Apr/2020</option>
+              <option v-if="!reportName.includes('Footwear')" value="Year Ending Feb/2020">Year Ending Feb/2020</option>
+              <option v-if="!reportName.includes('Footwear')" value="Year Ending Mar/2020">Year Ending Mar/2020</option>
+              <option v-if="!reportName.includes('Footwear')" value="Year-to-Date Apr/2018">Year-to-Date Apr/2018</option>
+              <option v-if="!reportName.includes('Footwear')" value="Year-to-Date Apr/2019">Year-to-Date Apr/2019</option>
+              <option v-if="!reportName.includes('Footwear')" value="Year-to-Date Apr/2020">Year-to-Date Apr/2020</option>
+              <option v-if="reportName.includes('Footwear')" value="2019_YTD">2019_YTD</option>
+              <option v-if="reportName.includes('Footwear')" value="2020_YTD">2020_YTD</option>
+            </select>
+          </div>
           <div class="filter-field" v-if="reportName.includes('Footwear')">
             <label for="displayIn">Display In:</label>
             <select
@@ -104,7 +131,7 @@
             </select>
           </div>
         </div>
-        <p v-if="!onlyCountry">
+        <p v-if="(!onlyCountry || reportName.includes('Historical'))">
           *Multiple selections will be added together (use the Shift key for
           sequential selections and the Ctrl key for non-sequential ones).
         </p>
@@ -144,6 +171,7 @@ export default {
     selectedCategories: [],
     selectedChapters: [],
     selectedHts: [],
+    selectedYears: [],
     displayIn: [],
     isReportVisible: false,
     loading: true,
@@ -232,7 +260,17 @@ export default {
       }
 
       if (this.reportName.includes('Historical')) {
-        filters.push(this.filter('Year', 'All', [], false))
+        if (this.selectedYears.length > 0) {
+          let selectedYears;
+          if (this.reportName.includes('Footwear')) {
+            selectedYears = (this.selectedYears).map(year => `Y_${year}`);
+          } else {
+            selectedYears = (this.selectedYears).map(year => `${year}`);
+          }
+          filters.push(this.filter('Year', 'In', selectedYears, false))
+        } else {
+          filters.push(this.filter('Year', 'All', [], false))
+        }
       }
 
       this.report = await this.repository.generateToken(
@@ -275,6 +313,7 @@ export default {
       this.selectedCategories = []
       this.selectedChapters = []
       this.selectedHts = []
+      this.selectedYears = []
       this.hts = []
       this.displayIn = 'DOLLARS'
       this.isReportVisible = false
@@ -324,6 +363,10 @@ export default {
 input,
 label {
   display: block;
+}
+
+.years select{
+  width: 150px;
 }
 
 [multiple] {

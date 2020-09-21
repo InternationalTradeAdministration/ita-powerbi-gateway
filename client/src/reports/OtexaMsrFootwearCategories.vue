@@ -4,34 +4,44 @@
     <div v-else-if="!isReportVisible">
       <div class="filter-pane">
         <div class="filter-fields">
+
           <div class="filter-field">
-            <label for="countries">Countries:</label>
+            <label for="categoryFootwearProducts">Footwear, Leather and Fur Products:</label>
             <select
-              v-model="selectedCountries"
-              name="countries"
-              id="countries"
+              v-model="selectedCategories"
+              name="categoryFootwearProducts"
+              id="categoryFootwearProducts"
               size="20"
             >
               <option
-                v-for="item in countries"
-                :key="item.ctryId"
-                :value="item.ctryId"
-                >{{ item.ctryDescription }}</option
+                v-for="item in categoryFootwearProducts"
+                :key="item.catId"
+                :value="item.catId"
+                >{{ item.longCategory }}</option
               >
             </select>
           </div>
-          <div class="filter-field" v-if="reportName.includes('Footwear')">
-            <label for="displayIn">Display In:</label>
+
+          <div class="filter-field">
+            <label for="categoryTravelGoods">Travelgoods:</label>
             <select
-              v-model="displayIn"
-              name="displayIn"
-              id="displayIn"
+              v-model="selectedCategories"
+              name="categoryTravelGoods"
+              id="categoryTravelGoods"
+              size="20"
             >
-              <option value='DOLLARS'>DOLLARS</option>
-              <option value='QTY'>QTY</option>
+              <option
+                v-for="item in categoryTravelGoods"
+                :key="item.catId"
+                :value="item.catId"
+                >{{ item.longCategory }}</option
+              >
             </select>
           </div>
-          <div class="filter-field" v-else>
+        </div>
+
+        <div class="filter-pane">
+          <div class="filter-field">
             <label for="displayIn">Display In:</label>
             <select
               v-model="displayIn"
@@ -40,11 +50,11 @@
               size="3"
             >
               <option value='DOLLARS'>DOLLARS</option>
-              <option value='SME'>SME</option>
-              <option value='UNITS'>UNITS</option>
+              <option value='QTY'>QTY</option>
             </select>
           </div>
         </div>
+
         <div class="filter-buttons">
           <button @click="viewReport()" id="submit-button">Submit</button>
           <button @click="reset()" id="reset-button">Reset</button>
@@ -65,7 +75,7 @@
 import Toolbar from '@/Toolbar'
 import TokenExpirationListenerMixin from '../TokenExpirationListenerMixin'
 export default {
-  name: 'OtexaMsrCountries',
+  name: 'OtexaMsrFootwearCategories',
   props: ['repository', 'pbi', 'reportName'],
   components: {
     toolbar: Toolbar
@@ -73,9 +83,10 @@ export default {
   mixins: [TokenExpirationListenerMixin],
   data: () => ({
     report: null,
-    countries: [],
-    categories: [],
-    selectedCountries: [],
+    categoryFootwearProducts: [],
+    categoryTravelGoods: [],
+    allCategories: [],
+    selectedCategories: [],
     displayIn: [],
     isReportVisible: false,
     loading: true,
@@ -85,8 +96,17 @@ export default {
     let source = this.reportName.includes('Footwear')
       ? 'ANNUAL_FOOTWEAR'
       : 'ANNUAL'
-    this.countries = await this.repository.getOtexaCountries(source)
-    this.categories = await this.repository.getOtexaCategories(source)
+    const MSR_CATEGORIES = {
+      'categoryFootwearProducts': [10, 100, 101, 105, 110, 111, 112, 113, 114, 119, 120, 132, 133, 134, 139, 140, 141, 142, 143, 144],
+      'categoryTravelGoods': [190, 191, 192 ,193, 195, 196],
+    }
+
+    let allCategories = await this.repository.getOtexaCategories(source)
+    this.allCategories = allCategories
+
+    Object.keys(MSR_CATEGORIES).forEach(cat => {
+      this[cat] = allCategories.filter(item => MSR_CATEGORIES[cat].includes(item.catId))
+    })
 
     this.displayIn = 'DOLLARS'
 
@@ -96,6 +116,7 @@ export default {
     getReportClass () {
       return this.isReportVisible ? 'sub-content visible' : 'hidden'
     },
+
     async viewReport () {
       let filters = []
 
@@ -105,15 +126,14 @@ export default {
         filters.push(this.filter('Display In', 'In', [this.displayIn], true))
       }
 
-      let selectedCountries = this.countries
-        .filter(c => [this.selectedCountries].includes(c.ctryId))
-        .map(c => c.ctryDescription.trim())
-      filters.push(this.filter('Country', 'In', selectedCountries, false))
+      filters.push(this.filter('Country', 'All', [], false))
 
-      filters.push(this.filter('Category', 'All', [], false))
+      let selectedCategories = this.allCategories
+        .filter(c => [this.selectedCategories].includes(c.catId))
+        .map(c => c.longCategory.trim())
+      filters.push(this.filter('Category', 'In', selectedCategories, false))
 
       filters.push(this.filter('Chapter', 'All', [], false))
-
       filters.push(this.filter('HTS', 'All', [], false))
 
       if (this.reportName.includes('Historical')) {
@@ -148,12 +168,14 @@ export default {
         this.setTokenExpirationListener(this.report.powerBiToken.expiration)
 
         report.setFilters(filters)
-      })
 
+        let pages = await report.getPages()
+        pages.filter(p => p.displayName === 'Country')[0].setActive()
+      })
       this.isReportVisible = true
     },
     reset () {
-      this.selectedCountries = []
+      this.selectedCategories = []
       this.displayIn = 'DOLLARS'
       this.isReportVisible = false
     },

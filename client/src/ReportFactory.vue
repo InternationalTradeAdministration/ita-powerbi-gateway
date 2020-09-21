@@ -1,5 +1,11 @@
 <template>
   <div class="report-factory">
+    <otexa-msr-footwear-categories
+      v-if="reportName.includes('MSR Categories') && reportName.includes('Footwear')"
+      :repository="repository"
+      :pbi="pbi"
+      :reportName="reportName"
+    />
     <otexa-msr-countries
       v-if="reportName.includes('MSR Countries')"
       :repository="repository"
@@ -26,6 +32,7 @@ import Default from '@/reports/Default'
 import OtexaAnnual from '@/reports/OtexaAnnual'
 import OtexaMsrCountries from '@/reports/OtexaMsrCountries'
 import OtexaMsrCategories from '@/reports/OtexaMsrCategories'
+import OtexaMsrFootwearCategories from '@/reports/OtexaMsrFootwearCategories'
 
 export default {
   name: 'ReportFactory',
@@ -35,6 +42,7 @@ export default {
     'otexa-annual': OtexaAnnual,
     'otexa-msr-countries': OtexaMsrCountries,
     'otexa-msr-categories': OtexaMsrCategories,
+    'otexa-msr-footwear-categories': OtexaMsrFootwearCategories,
   },
   data: () => ({
     workspaceName: null,

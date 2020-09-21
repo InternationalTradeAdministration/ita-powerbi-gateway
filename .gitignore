@@ -14,6 +14,7 @@ HELP.md
 /src/main/resources/public/
 /client/test/unit/coverage/
 /docker/*.jar
+gradle.properties
 
 ### STS ###
 .apt_generated

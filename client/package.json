@@ -16,7 +16,7 @@
     "kind-of": "^6.0.3",
     "minimist": "^1.2.5",
     "powerbi-client": "^2.11.0",
-    "serialize-javascript": "^3.0.0",
+    "serialize-javascript": "^3.1.0",
     "vue": "^2.6.10",
     "vue-router": "^3.1.3"
   },

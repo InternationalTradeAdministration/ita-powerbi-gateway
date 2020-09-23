@@ -6,6 +6,9 @@ metadata:
   labels:
     app: ita-power-bi-gateway
 spec:
+  selector:
+    matchLabels:
+      app: ita-power-bi-gateway
   template:
     metadata:
       labels:

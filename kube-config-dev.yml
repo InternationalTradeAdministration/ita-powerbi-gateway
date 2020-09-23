@@ -10,9 +10,6 @@ spec:
     metadata:
       labels:
         app: ita-power-bi-gateway
-  selector:
-    matchLabels:
-      app: ita-power-bi-gateway
     spec:
       containers:
       - name: ita-power-bi-gateway

@@ -1,5 +1,5 @@
 kind: Deployment
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 metadata:
   name: ita-power-bi-gateway
   namespace: mdsnamespace
@@ -10,6 +10,9 @@ spec:
     metadata:
       labels:
         app: ita-power-bi-gateway
+  selector:
+    matchLabels:
+      app: ita-power-bi-gateway
     spec:
       containers:
       - name: ita-power-bi-gateway

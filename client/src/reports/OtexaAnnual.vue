@@ -113,6 +113,7 @@
               v-model="displayIn"
               name="displayIn"
               id="displayIn"
+              size="2"
             >
               <option value='DOLLARS'>DOLLARS</option>
               <option value='QTY'>QTY</option>
@@ -124,6 +125,7 @@
               v-model="displayIn"
               name="displayIn"
               id="displayIn"
+              size="3"
             >
               <option value='DOLLARS'>DOLLARS</option>
               <option value='SME'>SME</option>
@@ -187,9 +189,15 @@ export default {
     let source = this.reportName.includes('Footwear')
       ? 'ANNUAL_FOOTWEAR'
       : 'ANNUAL'
+
     this.countries = await this.repository.getOtexaCountries(source)
     this.categories = await this.repository.getOtexaCategories(source)
-    this.chapters = await this.repository.getOtexaChapters()
+    let chapters = await this.repository.getOtexaChapters()
+
+    const footwearChapters = [39, 41, 42, 43, 46, 64, 65, 83, 94, 96]
+    if (source === 'ANNUAL_FOOTWEAR') {
+      this.chapters = Object.values(chapters).filter(item => footwearChapters.includes(item.chapter))
+    } else { this.chapters = chapters }
 
     this.displayIn = 'DOLLARS'
 

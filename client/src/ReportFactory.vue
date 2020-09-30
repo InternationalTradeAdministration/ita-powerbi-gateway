@@ -7,7 +7,7 @@
       :reportName="reportName"
     />
     <otexa-msr-countries
-      v-if="reportName.includes('MSR Countries')"
+      v-else-if="reportName.includes('MSR Countries')"
       :repository="repository"
       :pbi="pbi"
       :reportName="reportName"

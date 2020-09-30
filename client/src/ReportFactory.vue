@@ -19,7 +19,7 @@
       :reportName="reportName"
     />
     <otexa-annual
-      v-else-if="workspaceName === 'OTEXA-PUBLIC'"
+      v-else-if="workspaceName === 'OTEXA-PUBLIC' && !reportName.includes('Metrics')"
       :repository="repository"
       :pbi="pbi"
       :reportName="reportName"

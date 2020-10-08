@@ -22,9 +22,17 @@ public class ProductionMetadataService implements MetadataService {
   @Autowired
   private HtsRepository htsRepository;
 
+  @Autowired
+  private YearRepository yearRepository;
+
   @Override
   public List<Country> getCountries(String source) {
     return countryRepository.findBySource(source);
+  }
+
+  @Override
+  public List<Year> getYears() {
+    return yearRepository.findAllYears();
   }
 
   @Override

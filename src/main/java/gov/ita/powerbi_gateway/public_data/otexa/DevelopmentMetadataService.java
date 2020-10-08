@@ -18,6 +18,16 @@ public class DevelopmentMetadataService implements MetadataService {
   }
 
   @Override
+  public List<Year> getYears() {
+    return Arrays.asList(
+      new Year("1989"),
+      new Year("Year Ending Apr/2020"),
+      new Year("Stardate 42523.7")
+
+    );
+  }
+
+  @Override
   public List<Category> getCategories(String source) {
     return Arrays.asList(
       new Category(1L, "1 - Frogs", "ANNUAL"),

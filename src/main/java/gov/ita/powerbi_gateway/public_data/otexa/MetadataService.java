@@ -9,6 +9,8 @@ public interface MetadataService {
 
   List<Chapter> getChapters();
 
+  List<Year> getYears();
+
   List<Hts> getHtsByCategoriesAndChapters(List<Long> categories, List<Long> chapters);
 
   List<Hts> getHtsByCategories(List<Long> categoryIds);

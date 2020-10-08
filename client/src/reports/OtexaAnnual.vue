@@ -95,14 +95,14 @@
                 :value="n+1988"
               >{{ n+1988 }}</option>
 
-              <option v-if="!reportName.includes('Footwear')" value="Apr-20">Apr-20</option>
-              <option v-if="!reportName.includes('Footwear')" value="Year Ending Apr/2019">Year Ending Apr/2019</option>
-              <option v-if="!reportName.includes('Footwear')" value="Year Ending Apr/2020">Year Ending Apr/2020</option>
-              <option v-if="!reportName.includes('Footwear')" value="Year Ending Feb/2020">Year Ending Feb/2020</option>
-              <option v-if="!reportName.includes('Footwear')" value="Year Ending Mar/2020">Year Ending Mar/2020</option>
-              <option v-if="!reportName.includes('Footwear')" value="Year-to-Date Apr/2018">Year-to-Date Apr/2018</option>
-              <option v-if="!reportName.includes('Footwear')" value="Year-to-Date Apr/2019">Year-to-Date Apr/2019</option>
-              <option v-if="!reportName.includes('Footwear')" value="Year-to-Date Apr/2020">Year-to-Date Apr/2020</option>
+              <option v-if="!reportName.includes('Footwear')" value="Jul-20">Jul-20</option>
+              <option v-if="!reportName.includes('Footwear')" value="Year Ending Jul/2019">Year Ending Jul/2019</option>
+              <option v-if="!reportName.includes('Footwear')" value="Year Ending Jul/2020">Year Ending Jul/2020</option>
+              <option v-if="!reportName.includes('Footwear')" value="Year Ending May/2020">Year Ending May/2020</option>
+              <option v-if="!reportName.includes('Footwear')" value="Year Ending Jun/2020">Year Ending Jun/2020</option>
+              <option v-if="!reportName.includes('Footwear')" value="Year-to-Date Jul/2018">Year-to-Date Jul/2018</option>
+              <option v-if="!reportName.includes('Footwear')" value="Year-to-Date Jul/2019">Year-to-Date Jul/2019</option>
+              <option v-if="!reportName.includes('Footwear')" value="Year-to-Date Jul/2020">Year-to-Date Jul/2020</option>
               <option v-if="reportName.includes('Footwear')" value="2019_YTD">2019_YTD</option>
               <option v-if="reportName.includes('Footwear')" value="2020_YTD">2020_YTD</option>
             </select>

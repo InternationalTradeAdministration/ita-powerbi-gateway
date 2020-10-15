@@ -23,6 +23,11 @@ public class OtexaController {
     return metadataService.getCountries(source);
   }
 
+  @GetMapping("/years")
+  public List<Year> getYears() {
+    return metadataService.getYears();
+  }
+
   @GetMapping("/categories")
   public List<Category> getCategories(@RequestParam String source) {
     return metadataService.getCategories(source);

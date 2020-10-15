@@ -80,7 +80,7 @@
               }}</option>
             </select>
           </div>
-          <div class="filter-field years" v-if="reportName.includes('Historical')">
+          <div class="filter-field years" v-if="reportName.includes('Historical') && !reportName.includes('Footwear')">
             <label for="years">*Years:</label>
             <select
               v-model="selectedYears"
@@ -90,21 +90,10 @@
               size="20"
             >
               <option
-                v-for="n in 31"
-                :key="n+1988"
-                :value="n+1988"
-              >{{ n+1988 }}</option>
-
-              <option v-if="!reportName.includes('Footwear')" value="Jul-20">Jul-20</option>
-              <option v-if="!reportName.includes('Footwear')" value="Year Ending Jul/2019">Year Ending Jul/2019</option>
-              <option v-if="!reportName.includes('Footwear')" value="Year Ending Jul/2020">Year Ending Jul/2020</option>
-              <option v-if="!reportName.includes('Footwear')" value="Year Ending May/2020">Year Ending May/2020</option>
-              <option v-if="!reportName.includes('Footwear')" value="Year Ending Jun/2020">Year Ending Jun/2020</option>
-              <option v-if="!reportName.includes('Footwear')" value="Year-to-Date Jul/2018">Year-to-Date Jul/2018</option>
-              <option v-if="!reportName.includes('Footwear')" value="Year-to-Date Jul/2019">Year-to-Date Jul/2019</option>
-              <option v-if="!reportName.includes('Footwear')" value="Year-to-Date Jul/2020">Year-to-Date Jul/2020</option>
-              <option v-if="reportName.includes('Footwear')" value="2019_YTD">2019_YTD</option>
-              <option v-if="reportName.includes('Footwear')" value="2020_YTD">2020_YTD</option>
+                v-for="item in years"
+                :key="item.headerDescription"
+                :value="item.headerDescription"
+              >{{ item.headerDescription }}</option>
             </select>
           </div>
           <div class="filter-field" v-if="reportName.includes('Footwear')">
@@ -169,6 +158,7 @@ export default {
     categories: [],
     chapters: [],
     hts: [],
+    years: [],
     selectedCountries: [],
     selectedCategories: [],
     selectedChapters: [],
@@ -192,6 +182,10 @@ export default {
 
     this.countries = await this.repository.getOtexaCountries(source)
     this.categories = await this.repository.getOtexaCategories(source)
+
+    let years = await this.repository.getOtexaYears()
+    this.years = years.filter(year => !year.headerDescription.includes('Quarter'))
+
     let chapters = await this.repository.getOtexaChapters()
 
     const footwearChapters = [39, 41, 42, 43, 46, 64, 65, 83, 94, 96]

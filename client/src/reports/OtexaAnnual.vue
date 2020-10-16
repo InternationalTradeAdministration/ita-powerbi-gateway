@@ -368,7 +368,7 @@ label {
 }
 
 .years select{
-  width: 150px;
+  width: 225px;
 }
 
 [multiple] {

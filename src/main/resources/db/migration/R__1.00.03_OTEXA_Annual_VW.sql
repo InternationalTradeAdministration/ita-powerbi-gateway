@@ -28,7 +28,7 @@ SELECT details.[Country]
     , chapter.[LONG_CHAPTER] as 'Chapter'
     , hdr.[HEADER_DESCRIPTION] as 'DATA_KEY'
     , CASE 
-        WHEN hdr.[HEADER_DESCRIPTION] = '20-Apr' THEN details.[VAL] * details.[SYEF]
+        WHEN hdr.[HEADER_DESCRIPTION] = 'Current Month' THEN details.[VAL] * details.[SYEF]
         ELSE details.[VAL] / details.[SYEF]
         END as 'DATA_VALUE'
     , 'UNITS' as 'DATA_TYPE'
@@ -54,7 +54,7 @@ SELECT details.[Country]
     , chapter.[LONG_CHAPTER] as 'Chapter'
     , hdr.[HEADER_DESCRIPTION] as 'DATA_KEY'
     , CASE 
-        WHEN hdr.[HEADER_DESCRIPTION] = '20-Apr' THEN details.[VAL]
+        WHEN hdr.[HEADER_DESCRIPTION] = 'Current Month' THEN details.[VAL]
         ELSE details.[VAL] * details.[SYEF]
         END AS 'DATA_VALUE'
     , 'SME' as 'DATA_TYPE'

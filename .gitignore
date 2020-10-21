@@ -15,6 +15,7 @@ HELP.md
 /client/test/unit/coverage/
 /docker/*.jar
 gradle.properties
+*.log
 
 ### STS ###
 .apt_generated

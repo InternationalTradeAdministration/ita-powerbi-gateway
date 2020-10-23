@@ -28,7 +28,7 @@ SELECT details.[Country]
     , chapter.[LONG_CHAPTER] as 'Chapter'
     , hdr.[HEADER_DESCRIPTION] as 'DATA_KEY'
     , CASE 
-        WHEN hdr.[HEADER_DESCRIPTION] = 'Current Month' THEN details.[VAL] * details.[SYEF]
+        WHEN hdr.[HEADER_DESCRIPTION] = 'Current Month' THEN details.[VAL]
         ELSE details.[VAL] / details.[SYEF]
         END as 'DATA_VALUE'
     , 'UNITS' as 'DATA_TYPE'
@@ -53,10 +53,7 @@ SELECT details.[Country]
     , hts.[LONG_HTS] as 'HTS'
     , chapter.[LONG_CHAPTER] as 'Chapter'
     , hdr.[HEADER_DESCRIPTION] as 'DATA_KEY'
-    , CASE 
-        WHEN hdr.[HEADER_DESCRIPTION] = 'Current Month' THEN details.[VAL]
-        ELSE details.[VAL] * details.[SYEF]
-        END AS 'DATA_VALUE'
+    , details.[VAL] * details.[SYEF] AS 'DATA_VALUE'
     , 'SME' as 'DATA_TYPE'
 FROM [dbo].[OTEXA_ANNUAL] details
 INNER JOIN [dbo].[OTEXA_HEADER_REF] hdr

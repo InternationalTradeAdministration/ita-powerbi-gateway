@@ -53,7 +53,10 @@ SELECT details.[Country]
     , hts.[LONG_HTS] as 'HTS'
     , chapter.[LONG_CHAPTER] as 'Chapter'
     , hdr.[HEADER_DESCRIPTION] as 'DATA_KEY'
-    , details.[VAL] * details.[SYEF] AS 'DATA_VALUE'
+    , CASE 
+        WHEN hdr.[HEADER_DESCRIPTION] = 'Current Month' and 'Category' LIKE '%M2.%' THEN details.[VAL]
+        ELSE details.[VAL] * details.[SYEF]
+        END as 'DATA_VALUE'
     , 'SME' as 'DATA_TYPE'
 FROM [dbo].[OTEXA_ANNUAL] details
 INNER JOIN [dbo].[OTEXA_HEADER_REF] hdr

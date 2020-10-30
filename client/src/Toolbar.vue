@@ -43,7 +43,7 @@
           <tr>
             <th>Visualization</th>
             <th>Summarized</th>
-            <th>Underlying</th>
+            <th v-if="!workspaceName.includes('OTEXA')">Underlying</th>
           </tr>
           <tr v-for="(v, i) in getVisualsWithData()" :key="i">
             <td>
@@ -54,7 +54,7 @@
             <td>
               <button @click="exportData(i, true)">Export</button>
             </td>
-            <td>
+            <td v-if="!workspaceName.includes('OTEXA')">
               <button @click="exportData(i, false)">Export</button>
             </td>
           </tr>
@@ -152,8 +152,12 @@ export default {
     loadingExportDialog: false,
     activePageName: null,
     activePageIndex: 0,
-    activePageVisuals: []
+    activePageVisuals: [],
+    workspaceName: null
   }),
+  created () {
+    this.workspaceName = this.$route.params.workspaceName
+  },
   methods: {
     getReport () {
       let embedContainer = this.$parent.$refs['embed-container']

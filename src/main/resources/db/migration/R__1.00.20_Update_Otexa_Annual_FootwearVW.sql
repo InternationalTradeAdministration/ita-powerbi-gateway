@@ -9,12 +9,11 @@ SELECT details.[Country]
     , details.[DATA_TYPE]
 FROM [dbo].[OTEXA_ANNUAL_FOOTWEAR] details
 
-INNER JOIN [dbo].[OTEXA_CATEGORY_REF_VW] category
+FULL OUTER JOIN [dbo].[OTEXA_CATEGORY_REF_VW] category
     ON details.[CAT_ID] = category.[CAT_ID]
 
 FULL OUTER JOIN [dbo].[OTEXA_HTS_REF_VW] hts
     ON hts.[HTS] = details.[HTS]
-    AND hts.[CAT_ID] = details.[CAT_ID]
 
 FULL OUTER JOIN [dbo].[OTEXA_HTS_CHAPTER_REF_VW] chapter
     ON hts.[HTS] = chapter.[HTS]

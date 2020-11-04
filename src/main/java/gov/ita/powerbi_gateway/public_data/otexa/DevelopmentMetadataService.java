@@ -36,6 +36,22 @@ public class DevelopmentMetadataService implements MetadataService {
   }
 
   @Override
+  public List<MergedCategory> getMergedCategories() {
+    return Arrays.asList(
+      new MergedCategory("123 456", "1 - Frogs"),
+      new MergedCategory("789 012", "2 - Cows")
+    );
+  }
+
+  @Override
+  public List<PartCategory> getPartCategories() {
+    return Arrays.asList(
+      new PartCategory("345 678", "3 - Salamanders"),
+      new PartCategory("901 234", "4 - Ocelots")
+    );
+  }
+
+  @Override
   public List<Chapter> getChapters() {
     return Arrays.asList(
       new Chapter(1L, "1 - Matrix"),

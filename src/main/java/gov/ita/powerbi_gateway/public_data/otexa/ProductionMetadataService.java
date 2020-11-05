@@ -17,6 +17,12 @@ public class ProductionMetadataService implements MetadataService {
   private CategoryRepository categoryRepository;
 
   @Autowired
+  private MergedCategoryRepository mergedCategoryRepository;
+
+  @Autowired
+  private PartCategoryRepository partCategoryRepository;
+
+  @Autowired
   private HtsChapterRepository htsChapterRepository;
 
   @Autowired
@@ -38,6 +44,16 @@ public class ProductionMetadataService implements MetadataService {
   @Override
   public List<Category> getCategories(String source) {
     return categoryRepository.findBySource(source);
+  }
+
+  @Override
+  public List<MergedCategory> getMergedCategories() {
+    return mergedCategoryRepository.findAllMergedCategories();
+  }
+
+  @Override
+  public List<PartCategory> getPartCategories() {
+    return partCategoryRepository.findAllPartCategories();
   }
 
   @Override

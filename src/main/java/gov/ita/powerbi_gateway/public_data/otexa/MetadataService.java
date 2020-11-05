@@ -7,6 +7,10 @@ public interface MetadataService {
 
   List<Category> getCategories(String source);
 
+  List<MergedCategory> getMergedCategories();
+
+  List<PartCategory> getPartCategories();
+
   List<Chapter> getChapters();
 
   List<Year> getYears();

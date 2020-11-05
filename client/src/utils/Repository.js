@@ -37,6 +37,14 @@ export default class Repository {
     }).then(response => response.data)
   }
 
+  async getOtexaMergedCategories() {
+    return await axios.get('api/otexa/mergedcategories').then(response => response.data)
+  }
+
+  async getOtexaPartCategories() {
+    return await axios.get('api/otexa/partcategories').then(response => response.data)
+  }
+
   async getOtexaChapters() {
     return await axios.get('/api/otexa/chapters').then(response => response.data)
   }

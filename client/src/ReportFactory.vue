@@ -18,6 +18,12 @@
       :pbi="pbi"
       :reportName="reportName"
     />
+    <otexa-merged-part-cat
+      v-else-if="reportName.includes('Merged') || reportName.includes('Part')"
+      :repository="repository"
+      :pbi="pbi"
+      :reportName="reportName"
+    />
     <otexa-annual
       v-else-if="workspaceName.includes('OTEXA') && !reportName.includes('Metrics')"
       :repository="repository"
@@ -30,6 +36,7 @@
 <script>
 import Default from '@/reports/Default'
 import OtexaAnnual from '@/reports/OtexaAnnual'
+import OtexaMergedPartCat from '@/reports/OtexaMergedPartCat'
 import OtexaMsrCountries from '@/reports/OtexaMsrCountries'
 import OtexaMsrCategories from '@/reports/OtexaMsrCategories'
 import OtexaMsrFootwearCategories from '@/reports/OtexaMsrFootwearCategories'
@@ -40,6 +47,7 @@ export default {
   components: {
     default: Default,
     'otexa-annual': OtexaAnnual,
+    'otexa-merged-part-cat': OtexaMergedPartCat,
     'otexa-msr-countries': OtexaMsrCountries,
     'otexa-msr-categories': OtexaMsrCategories,
     'otexa-msr-footwear-categories': OtexaMsrFootwearCategories,

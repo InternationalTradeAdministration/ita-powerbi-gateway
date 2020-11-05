@@ -33,6 +33,16 @@ public class OtexaController {
     return metadataService.getCategories(source);
   }
 
+  @GetMapping("/mergedcategories")
+  public List<MergedCategory> getMergedCategories() {
+    return metadataService.getMergedCategories();
+  }
+
+  @GetMapping("/partcategories")
+  public List<PartCategory> getPartCategories() {
+    return metadataService.getPartCategories();
+  }
+
   @GetMapping("/chapters")
   public List<Chapter> getChapters() {
     return metadataService.getChapters();

@@ -218,6 +218,9 @@ export default {
     },
     async viewReport () {
       let filters = []
+      let categoryPageFilters = []
+      let htsPageFilters = []
+      let countryPageFilters = []
 
       if (this.displayIn.length === 0) {
         filters.push(this.filter('Display In', 'In', ['DOLLARS'], true))
@@ -275,6 +278,24 @@ export default {
         }
       }
 
+      /* If search by Category => Category & HTS tab defaults to Country = World. */
+      /* If search by Country => Country tab defaults to Category = 0. */
+
+      if (this.onlyCountry) {
+        let cat0 = this.categories
+          .filter(c => (c.catId === 0))
+          .map(c => c.longCategory.trim())
+        countryPageFilters.push(this.filter('Category', 'In', cat0, false))
+      }
+
+      if (!this.onlyCountry) {
+        let world = this.countries
+          .filter(c => (c.ctryDescription === 'WORLD'))
+          .map(c => c.ctryDescription.trim())
+        categoryPageFilters.push(this.filter('Country', 'In', world, false))
+        htsPageFilters.push(this.filter('Country', 'In', world, false))
+      }
+
       this.report = await this.repository.generateToken(
         this.$route.params.workspaceName,
         this.$route.params.reportName
@@ -300,11 +321,19 @@ export default {
       report.on('loaded', async () => {
         this.loadingReport = false
         this.setTokenExpirationListener(this.report.powerBiToken.expiration)
+
+        let pages = await report.getPages()
+        let categoryPage = pages.filter(p => p.displayName === 'Category')[0]
+        let htsPage = pages.filter(p => p.displayName === 'HTS')[0]
+        let countryPage = pages.filter(p => p.displayName === 'Country')[0]
+
         report.setFilters(filters)
+        categoryPage.setFilters(categoryPageFilters)
+        htsPage.setFilters(htsPageFilters)
+        countryPage.setFilters(countryPageFilters)
 
         if (!this.onlyCountry) {
-          let pages = await report.getPages()
-          pages.filter(p => p.displayName === 'Country')[0].setActive()
+          countryPage.setActive()
         }
       })
 

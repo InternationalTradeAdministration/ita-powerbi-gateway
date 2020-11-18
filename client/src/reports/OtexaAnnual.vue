@@ -263,6 +263,8 @@ export default {
       } else {
         filters.push(this.filter('HTS', 'All', [], false))
       }
+      
+      htsPageFilters.push(this.advancedFilter('HTS', 'And', 'IsNotBlank', null))
 
       if (this.reportName.includes('Historical')) {
         if (this.selectedYears.length > 0) {
@@ -286,9 +288,7 @@ export default {
           .filter(c => (c.catId === 0))
           .map(c => c.longCategory.trim())
         countryPageFilters.push(this.filter('Category', 'In', cat0, false))
-      }
-
-      if (!this.onlyCountry) {
+      } else {
         let world = this.countries
           .filter(c => (c.ctryDescription === 'WORLD'))
           .map(c => c.ctryDescription.trim())
@@ -366,6 +366,32 @@ export default {
           table
         },
         filterType: 1
+      }
+    },
+    advancedFilter (column, logicalOperator, operator, value) {
+      let table;
+        if (this.reportName.includes('Footwear')) {
+        table = 'OTEXA_ANNUAL_FOOTWEAR_VW'
+      } else {
+        table = 'OTEXA_ANNUAL_VW'
+      }
+      return {
+        logicalOperator,
+        conditions: [
+          {
+            operator: operator,
+            value: value
+          }
+        ],
+        $schema: 'http://powerbi.com/product/schema#advanced',
+        target: {
+          column,
+          table
+        },
+        filterType: 0,
+        displaySettings: {
+          isHiddenInViewMode: true
+        }
       }
     }
   }

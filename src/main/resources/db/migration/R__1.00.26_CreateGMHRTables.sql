@@ -20,9 +20,9 @@ CREATE TABLE [dbo].[DH_DUTY_STATION_LOOKUP]
     ID  INT,
     [Duty Station Code] VARCHAR(MAX),
     [Country Name]  VARCHAR(MAX),
-    [State Code]    INTEGER,
+    [State Code]    VARCHAR(MAX),
     [State Name]    VARCHAR(MAX),
-    [City Code] INTEGER,
+    [City Code] VARCHAR(MAX),
     [City Name] VARCHAR(MAX),
     [County Name]   VARCHAR(MAX)
 )

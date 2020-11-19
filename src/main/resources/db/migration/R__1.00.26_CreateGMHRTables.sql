@@ -136,7 +136,7 @@ CREATE TABLE [dbo].[GMHR_LES_FLAT_FILE]
     [Appropriation] VARCHAR(MAX),
     [Bgn FY]    INTEGER,
     [End FY]    INTEGER,
-    Allotment   INTEGER,
+    Allotment   VARCHAR(MAX),
     [Op Allow]  VARCHAR(MAX),
     [Function]  INTEGER,
     [Object]    INTEGER,

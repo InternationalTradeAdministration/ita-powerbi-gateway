@@ -28,10 +28,10 @@ CREATE TABLE [dbo].[DH_DUTY_STATION_LOOKUP]
 )
 GO
 
-DROP TABLE IF EXISTS [dbo].[GMHR_FLAT_FILE]
+DROP TABLE IF EXISTS [dbo].[GMHR_DH_FLAT_FILE]
 GO
 
-CREATE TABLE [dbo].[GMHR_FLAT_FILE]
+CREATE TABLE [dbo].[GMHR_DH_FLAT_FILE]
 (
     [Bureau Code]   INTEGER,
     [Fund Code] INTEGER,
@@ -50,7 +50,7 @@ CREATE TABLE [dbo].[GMHR_FLAT_FILE]
     [Hourly Rate]   DECIMAL(10),
     [Total Leave Used]  DECIMAL(10),
     [Hours Worked Project]  DECIMAL(10),
-    [Labot Cost Project]    DECIMAL(10),
+    [Labor Cost Project]    DECIMAL(10),
     [Employee Name] VARCHAR(MAX),
     [Employee No]   INTEGER,
     [Title] VARCHAR(MAX),
@@ -71,7 +71,7 @@ CREATE TABLE [dbo].[GMHR_FLAT_FILE]
     [Document No]   INTEGER,
     [Occup Series Code] INTEGER,
     [Emp Type]  VARCHAR(MAX),
-    [Chargin Org]   VARCHAR(MAX),
+    [Charging Org]   VARCHAR(MAX),
     [Comp Earned Hours] DECIMAL(10),
     [Comp Earned Dollars]   DECIMAL(10),
     [AL/SL Used]    DECIMAL(10),
@@ -117,3 +117,55 @@ CREATE TABLE [dbo].[GM_HR_PAYPLAN_LOOKUP]
     [Employee Type] VARCHAR(MAX)
 )
 GO
+
+DROP TABLE IF EXISTS [dbo].[GMHR_LES_FLAT_FILE]
+GO
+
+CREATE TABLE [dbo].[GMHR_LES_FLAT_FILE]
+(
+    [Line No.]  INTEGER,
+    [Period ID] VARCHAR(MAX),
+    [Cntry] INTEGER,
+    [Country Name]  VARCHAR(MAX),
+    [Post]  INTEGER,
+    [Sub Post]  INTEGER,
+    [Agy]   INTEGER,
+    [Bur]   INTEGER,
+    [Bureau Name]   VARCHAR(MAX),
+    [Budget FY] INTEGER,
+    [Appropriation] VARCHAR(MAX),
+    [Bgn FY]    INTEGER,
+    [End FY]    INTEGER,
+    Allotment   INTEGER,
+    [Op Allow]  VARCHAR(MAX),
+    [Function]  INTEGER,
+    [Object]    INTEGER,
+    Project VARCHAR(MAX),
+    [Prop ID]   VARCHAR(MAX),
+    [Benf Org]  VARCHAR(MAX),
+    [Obligation]    VARCHAR(MAX),
+    [Currency]  INTEGER,
+    [Exchange Rate] DECIMAL(10),
+    [Employee ID]   VARCHAR(MAX),
+    [Name]  VARCHAR(MAX),
+    [Position Number]   INTEGER,
+    [Position Title]    VARCHAR(MAX),
+    [OPS Working Title] VARCHAR(MAX),
+    [Salary Plan]   VARCHAR(MAX),
+    [Grade] INTEGER,
+    [Step]  INTEGER,
+    [Annual Salary] MONEY,
+    [Worked Hours]  DECIMAL(10),
+    [Amount]    MONEY,
+    [Amount in USE] MONEY,
+    [Adjusted Amount]   MONEY,
+    [Adjusted Amount in USE]    MONEY,
+    [Fiscal Hours YTD]  DECIMAL(10),
+    [Fiscal Total YTD]  MONEY,
+    [Fiscal Total YTD in USE]   MONEY,
+    [PP Begin Date] DATETIME,
+    [PP End Date]   DATETIME,
+    [Payroll Status]    VARCHAR(MAX),
+    [Run Date]  DATETIME,
+    [Service Center]    VARCHAR(MAX)
+)

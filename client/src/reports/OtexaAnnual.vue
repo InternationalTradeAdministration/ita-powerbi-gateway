@@ -80,7 +80,7 @@
               }}</option>
             </select>
           </div>
-          <div class="filter-field years" v-if="reportName.includes('Historical') && !reportName.includes('Footwear')">
+          <div class="filter-field years" v-if="reportName.includes('Historical')">
             <label for="years">*Years:</label>
             <select
               v-model="selectedYears"
@@ -91,9 +91,9 @@
             >
               <option
                 v-for="item in years"
-                :key="item.headerDescription"
-                :value="item.headerDescription"
-              >{{ item.headerDescription }}</option>
+                :key="item[yearKey]"
+                :value="item[yearKey]"
+              >{{ item[yearKey] }}</option>
             </select>
           </div>
           <div class="filter-field" v-if="reportName.includes('Footwear')">
@@ -159,6 +159,7 @@ export default {
     chapters: [],
     hts: [],
     years: [],
+    yearKey: null,
     selectedCountries: [],
     selectedCategories: [],
     selectedChapters: [],
@@ -183,8 +184,14 @@ export default {
     this.countries = await this.repository.getOtexaCountries(source)
     this.categories = await this.repository.getOtexaCategories(source)
 
-    let years = await this.repository.getOtexaYears()
-    this.years = years.filter(year => !year.headerDescription.includes('Quarter'))
+    if (this.reportName.includes('Footwear')) {
+      this.years = await this.repository.getOtexaFootwearYears()
+      this.yearKey = 'dataKey'
+    } else {
+      let years = await this.repository.getOtexaYears()
+      this.years = years.filter(year => !year.headerDescription.includes('Quarter'))
+      this.yearKey = 'headerDescription'
+    }
 
     let chapters = await this.repository.getOtexaChapters()
 
@@ -268,12 +275,7 @@ export default {
 
       if (this.reportName.includes('Historical')) {
         if (this.selectedYears.length > 0) {
-          let selectedYears;
-          if (this.reportName.includes('Footwear')) {
-            selectedYears = (this.selectedYears).map(year => `Y_${year}`);
-          } else {
-            selectedYears = (this.selectedYears).map(year => `${year}`);
-          }
+          let selectedYears = this.selectedYears
           filters.push(this.filter('Year', 'In', selectedYears, false))
         } else {
           filters.push(this.filter('Year', 'All', [], false))
@@ -345,6 +347,7 @@ export default {
       this.selectedChapters = []
       this.selectedHts = []
       this.selectedYears = []
+      this.yearKey = null
       this.hts = []
       this.displayIn = 'DOLLARS'
       this.isReportVisible = false

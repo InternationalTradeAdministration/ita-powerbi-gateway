@@ -57,6 +57,10 @@ export default class Repository {
     return await axios.get('/api/otexa/years').then(response => response.data)
   }
 
+  async getOtexaFootwearYears() {
+    return await axios.get('/api/otexa/footwearyears').then(response => response.data)
+  }
+
   exportToFile(workspaceName, reportName, bookmarkState, format) {
     return axios.get("/api/pbi-admin/export-to-file", {
       params: {

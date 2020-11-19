@@ -31,6 +31,9 @@ public class ProductionMetadataService implements MetadataService {
   @Autowired
   private YearRepository yearRepository;
 
+  @Autowired
+  private FootwearYearRepository footwearYearRepository;
+
   @Override
   public List<Country> getCountries(String source) {
     return countryRepository.findBySource(source);
@@ -39,6 +42,11 @@ public class ProductionMetadataService implements MetadataService {
   @Override
   public List<Year> getYears() {
     return yearRepository.findAllYears();
+  }
+
+  @Override
+  public List<FootwearYear> getFootwearYears() {
+    return footwearYearRepository.findAllFootwearYears();
   }
 
   @Override

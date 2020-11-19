@@ -23,7 +23,14 @@ public class DevelopmentMetadataService implements MetadataService {
       new Year("1989"),
       new Year("Year Ending Apr/2020"),
       new Year("Stardate 42523.7")
+    );
+  }
 
+  @Override
+  public List<FootwearYear> getFootwearYears() {
+    return Arrays.asList(
+      new FootwearYear("Y_2019"),
+      new FootwearYear("Y_2020_YTD")
     );
   }
 

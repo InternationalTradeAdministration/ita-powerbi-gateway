@@ -28,6 +28,11 @@ public class OtexaController {
     return metadataService.getYears();
   }
 
+  @GetMapping("/footwearyears")
+  public List<FootwearYear> getFootwearYears() {
+    return metadataService.getFootwearYears();
+  }
+
   @GetMapping("/categories")
   public List<Category> getCategories(@RequestParam String source) {
     return metadataService.getCategories(source);

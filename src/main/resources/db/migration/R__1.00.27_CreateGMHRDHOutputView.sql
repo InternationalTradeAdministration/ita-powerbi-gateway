@@ -1,6 +1,7 @@
 CREATE OR ALTER VIEW [dbo].[GMHR_DH_OUTPUT_VIEW]
 AS
-SELECT flat.[Project Code],
+SELECT 'DH' as ID,
+flat.[Project Code],
 RIGHT(flat.[Project Code],3) as [Fund],
 CONCAT(flat.[Object1 Code], flat.[Object2 Code]) as BOC,
 flat.[Object1 Code] as BOC_First_2,

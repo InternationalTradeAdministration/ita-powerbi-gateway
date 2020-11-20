@@ -139,7 +139,7 @@ CREATE TABLE [dbo].[GMHR_LES_FLAT_FILE]
     Allotment   VARCHAR(MAX),
     [Op Allow]  VARCHAR(MAX),
     [Function]  INTEGER,
-    [Object]    INTEGER,
+    [Object]    VARCHAR(MAX),
     Project VARCHAR(MAX),
     [Prop ID]   VARCHAR(MAX),
     [Benf Org]  VARCHAR(MAX),
@@ -169,3 +169,4 @@ CREATE TABLE [dbo].[GMHR_LES_FLAT_FILE]
     [Run Date]  DATETIME,
     [Service Center]    VARCHAR(MAX)
 )
+GO

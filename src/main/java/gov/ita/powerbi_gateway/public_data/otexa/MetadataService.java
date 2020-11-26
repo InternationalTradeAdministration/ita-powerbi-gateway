@@ -5,11 +5,15 @@ import java.util.List;
 public interface MetadataService {
   List<Country> getCountries(String source);
 
+  List<ExportCountry> getExportCountries();
+
   List<Category> getCategories(String source);
 
   List<MergedCategory> getMergedCategories();
 
   List<PartCategory> getPartCategories();
+
+  List<ExportGroup> getExportGroups();
 
   List<Chapter> getChapters();
 

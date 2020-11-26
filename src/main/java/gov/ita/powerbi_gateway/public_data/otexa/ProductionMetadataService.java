@@ -14,6 +14,9 @@ public class ProductionMetadataService implements MetadataService {
   private CountryRepository countryRepository;
 
   @Autowired
+  private ExportCountryRepository exportCountryRepository;
+
+  @Autowired
   private CategoryRepository categoryRepository;
 
   @Autowired
@@ -21,6 +24,9 @@ public class ProductionMetadataService implements MetadataService {
 
   @Autowired
   private PartCategoryRepository partCategoryRepository;
+
+  @Autowired
+  private ExportGroupRepository exportGroupRepository;
 
   @Autowired
   private HtsChapterRepository htsChapterRepository;
@@ -37,6 +43,11 @@ public class ProductionMetadataService implements MetadataService {
   @Override
   public List<Country> getCountries(String source) {
     return countryRepository.findBySource(source);
+  }
+
+  @Override
+  public List<ExportCountry> getExportCountries() {
+    return exportCountryRepository.findAllExportCountries();
   }
 
   @Override
@@ -62,6 +73,11 @@ public class ProductionMetadataService implements MetadataService {
   @Override
   public List<PartCategory> getPartCategories() {
     return partCategoryRepository.findAllPartCategories();
+  }
+
+  @Override
+  public List<ExportGroup> getExportGroups() {
+    return exportGroupRepository.findAllExportGroups();
   }
 
   @Override

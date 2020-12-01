@@ -34,8 +34,8 @@ class OtexaControllerTest {
 
   @Test
   public void otexa_controller_returns_countries() throws Exception {
-    countryRepository.save(new Country(1L, "GREECE", "MATRIX"));
-    countryRepository.save(new Country(2L, "JAPAN",  "MATRIX"));
+    countryRepository.save(new Country(1L, 3L, "GREECE", "Europe", "MATRIX"));
+    countryRepository.save(new Country(2L, 4L, "JAPAN", "Asia", "MATRIX"));
     mockMvc.perform(get("/api/otexa/countries?source=MATRIX"))
       .andExpect(status().isOk())
       .andExpect(content().contentType(MediaType.APPLICATION_JSON))

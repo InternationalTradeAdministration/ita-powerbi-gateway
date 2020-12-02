@@ -31,7 +31,12 @@ payroll.DAS,
 payroll.Region,
 flat.[Charging Org],
 flat.FCFY
-FROM [dbo].[GMHR_DH_FLAT_FILE] flat, [dbo].[BOC_LOOKUP_TABLE] boc, [dbo].[DH_DUTY_STATION_LOOKUP] dh, [dbo].[GM_HR_PAYPLAN_LOOKUP] payplan, [dbo].[ITA_PAYROLL_CODES_LOOKUP] payroll
-WHERE CONCAT(flat.[Object1 Code], flat.[Object2 Code]) = boc.BOC AND dh.[Duty Station Code]=CONCAT(flat.[Duty Station State], flat.[Duty Station City])
-AND payplan.[Pay Plan]=flat.[Pay Plane] AND payroll.[Payroll Org Code] = flat.[Charging Org]
+FROM [dbo].[GMHR_DH_FLAT_FILE] flat
+JOIN (SELECT DISTINCT * FROM [dbo].[BOC_LOOKUP_TABLE]) boc
+ON CONCAT(flat.[Object1 Code], flat.[Object2 Code]) = boc.BOC 
+JOIN (SELECT DISTINCT * FROM [dbo].[DH_DUTY_STATION_LOOKUP]) dh
+ON dh.[Duty Station Code]=CONCAT(flat.[Duty Station State], flat.[Duty Station City])
+JOIN (SELECT DISTINCT * FROM [dbo].[GM_HR_PAYPLAN_LOOKUP]) payplan
+ON payplan.[Pay Plan]=flat.[Pay Plane] 
+JOIN (SELECT DISTINCT * FROM [dbo].[ITA_PAYROLL_CODES_LOOKUP]) payroll ON payroll.[Payroll Org Code] = flat.[Charging Org]
 GO

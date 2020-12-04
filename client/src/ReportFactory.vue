@@ -6,6 +6,12 @@
       :pbi="pbi"
       :reportName="reportName"
     />
+    <otexa-exports
+      v-else-if="reportName.includes('Export')"
+      :repository="repository"
+      :pbi="pbi"
+      :reportName="reportName"
+    />
     <otexa-msr-countries
       v-else-if="reportName.includes('MSR Countries')"
       :repository="repository"
@@ -36,6 +42,7 @@
 <script>
 import Default from '@/reports/Default'
 import OtexaAnnual from '@/reports/OtexaAnnual'
+import OtexaExports from '@/reports/OtexaExports'
 import OtexaMergedPartCat from '@/reports/OtexaMergedPartCat'
 import OtexaMsrCountries from '@/reports/OtexaMsrCountries'
 import OtexaMsrCategories from '@/reports/OtexaMsrCategories'
@@ -47,6 +54,7 @@ export default {
   components: {
     default: Default,
     'otexa-annual': OtexaAnnual,
+    'otexa-exports': OtexaExports,
     'otexa-merged-part-cat': OtexaMergedPartCat,
     'otexa-msr-countries': OtexaMsrCountries,
     'otexa-msr-categories': OtexaMsrCategories,

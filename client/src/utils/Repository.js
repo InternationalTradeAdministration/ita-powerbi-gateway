@@ -29,6 +29,10 @@ export default class Repository {
     }).then(response => response.data)
   }
 
+  async getOtexaExportCountries() {
+    return await axios.get('/api/otexa/exportcountries').then(response => response.data)
+  }
+
   async getOtexaCategories(source) {
     return await axios.get('/api/otexa/categories', {
       params: {
@@ -39,6 +43,10 @@ export default class Repository {
 
   async getOtexaMergedCategories() {
     return await axios.get('api/otexa/mergedcategories').then(response => response.data)
+  }
+
+  async getOtexaExportGroups() {
+    return await axios.get('api/otexa/exportgroups').then(response => response.data)
   }
 
   async getOtexaPartCategories() {

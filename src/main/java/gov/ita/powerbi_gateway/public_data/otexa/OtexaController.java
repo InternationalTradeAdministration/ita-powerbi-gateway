@@ -23,6 +23,11 @@ public class OtexaController {
     return metadataService.getCountries(source);
   }
 
+  @GetMapping("/exportcountries")
+  public List<ExportCountry> getExportCountries() {
+    return metadataService.getExportCountries();
+  }
+
   @GetMapping("/years")
   public List<Year> getYears() {
     return metadataService.getYears();
@@ -46,6 +51,11 @@ public class OtexaController {
   @GetMapping("/partcategories")
   public List<PartCategory> getPartCategories() {
     return metadataService.getPartCategories();
+  }
+
+  @GetMapping("/exportgroups")
+  public List<ExportGroup> getExportGroups() {
+    return metadataService.getExportGroups();
   }
 
   @GetMapping("/chapters")

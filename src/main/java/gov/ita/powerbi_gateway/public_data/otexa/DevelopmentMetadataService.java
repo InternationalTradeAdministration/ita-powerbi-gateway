@@ -18,6 +18,14 @@ public class DevelopmentMetadataService implements MetadataService {
   }
 
   @Override
+  public List<ExportCountry> getExportCountries() {
+    return Arrays.asList(
+      new ExportCountry("WORLD"),
+      new ExportCountry("BANGLADESH")
+    );
+  }
+
+  @Override
   public List<Year> getYears() {
     return Arrays.asList(
       new Year("1989"),
@@ -55,6 +63,14 @@ public class DevelopmentMetadataService implements MetadataService {
     return Arrays.asList(
       new PartCategory("345 678", "3 - Salamanders"),
       new PartCategory("901 234", "4 - Ocelots")
+    );
+  }
+
+  @Override
+  public List<ExportGroup> getExportGroups() {
+    return Arrays.asList(
+      new ExportGroup(42),
+      new ExportGroup(38)
     );
   }
 

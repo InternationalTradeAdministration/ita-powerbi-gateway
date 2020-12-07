@@ -12,7 +12,7 @@
             title="Export Report"
           />
         </button>
-        <button v-if="!loadingReport">
+        <button v-if="!loadingReport && this.$route.query.exportdata != 0">
           <img
             src="/images/download.svg"
             alt="Export Data"

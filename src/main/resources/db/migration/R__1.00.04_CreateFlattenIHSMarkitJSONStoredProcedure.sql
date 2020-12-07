@@ -1,4 +1,5 @@
-CREATE OR ALTER PROCEDURE dbo.FLATTEN_IHS_MARKIT_JSON @json nvarchar(max)
+CREATE OR
+ALTER PROCEDURE dbo.FLATTEN_IHS_MARKIT_JSON @json nvarchar(max)
 AS
 BEGIN
     DECLARE @direction AS nvarchar(max)
@@ -7,6 +8,8 @@ BEGIN
     DECLARE @partner AS nvarchar(max)
     DECLARE @partner_iso AS char(2)
     DECLARE @product AS nvarchar(max)
+    DECLARE @currency AS nvarchar(10)
+    DECLARE @unit AS nvarchar(10)
     DECLARE @ihs_markit_trade_data AS TABLE
                                       (
                                           direction       nvarchar(max)  NOT NULL,
@@ -17,6 +20,7 @@ BEGIN
                                           product         nvarchar(max)  NOT NULL,
                                           date            char(8)        NOT NULL,
                                           attribute       nvarchar(8)    NOT NULL,
+                                          attribute_unit  nvarchar(10)   NOT NULL,
                                           attribute_value decimal(19, 1) NOT NULL
                                       )
 
@@ -25,7 +29,9 @@ BEGIN
            @reporter_iso = reporter_iso,
            @partner = partner,
            @partner_iso = partner_iso,
-           @product = product
+           @product = product,
+           @currency = currency,
+           @unit = unit
     FROM OPENJSON(@json)
                   WITH (
                       direction nvarchar(max) '$.Direction',
@@ -33,7 +39,9 @@ BEGIN
                       reporter_iso nvarchar(max) '$.ReporterIso',
                       partner nvarchar(max) '$.Partner',
                       partner_iso nvarchar(max) '$.PartnerIso',
-                      product nvarchar(max) '$.Product'
+                      product nvarchar(max) '$.Product',
+                      currency nvarchar(10) '$.Currency',
+                      unit nvarchar(10) '$.Unit'
                       )
 
     INSERT INTO @ihs_markit_trade_data (direction,
@@ -44,6 +52,7 @@ BEGIN
                                         product,
                                         date,
                                         attribute,
+                                        attribute_unit,
                                         attribute_value)
     SELECT @direction,
            @reporter,
@@ -53,6 +62,7 @@ BEGIN
            @product,
            [key],
            'Quantity',
+           @unit,
            [value]
     FROM OPENJSON(@json, N'$.Quantity')
 
@@ -64,6 +74,7 @@ BEGIN
                                         product,
                                         date,
                                         attribute,
+                                        attribute_unit,
                                         attribute_value)
     SELECT @direction,
            @reporter,
@@ -73,6 +84,7 @@ BEGIN
            @product,
            [key],
            'Value',
+           @currency,
            [value]
     FROM OPENJSON(@json, N'$.Value')
 

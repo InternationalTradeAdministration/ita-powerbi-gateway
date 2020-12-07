@@ -1,31 +1,31 @@
 <template>
   <div class="report-factory">
     <otexa-msr-footwear-categories
-      v-if="reportName.includes('MSR Categories') && reportName.includes('Footwear')"
+      v-if="workspaceName.includes('OTEXA') && reportName.includes('MSR Categories') && reportName.includes('Footwear')"
       :repository="repository"
       :pbi="pbi"
       :reportName="reportName"
     />
     <otexa-exports
-      v-else-if="reportName.includes('Export')"
+      v-else-if="workspaceName.includes('OTEXA') && reportName.includes('Export')"
       :repository="repository"
       :pbi="pbi"
       :reportName="reportName"
     />
     <otexa-msr-countries
-      v-else-if="reportName.includes('MSR Countries')"
+      v-else-if="workspaceName.includes('OTEXA') && reportName.includes('MSR Countries')"
       :repository="repository"
       :pbi="pbi"
       :reportName="reportName"
     />
     <otexa-msr-categories
-      v-else-if="reportName.includes('MSR Categories')"
+      v-else-if="workspaceName.includes('OTEXA') && reportName.includes('MSR Categories')"
       :repository="repository"
       :pbi="pbi"
       :reportName="reportName"
     />
     <otexa-merged-part-cat
-      v-else-if="reportName.includes('Merged') || reportName.includes('Part')"
+      v-else-if="workspaceName.includes('OTEXA') && (reportName.includes('Merged') || reportName.includes('Part'))"
       :repository="repository"
       :pbi="pbi"
       :reportName="reportName"

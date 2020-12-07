@@ -11,22 +11,24 @@
               <option :value="false">Group</option>
             </select>
           </div>
-          <div class="filter-field" v-if="onlyCountry">
-            <label for="countries">Countries:</label>
-            <select
-              v-model="selectedCountries"
-              name="countries"
-              id="countries"
-              multiple
-              size="20"
-            >
-              <option
-                v-for="item in countries"
-                :key="item.country"
-                :value="item.country"
-                >{{ item.country }}</option
+          <div class="regions" v-if="onlyCountry">
+            <div class="filter-field" v-for="(countries, region) in countryRegions" :key="region">
+              <label for="region">{{ region }}:</label>
+              <select
+                v-model="selectedCountries"
+                :name=region
+                :id=region
+                multiple
+                size="20"
               >
-            </select>
+                <option
+                  v-for="item in countries"
+                  :key="item.ctryId"
+                  :value="item.ctryId"
+                  >{{ item.ctryDescription }}</option
+                >
+              </select>
+            </div>
           </div>
           <div class="filter-field" v-if="!onlyCountry">
             <label for="groups">Groups:</label>
@@ -98,15 +100,29 @@ export default {
     isReportVisible: false,
     loading: true,
     loadingReport: true,
-    onlyCountry: null
+    onlyCountry: null,
+    countryRegions: {
+      'Country Groups': [],
+      'Africa': [],
+      'Asia': [],
+      'Australia and Oceania': [],
+      'Europe': [],
+      'North and Central America': [],
+      'South America': [],
+    }
   }),
   async created () {
     this.onlyCountry = (this.$route.query.onlyCountry || this.reportName.includes('Group'))
       ? (this.$route.query.onlyCountry === 'true' || this.reportName.includes('Country'))
       : true
 
-    this.countries = await this.repository.getOtexaExportCountries()
+    let source = 'EXPORT'
+    this.countries = await this.repository.getOtexaCountries(source)
     this.groups = await this.repository.getOtexaExportGroups()
+
+    Object.keys(this.countryRegions).forEach(region => {
+      this.countryRegions[region] = this.countries.filter(country => country.ctryGroup === region)
+    })
 
     this.displayIn = 'DOLLARS'
 
@@ -129,8 +145,8 @@ export default {
 
       if (this.selectedCountries.length > 0) {
         let selectedCountries = this.countries
-          .filter(c => this.selectedCountries.includes(c.country))
-          .map(c => c.country.trim())
+          .filter(c => this.selectedCountries.includes(c.ctryId))
+          .map(c => c.ctryDescription.trim())
         filters.push(this.filter('Country', 'In', selectedCountries, false))
       } else {
         filters.push(this.filter('Country', 'All', [], false))
@@ -225,8 +241,13 @@ export default {
   visibility: hidden;
 }
 
-.filter-fields {
-  display: flex;
+.filter-fields, .regions {
+  display: inline-flex;
+  flex-wrap: wrap;
+}
+
+.regions select {
+  width: 150px;
 }
 
 input,

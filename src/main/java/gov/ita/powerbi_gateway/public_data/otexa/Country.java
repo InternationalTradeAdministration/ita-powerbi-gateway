@@ -12,10 +12,12 @@ import javax.persistence.Table;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "OtexaCountryRef")
+@Table(name = "OtexaCountryRefVw")
 public class Country {
   @Id
   private Long ctryId;
+  private Long ctryNumber;
   private String ctryDescription;
+  private String ctryGroup;
   private String source;
 }

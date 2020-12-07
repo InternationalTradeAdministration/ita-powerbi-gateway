@@ -11,22 +11,24 @@
               <option :value="false">Category</option>
             </select>
           </div>
-          <div class="filter-field" v-if="onlyCountry">
-            <label for="countries">Countries:</label>
-            <select
-              v-model="selectedCountries"
-              name="countries"
-              id="countries"
-              multiple
-              size="20"
-            >
-              <option
-                v-for="item in countries"
-                :key="item.ctryId"
-                :value="item.ctryId"
-                >{{ item.ctryDescription }}</option
+          <div class="regions" v-if="onlyCountry">
+            <div class="filter-field" v-for="(countries, region) in countryRegions" :key="region">
+              <label for="region">{{ region }}:</label>
+              <select
+                v-model="selectedCountries"
+                :name=region
+                :id=region
+                multiple
+                size="20"
               >
-            </select>
+                <option
+                  v-for="item in countries"
+                  :key="item.ctryId"
+                  :value="item.ctryId"
+                  >{{ item.ctryDescription }}</option
+                >
+              </select>
+            </div>
           </div>
           <div class="filter-field" v-if="!onlyCountry">
             <label for="categories">Categories:</label>
@@ -115,7 +117,16 @@ export default {
     isReportVisible: false,
     loading: true,
     loadingReport: true,
-    onlyCountry: null
+    onlyCountry: null,
+    countryRegions: {
+      'Country Groups': [],
+      'Africa': [],
+      'Asia': [],
+      'Australia and Oceania': [],
+      'Europe': [],
+      'North and Central America': [],
+      'South America': [],
+    }
   }),
   async created () {
     this.onlyCountry = true
@@ -128,6 +139,10 @@ export default {
     this.categories = this.reportName.includes('Merged') 
       ? await this.repository.getOtexaMergedCategories() 
       : await this.repository.getOtexaPartCategories()
+
+    Object.keys(this.countryRegions).forEach(region => {
+      this.countryRegions[region] = this.countries.filter(country => country.ctryGroup === region)
+    })
 
     this.displayIn = 'DOLLARS'
 
@@ -254,6 +269,15 @@ export default {
 
 .hidden {
   visibility: hidden;
+}
+
+.filter-fields, .regions {
+  display: inline-flex;
+  flex-wrap: wrap;
+}
+
+.regions select {
+  width: 150px;
 }
 
 .filter-fields {

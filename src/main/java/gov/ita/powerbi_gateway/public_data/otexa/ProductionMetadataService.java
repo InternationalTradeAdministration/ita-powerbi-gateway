@@ -14,9 +14,6 @@ public class ProductionMetadataService implements MetadataService {
   private CountryRepository countryRepository;
 
   @Autowired
-  private ExportCountryRepository exportCountryRepository;
-
-  @Autowired
   private CategoryRepository categoryRepository;
 
   @Autowired
@@ -42,12 +39,7 @@ public class ProductionMetadataService implements MetadataService {
 
   @Override
   public List<Country> getCountries(String source) {
-    return countryRepository.findBySource(source);
-  }
-
-  @Override
-  public List<ExportCountry> getExportCountries() {
-    return exportCountryRepository.findAllExportCountries();
+    return countryRepository.findBySourceOrderByCtryDescription(source);
   }
 
   @Override

@@ -4,21 +4,24 @@
     <div v-else-if="!isReportVisible">
       <div class="filter-pane">
         <div class="filter-fields">
-          <div class="filter-field">
-            <label for="countries">Countries:</label>
-            <select
-              v-model="selectedCountries"
-              name="countries"
-              id="countries"
-              size="20"
-            >
-              <option
-                v-for="item in countries"
-                :key="item.ctryId"
-                :value="item.ctryId"
-                >{{ item.ctryDescription }}</option
+          <div class="regions" v-if="onlyCountry">
+            <div class="filter-field" v-for="(countries, region) in countryRegions" :key="region">
+              <label for="region">{{ region }}:</label>
+              <select
+                v-model="selectedCountries"
+                :name=region
+                :id=region
+                multiple
+                size="20"
               >
-            </select>
+                <option
+                  v-for="item in countries"
+                  :key="item.ctryId"
+                  :value="item.ctryId"
+                  >{{ item.ctryDescription }}</option
+                >
+              </select>
+            </div>
           </div>
           <div class="filter-field" v-if="reportName.includes('Footwear')">
             <label for="displayIn">Display In:</label>
@@ -80,6 +83,15 @@ export default {
     isReportVisible: false,
     loading: true,
     loadingReport: true,
+    countryRegions: {
+      'Country Groups': [],
+      'Africa': [],
+      'Asia': [],
+      'Australia and Oceania': [],
+      'Europe': [],
+      'North and Central America': [],
+      'South America': [],
+    }
   }),
   async created () {
     let source = this.reportName.includes('Footwear')
@@ -87,6 +99,10 @@ export default {
       : 'ANNUAL'
     this.countries = await this.repository.getOtexaCountries(source)
     this.categories = await this.repository.getOtexaCategories(source)
+
+    Object.keys(this.countryRegions).forEach(region => {
+      this.countryRegions[region] = this.countries.filter(country => country.ctryGroup === region)
+    })
 
     this.displayIn = 'DOLLARS'
 
@@ -193,6 +209,15 @@ export default {
 
 .hidden {
   visibility: hidden;
+}
+
+.filter-fields, .regions {
+  display: inline-flex;
+  flex-wrap: wrap;
+}
+
+.regions select {
+  width: 150px;
 }
 
 .filter-fields {

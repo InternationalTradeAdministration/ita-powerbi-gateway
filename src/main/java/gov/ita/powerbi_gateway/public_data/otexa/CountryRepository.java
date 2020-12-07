@@ -7,5 +7,5 @@ import java.util.List;
 
 @Repository
 interface CountryRepository extends JpaRepository<Country, Long> {
-  List<Country> findBySource(String source);
+  List<Country> findBySourceOrderByCtryDescription(String source);
 }

@@ -11,22 +11,24 @@
               <option :value="false">Category</option>
             </select>
           </div>
-          <div class="filter-field" v-if="onlyCountry">
-            <label for="countries">Countries:</label>
-            <select
-              v-model="selectedCountries"
-              name="countries"
-              id="countries"
-              multiple
-              size="20"
-            >
-              <option
-                v-for="item in countries"
-                :key="item.ctryId"
-                :value="item.ctryId"
-                >{{ item.ctryDescription }}</option
+          <div class="regions" v-if="onlyCountry">
+            <div class="filter-field" v-for="(countries, region) in countryRegions" :key="region">
+              <label for="region">{{ region }}:</label>
+              <select
+                v-model="selectedCountries"
+                :name=region
+                :id=region
+                multiple
+                size="20"
               >
-            </select>
+                <option
+                  v-for="item in countries"
+                  :key="item.ctryId"
+                  :value="item.ctryId"
+                  >{{ item.ctryDescription }}</option
+                >
+              </select>
+            </div>
           </div>
           <div class="filter-field" v-if="!onlyCountry">
             <label for="categories">Categories:</label>
@@ -170,7 +172,16 @@ export default {
     loading: true,
     loadingReport: true,
     loadingHts: false,
-    onlyCountry: null
+    onlyCountry: null,
+    countryRegions: {
+      'Country Groups': [],
+      'Africa': [],
+      'Asia': [],
+      'Australia and Oceania': [],
+      'Europe': [],
+      'North and Central America': [],
+      'South America': [],
+    }
   }),
   async created () {
     this.onlyCountry = (this.$route.query.onlyCountry || this.reportName.includes('Category'))
@@ -183,6 +194,10 @@ export default {
 
     this.countries = await this.repository.getOtexaCountries(source)
     this.categories = await this.repository.getOtexaCategories(source)
+
+    Object.keys(this.countryRegions).forEach(region => {
+      this.countryRegions[region] = this.countries.filter(country => country.ctryGroup === region)
+    })
 
     if (this.reportName.includes('Footwear')) {
       this.years = await this.repository.getOtexaFootwearYears()
@@ -282,17 +297,22 @@ export default {
         }
       }
 
-      /* If search by Category => Category & HTS tab defaults to Country = World. */
+      /* For Annual Data */
+      /* If search by Category => Category & HTS tab defaults to Country = `WORLD`. */
       /* If search by Country => Country tab defaults to Category = 0. */
-
+      /* For Footwear Data */
+      /* If search by Category => Category & HTS tab defaults to Country = `World`. */
+      /* If search by Country => Country tab defaults to Category = 101. */
+      
+      let cat0 = (this.reportName.includes('Footwear')) ? (101) : (0)
+      let catZero = this.categories
+            .filter(c => (c.catId === cat0))
+            .map(c => c.longCategory.trim())
       if (this.onlyCountry) {
-        let cat0 = this.categories
-          .filter(c => (c.catId === 0))
-          .map(c => c.longCategory.trim())
-        countryPageFilters.push(this.filter('Category', 'In', cat0, false))
+        countryPageFilters.push(this.filter('Category', 'In', catZero, false))
       } else {
         let world = this.countries
-          .filter(c => (c.ctryDescription === 'WORLD'))
+          .filter(c => (c.ctryNumber === 0))
           .map(c => c.ctryDescription.trim())
         categoryPageFilters.push(this.filter('Country', 'In', world, false))
         htsPageFilters.push(this.filter('Country', 'In', world, false))
@@ -416,8 +436,13 @@ export default {
   visibility: hidden;
 }
 
-.filter-fields {
-  display: flex;
+.filter-fields, .regions {
+  display: inline-flex;
+  flex-wrap: wrap;
+}
+
+.regions select {
+  width: 150px;
 }
 
 input,

@@ -7,6 +7,8 @@ SELECT details.[Country]
     , details.[HEADER_ID] as 'DATA_KEY'
     , details.[VAL] AS 'DATA_VALUE'
     , details.[DATA_TYPE]
+    , details.[REPORT_MONTH] as 'Report Month'
+    , details.[REPORT_YEAR] as 'Report Year'
 FROM [dbo].[OTEXA_ANNUAL_FOOTWEAR] details
 
 FULL OUTER JOIN [dbo].[OTEXA_CATEGORY_REF_VW] category

@@ -367,7 +367,6 @@ export default {
       this.selectedChapters = []
       this.selectedHts = []
       this.selectedYears = []
-      this.yearKey = null
       this.hts = []
       this.displayIn = 'DOLLARS'
       this.isReportVisible = false

@@ -122,7 +122,7 @@ export default {
       }
 
       let selectedCountries = this.countries
-        .filter(c => [this.selectedCountries].includes(c.ctryId))
+        .filter(c => this.selectedCountries.includes(c.ctryId))
         .map(c => c.ctryDescription.trim())
       filters.push(this.filter('Country', 'In', selectedCountries, false))
 

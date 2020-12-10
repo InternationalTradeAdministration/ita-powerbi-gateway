@@ -4,7 +4,7 @@
     <div v-else-if="!isReportVisible">
       <div class="filter-pane">
         <div class="filter-fields">
-          <div class="regions" v-if="onlyCountry">
+          <div class="regions">
             <div class="filter-field" v-for="(countries, region) in countryRegions" :key="region">
               <label for="region">{{ region }}:</label>
               <select

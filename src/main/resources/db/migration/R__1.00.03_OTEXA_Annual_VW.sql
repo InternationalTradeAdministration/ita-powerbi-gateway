@@ -7,6 +7,8 @@ SELECT details.[Country]
     , hdr.[HEADER_DESCRIPTION] as 'DATA_KEY'
     , details.[VAL] AS 'DATA_VALUE'
     , hdr.[HEADER_TYPE] as 'DATA_TYPE'
+    , details.[REPORT_MONTH] as 'Report Month'
+    , details.[REPORT_YEAR] as 'Report Year'
 FROM [dbo].[OTEXA_ANNUAL] details
 INNER JOIN [dbo].[OTEXA_HEADER_REF] hdr
     ON details.[HEADER_ID] = hdr.[HEADER_ID]
@@ -32,6 +34,8 @@ SELECT details.[Country]
         ELSE details.[VAL] / details.[SYEF]
         END as 'DATA_VALUE'
     , 'UNITS' as 'DATA_TYPE'
+    , details.[REPORT_MONTH] as 'Report Month'
+    , details.[REPORT_YEAR] as 'Report Year'
 FROM [dbo].[OTEXA_ANNUAL] details
 INNER JOIN [dbo].[OTEXA_HEADER_REF] hdr
     ON details.[HEADER_ID] = hdr.[HEADER_ID]
@@ -55,6 +59,8 @@ SELECT details.[Country]
     , hdr.[HEADER_DESCRIPTION] as 'DATA_KEY'
     , details.[VAL] * details.[SYEF] AS 'DATA_VALUE'
     , 'SME' as 'DATA_TYPE'
+    , details.[REPORT_MONTH] as 'Report Month'
+    , details.[REPORT_YEAR] as 'Report Year'
 FROM [dbo].[OTEXA_ANNUAL] details
 INNER JOIN [dbo].[OTEXA_HEADER_REF] hdr
     ON details.[HEADER_ID] = hdr.[HEADER_ID]

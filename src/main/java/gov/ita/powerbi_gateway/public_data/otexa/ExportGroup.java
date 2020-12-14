@@ -12,8 +12,9 @@ import javax.persistence.Table;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "OtexaExportsVw")
+@Table(name = "OtexaGroupRefVw")
 public class ExportGroup {
   @Id
-  private Integer groupId;
+  private Long groupId;
+  private String longGroup;
 }

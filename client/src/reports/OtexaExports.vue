@@ -38,13 +38,48 @@
               id="groups"
               multiple
               size="20"
+              @change="updateScheduleB()"
             >
               <option
                 v-for="item in groups"
                 :key="item.groupId"
                 :value="item.groupId"
-                >{{ item.groupId }}</option
+                >{{ item.longGroup }}</option
               >
+            </select>
+          </div>
+          <div class="filter-field" v-if="!onlyCountry">
+            <label for="chapters">Chapters:</label>
+            <select
+              v-model="selectedChapters"
+              name="chapters"
+              id="chapters"
+              multiple
+              size="20"
+              @change="updateScheduleB()"
+            >
+              <option
+                v-for="item in chapters"
+                :key="item.chapter"
+                :value="item.chapter"
+                >{{ item.longChapter }}</option
+              >
+            </select>
+          </div>
+          <div class="filter-field" v-if="!onlyCountry">
+            <label for="scheduleB">Schedule B:</label>
+            <span v-if="loadingScheduleB">loading...</span>
+            <select
+              v-else
+              v-model="selectedScheduleB"
+              name="scheduleB"
+              id="scheduleB"
+              multiple
+              size="20"
+            >
+              <option v-for="item in scheduleB" :key="item.scheduleB" :value="item.scheduleB">{{
+                item.longSchedb
+              }}</option>
             </select>
           </div>
           <div class="filter-field">
@@ -94,12 +129,17 @@ export default {
     report: null,
     countries: [],
     groups: [],
+    chapters: [],
+    scheduleB: [],
     selectedCountries: [],
     selectedGroups: [],
+    selectedChapters: [],
+    selectedScheduleB: [],
     displayIn: [],
     isReportVisible: false,
     loading: true,
     loadingReport: true,
+    loadingScheduleB: false,
     onlyCountry: null,
     countryRegions: {
       'Country Groups': [],
@@ -118,11 +158,15 @@ export default {
 
     let source = 'EXPORT'
     this.countries = await this.repository.getOtexaCountries(source)
-    this.groups = await this.repository.getOtexaExportGroups()
+
+    let groups = await this.repository.getOtexaExportGroups()
+    this.groups = groups.sort((a,b) => a.groupId - b.groupId)
 
     Object.keys(this.countryRegions).forEach(region => {
       this.countryRegions[region] = this.countries.filter(country => country.ctryGroup === region)
     })
+
+    this.chapters = await this.repository.getOtexaChapters()
 
     this.displayIn = 'DOLLARS'
 
@@ -132,10 +176,26 @@ export default {
     getReportClass () {
       return this.isReportVisible ? 'sub-content visible' : 'hidden'
     },
+    async updateScheduleB () {
+      if (!this.scheduleBDisabled()) {
+        this.loadingScheduleB = true
+        this.scheduleB = await this.repository.getOtexaScheduleB(
+          this.selectedGroups,
+          this.selectedChapters
+        )
+        this.loadingScheduleB = false
+      }
+    },
+    scheduleBDisabled () {
+      return !(
+        this.selectedGroups.length > 0 || this.selectedChapters.length > 0
+      )
+    },
     async viewReport () {
       let filters = []
-      let groupPageFilters = []
       let countryPageFilters = []
+      let groupPageFilters = []
+      let scheduleBPageFilters = []
 
       if (this.displayIn.length === 0) {
         filters.push(this.filter('Display In', 'In', ['DOLLARS'], true))
@@ -153,12 +213,41 @@ export default {
       }
 
       if (this.selectedGroups.length > 0) {
-        let selectedCategories = this.groups
+        let selectedGroups = this.groups
           .filter(g => this.selectedGroups.includes(g.groupId))
-          .map(g => g.groupId)
-        filters.push(this.filter('Group_ID', 'In', selectedCategories, false))
+          .map(g => g.longGroup.trim())
+        filters.push(this.filter('Group', 'In', selectedGroups, false))
       } else {
-        filters.push(this.filter('Group_ID', 'All', [], false))
+        filters.push(this.filter('Group', 'All', [], false))
+      }
+
+      if (this.selectedChapters.length > 0) {
+        let selectedChapters = this.chapters
+          .filter(c => this.selectedChapters.includes(c.chapter))
+          .map(c => c.longChapter.trim())
+        filters.push(this.filter('Chapter', 'In', selectedChapters, false))
+      } else {
+        filters.push(this.filter('Chapter', 'All', [], false))
+      }
+
+      if (this.selectedScheduleB.length > 0) {
+        let selectedScheduleB = this.scheduleB
+          .filter(c => this.selectedScheduleB.includes(c.scheduleB))
+          .map(c => c.longSchedb.trim())
+        filters.push(this.filter('Schedule B', 'In', selectedScheduleB, false))
+      } else {
+        filters.push(this.filter('Schedule B', 'All', [], false))
+      }
+
+      scheduleBPageFilters.push(this.advancedFilter('Schedule B', 'And', 'IsNotBlank', null))
+
+      /* If search by Category => Category & HTS tab defaults to Country = `WORLD`. */
+      if (!this.onlyCountry) {
+        let world = this.countries
+          .filter(c => (c.ctryNumber === 0))
+          .map(c => c.ctryDescription.trim())
+        groupPageFilters.push(this.filter('Country', 'In', world, false))
+        scheduleBPageFilters.push(this.filter('Country', 'In', world, false))
       }
 
       this.report = await this.repository.generateToken(
@@ -188,12 +277,14 @@ export default {
         this.setTokenExpirationListener(this.report.powerBiToken.expiration)
 
         let pages = await report.getPages()
-        let groupPage = pages.filter(p => p.displayName === 'Group')[0]
         let countryPage = pages.filter(p => p.displayName === 'Country')[0]
+        let groupPage = pages.filter(p => p.displayName === 'Group')[0]
+        let scheduleBPage = pages.filter(p => p.displayName === 'Schedule B')[0]
 
         report.setFilters(filters)
-        groupPage.setFilters(groupPageFilters)
         countryPage.setFilters(countryPageFilters)
+        groupPage.setFilters(groupPageFilters)
+        scheduleBPage.setFilters(scheduleBPageFilters)
 
         if (!this.onlyCountry) {
           countryPage.setActive()
@@ -205,6 +296,9 @@ export default {
     reset () {
       this.selectedCountries = []
       this.selectedGroups = []
+      this.selectedChapters = []
+      this.selectedScheduleB = []
+      this.scheduleB = []
       this.displayIn = 'DOLLARS'
       this.isReportVisible = false
     },
@@ -220,6 +314,27 @@ export default {
           table
         },
         filterType: 1
+      }
+    },
+    advancedFilter (column, logicalOperator, operator, value) {
+      let table = 'OTEXA_EXPORTS_VW'
+      return {
+        logicalOperator,
+        conditions: [
+          {
+            operator: operator,
+            value: value
+          }
+        ],
+        $schema: 'http://powerbi.com/product/schema#advanced',
+        target: {
+          column,
+          table
+        },
+        filterType: 0,
+        displaySettings: {
+          isHiddenInViewMode: true
+        }
       }
     }
   }

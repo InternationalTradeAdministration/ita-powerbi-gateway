@@ -61,8 +61,8 @@ public class DevelopmentMetadataService implements MetadataService {
   @Override
   public List<ExportGroup> getExportGroups() {
     return Arrays.asList(
-      new ExportGroup(42),
-      new ExportGroup(38)
+      new ExportGroup(4L, "42 - W&G Suit-type Coats"),
+      new ExportGroup(5L, "58 - Accessories")
     );
   }
 
@@ -96,4 +96,27 @@ public class DevelopmentMetadataService implements MetadataService {
       new Hts("123323", "123323 - Shoes")
     );
   }
+
+  @Override
+  public List<ScheduleB> getScheduleBByExportGroupsAndChapters(List<Long> exportGroups, List<Long> chapters) {
+    return Arrays.asList(new ScheduleB("123456", "123456 - Socks"), new ScheduleB("123321", "123321 - Hats"));
+  }
+
+  @Override
+  public List<ScheduleB> getScheduleBByExportGroups(List<Long> groupIds) {
+    return Arrays.asList(
+      new ScheduleB("123456", "123456 - Socks"),
+      new ScheduleB("123321", "123321 - Hats"),
+      new ScheduleB("123323", "123323 - Shoes")
+    );
+  }
+
+  @Override
+  public List<ScheduleB> getScheduleBByChapters(List<Long> chapters) {
+    return Arrays.asList(
+      new ScheduleB("123456", "123456 - Socks"),
+      new ScheduleB("123323", "123323 - Shoes")
+    );
+  }
+
 }

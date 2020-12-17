@@ -79,4 +79,25 @@ public class OtexaController {
     return Collections.emptyList();
   }
 
+  @GetMapping("/scheduleb")
+  public List<ScheduleB> getScheduleB(@RequestParam(required = false) List<String> exportGroups, @RequestParam(required = false) List<String> chapters) {
+    if ((exportGroups != null && exportGroups.size() > 0) && (chapters != null && chapters.size() > 0)) {
+      List<Long> exportGroupIds = exportGroups.stream().map(Long::parseLong).collect(Collectors.toList());
+      List<Long> chapterIds = chapters.stream().map(Long::parseLong).collect(Collectors.toList());
+      return metadataService.getScheduleBByExportGroupsAndChapters(exportGroupIds, chapterIds);
+    }
+
+    if (exportGroups != null && exportGroups.size() > 0) {
+      List<Long> groupIds = exportGroups.stream().map(Long::parseLong).collect(Collectors.toList());
+      return metadataService.getScheduleBByExportGroups(groupIds);
+    }
+
+    if (chapters != null && chapters.size() > 0) {
+      List<Long> chapterIds = chapters.stream().map(Long::parseLong).collect(Collectors.toList());
+      return metadataService.getScheduleBByChapters(chapterIds);
+    }
+
+    return Collections.emptyList();
+  }
+
 }

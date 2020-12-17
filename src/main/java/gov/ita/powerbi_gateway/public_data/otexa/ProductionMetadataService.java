@@ -32,6 +32,12 @@ public class ProductionMetadataService implements MetadataService {
   private HtsRepository htsRepository;
 
   @Autowired
+  private ScheduleBChapterRepository scheduleBChapterRepository;
+
+  @Autowired
+  private ScheduleBRepository scheduleBRepository;
+
+  @Autowired
   private YearRepository yearRepository;
 
   @Autowired
@@ -90,5 +96,20 @@ public class ProductionMetadataService implements MetadataService {
   @Override
   public List<Hts> getHtsByChapters(List<Long> chapters) {
     return htsRepository.findByHtsChapterChapterInOrderByHts(chapters);
+  }
+
+  @Override
+  public List<ScheduleB> getScheduleBByExportGroupsAndChapters(List<Long> exportGroups, List<Long> chapters) {
+    return scheduleBRepository.findByGroupIdInAndScheduleBChapterChapterInOrderByScheduleB(exportGroups, chapters);
+  }
+
+  @Override
+  public List<ScheduleB> getScheduleBByExportGroups(List<Long> groupIds) {
+    return scheduleBRepository.findByGroupIdIn(groupIds);
+  }
+
+  @Override
+  public List<ScheduleB> getScheduleBByChapters(List<Long> chapters) {
+    return scheduleBRepository.findByScheduleBChapterChapterInOrderByScheduleB(chapters);
   }
 }

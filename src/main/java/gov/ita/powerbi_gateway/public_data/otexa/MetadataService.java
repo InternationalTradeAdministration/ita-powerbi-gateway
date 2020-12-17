@@ -24,4 +24,11 @@ public interface MetadataService {
   List<Hts> getHtsByCategories(List<Long> categoryIds);
 
   List<Hts> getHtsByChapters(List<Long> chapters);
+
+  List<ScheduleB> getScheduleBByExportGroupsAndChapters(List<Long> exportGroups, List<Long> chapters);
+
+  List<ScheduleB> getScheduleBByExportGroups(List<Long> groupIds);
+
+  List<ScheduleB> getScheduleBByChapters(List<Long> chapters);
+
 }

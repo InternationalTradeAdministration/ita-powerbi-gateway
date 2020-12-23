@@ -1,0 +1,10 @@
+DROP TABLE IF EXISTS [sima_steel_export].[HTS10_CODES_PRODUCT_GROUPS]
+
+CREATE TABLE [sima_steel_export].[HTS10_CODES_PRODUCT_GROUPS]
+(
+    hts10_code    nvarchar(10)   NOT NULL,
+    product_group nvarchar(1000) NOT NULL,
+    created_at    datetime       NOT NULL DEFAULT CURRENT_TIMESTAMP
+)
+
+CREATE UNIQUE NONCLUSTERED INDEX INDEX_SIMA_STEEL_EXPORT_HTS10_CODES_PRODUCT_GROUPS_ON_HTS10_CODE ON [sima_steel_export].[HTS10_CODES_PRODUCT_GROUPS] (hts10_code)

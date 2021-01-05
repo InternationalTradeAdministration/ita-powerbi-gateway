@@ -3,7 +3,7 @@ GO
 
 CREATE TABLE [dbo].[GMHR_DH_PROJECTIONS]
 (
-    [Source]    "DH Projections",
+    [Source]    VARCHAR(MAX),
     [Owning Org]    VARCHAR(MAX),
     [BOC]   INTEGER,
     [BOC_F2]    INTEGER,
@@ -50,7 +50,7 @@ GO
 
 CREATE TABLE [dbo].[GMHR_LES_PROJECTIONS]
 (
-    [Source]    "LES Projections",
+    [Source]    VARCHAR(MAX),
     [DAS/ED]    VARCHAR(MAX),
     [Country Name]  VARCHAR(MAX),
     [BOC]   INTEGER,

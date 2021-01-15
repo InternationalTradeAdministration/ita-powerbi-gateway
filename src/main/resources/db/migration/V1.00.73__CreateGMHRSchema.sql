@@ -1,0 +1,1 @@
+CREATE SCHEMA [gm_hr_reader] AUTHORIZATION [dbo]

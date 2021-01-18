@@ -18,6 +18,8 @@ public class ScheduleB {
   @JsonIgnore
   public Long groupId;
 
+  public Long catId;
+
   @Id
   public String scheduleB;
 
@@ -28,6 +30,7 @@ public class ScheduleB {
   @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   @JoinColumns({
       @JoinColumn(name = "GROUP_ID"),
+      @JoinColumn(name = "CAT_ID"),
       @JoinColumn(name = "SCHEDULE_B")
   })
   public ScheduleBChapter scheduleBChapter;

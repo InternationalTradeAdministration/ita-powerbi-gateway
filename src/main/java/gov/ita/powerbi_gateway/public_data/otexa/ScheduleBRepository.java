@@ -13,4 +13,9 @@ interface ScheduleBRepository extends JpaRepository<ScheduleB, String> {
   List<ScheduleB> findByGroupIdIn(List<Long> groupIds);
 
   List<ScheduleB> findByScheduleBChapterChapterInOrderByScheduleB(List<Long> chapters);
+
+  List<ScheduleB> findByCatIdInAndScheduleBChapterChapterInOrderByScheduleB(List<Long> categories, List<Long> chapters);
+
+  List<ScheduleB> findByCatIdIn(List<Long> categoryIds);
+
 }

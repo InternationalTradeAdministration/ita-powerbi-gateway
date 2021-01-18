@@ -10,15 +10,11 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExportGroupScheduleB implements Serializable {
+public class CategoryScheduleB implements Serializable {
   private static final long serialVersionUID = 1L;
 
-  @Column(name="GROUP_ID")
-  private Long groupId;
-
-  @Column(name="SCHEDULE_B")
-  private String scheduleB;
-
-  @Column(name="CAT_ID")
   private Long catId;
+
+  @Column(name="SCHED_B")
+  private String scheduleB;
 }

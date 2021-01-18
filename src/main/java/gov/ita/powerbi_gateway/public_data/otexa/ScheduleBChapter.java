@@ -19,8 +19,13 @@ import javax.persistence.Column;
 public class ScheduleBChapter {
   @Id
   public Long groupId;
+
+  @Id
+  public Long catId;
+
   @Id
   @Column(name="SCHEDULE_B")
+
   public String scheduleB;
 
   public Long chapter;

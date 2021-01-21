@@ -31,4 +31,8 @@ public interface MetadataService {
 
   List<ScheduleB> getScheduleBByChapters(List<Long> chapters);
 
+  List<ScheduleB> getScheduleBByCategoriesAndChapters(List<Long> categories, List<Long> chapters);
+
+  List<ScheduleB> getScheduleBByCategories(List<Long> categoryIds);
+
 }

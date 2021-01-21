@@ -1,4 +1,7 @@
-CREATE OR ALTER VIEW [dbo].[OTEXA_ANNUAL_FOOTWEAR_VW]
+DROP VIEW IF EXISTS [dbo].[OTEXA_ANNUAL_FOOTWEAR_VW]
+GO
+
+CREATE VIEW [dbo].[OTEXA_ANNUAL_FOOTWEAR_VW]
 AS
 SELECT details.[Country]
     , category.[LONG_CATEGORY] as 'Category'
@@ -13,6 +16,7 @@ FROM [dbo].[OTEXA_ANNUAL_FOOTWEAR] details
 
 FULL OUTER JOIN [dbo].[OTEXA_CATEGORY_REF_VW] category
     ON details.[CAT_ID] = category.[CAT_ID]
+    AND category.[SOURCE] = 'ANNUAL_FOOTWEAR'
 
 FULL OUTER JOIN [dbo].[OTEXA_HTS_REF_VW] hts
     ON hts.[HTS] = details.[HTS]

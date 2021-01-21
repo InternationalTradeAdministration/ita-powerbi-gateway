@@ -80,7 +80,7 @@ public class OtexaController {
   }
 
   @GetMapping("/scheduleb")
-  public List<ScheduleB> getScheduleB(@RequestParam(required = false) List<String> exportGroups, @RequestParam(required = false) List<String> chapters) {
+  public List<ScheduleB> getScheduleB(@RequestParam(required = false) List<String> exportGroups, @RequestParam(required = false) List<String> categories, @RequestParam(required = false) List<String> chapters) {
     if ((exportGroups != null && exportGroups.size() > 0) && (chapters != null && chapters.size() > 0)) {
       List<Long> exportGroupIds = exportGroups.stream().map(Long::parseLong).collect(Collectors.toList());
       List<Long> chapterIds = chapters.stream().map(Long::parseLong).collect(Collectors.toList());
@@ -90,6 +90,17 @@ public class OtexaController {
     if (exportGroups != null && exportGroups.size() > 0) {
       List<Long> groupIds = exportGroups.stream().map(Long::parseLong).collect(Collectors.toList());
       return metadataService.getScheduleBByExportGroups(groupIds);
+    }
+
+    if ((categories != null && categories.size() > 0) && (chapters != null && chapters.size() > 0)) {
+      List<Long> categoryIds = categories.stream().map(Long::parseLong).collect(Collectors.toList());
+      List<Long> chapterIds = chapters.stream().map(Long::parseLong).collect(Collectors.toList());
+      return metadataService.getScheduleBByCategoriesAndChapters(categoryIds, chapterIds);
+    }
+
+    if (categories != null && categories.size() > 0) {
+      List<Long> categoryIds = categories.stream().map(Long::parseLong).collect(Collectors.toList());
+      return metadataService.getScheduleBByCategories(categoryIds);
     }
 
     if (chapters != null && chapters.size() > 0) {

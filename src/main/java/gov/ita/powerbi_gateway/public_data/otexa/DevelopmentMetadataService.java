@@ -119,4 +119,18 @@ public class DevelopmentMetadataService implements MetadataService {
     );
   }
 
+  @Override
+  public List<ScheduleB> getScheduleBByCategoriesAndChapters(List<Long> categories, List<Long> chapters) {
+    return Arrays.asList(new ScheduleB("123456", "123456 - Socks"), new ScheduleB("123321", "123321 - Hats"));
+  }
+
+  @Override
+  public List<ScheduleB> getScheduleBByCategories(List<Long> categoryIds) {
+    return Arrays.asList(
+      new ScheduleB("123456", "123456 - Socks"),
+      new ScheduleB("123321", "123321 - Hats"),
+      new ScheduleB("123323", "123323 - Shoes")
+    );
+  }
+
 }

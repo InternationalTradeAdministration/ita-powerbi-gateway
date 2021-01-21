@@ -8,7 +8,7 @@
             <label>Data By:</label>
             <select v-model="onlyCountry" @click="reset()">
               <option :value="true">Country</option>
-              <option :value="false">Group</option>
+              <option :value="false">Category</option>
             </select>
           </div>
           <div class="regions" v-if="onlyCountry">
@@ -31,20 +31,20 @@
             </div>
           </div>
           <div class="filter-field" v-if="!onlyCountry">
-            <label for="groups">Groups:</label>
+            <label for="categories">Categories:</label>
             <select
-              v-model="selectedGroups"
-              name="groups"
-              id="groups"
+              v-model="selectedCategories"
+              name="categories"
+              id="categories"
               multiple
               size="20"
               @change="updateScheduleB()"
             >
               <option
-                v-for="item in groups"
-                :key="item.groupId"
-                :value="item.groupId"
-                >{{ item.longGroup }}</option
+                v-for="item in categories"
+                :key="item.catId"
+                :value="item.catId"
+                >{{ item.longCategory }}</option
               >
             </select>
           </div>
@@ -91,7 +91,7 @@
               size="2"
             >
               <option value='DOLLARS'>DOLLARS</option>
-              <option value='UNITS'>UNITS</option>
+              <option value='QTY'>QTY</option>
             </select>
           </div>
         </div>
@@ -119,7 +119,7 @@
 import Toolbar from '@/Toolbar'
 import TokenExpirationListenerMixin from '../TokenExpirationListenerMixin'
 export default {
-  name: 'OtexaExports',
+  name: 'OtexaExportFootwear',
   props: ['repository', 'pbi', 'reportName'],
   components: {
     toolbar: Toolbar
@@ -128,11 +128,11 @@ export default {
   data: () => ({
     report: null,
     countries: [],
-    groups: [],
+    categories: [],
     chapters: [],
     scheduleB: [],
     selectedCountries: [],
-    selectedGroups: [],
+    selectedCategories: [],
     selectedChapters: [],
     selectedScheduleB: [],
     displayIn: [],
@@ -162,8 +162,7 @@ export default {
 
     this.countries = await this.repository.getOtexaCountries(source)
 
-    let groups = await this.repository.getOtexaExportGroups()
-    this.groups = groups.sort((a,b) => a.groupId - b.groupId)
+    this.categories = await this.repository.getOtexaCategories(source)
 
     Object.keys(this.countryRegions).forEach(region => {
       this.countryRegions[region] = this.countries.filter(country => country.ctryGroup === region)
@@ -182,8 +181,8 @@ export default {
     async updateScheduleB () {
       if (!this.scheduleBDisabled()) {
         this.loadingScheduleB = true
-        this.scheduleB = await this.repository.getOtexaScheduleB(
-          this.selectedGroups,
+        this.scheduleB = await this.repository.getOtexaScheduleBByCat(
+          this.selectedCategories,
           this.selectedChapters
         )
         this.loadingScheduleB = false
@@ -191,13 +190,13 @@ export default {
     },
     scheduleBDisabled () {
       return !(
-        this.selectedGroups.length > 0 || this.selectedChapters.length > 0
+        this.selectedCategories.length > 0 || this.selectedChapters.length > 0
       )
     },
     async viewReport () {
       let filters = []
       let countryPageFilters = []
-      let groupPageFilters = []
+      let categoryPageFilters = []
       let scheduleBPageFilters = []
 
       if (this.displayIn.length === 0) {
@@ -215,13 +214,13 @@ export default {
         filters.push(this.filter('Country', 'All', [], false))
       }
 
-      if (this.selectedGroups.length > 0) {
-        let selectedGroups = this.groups
-          .filter(g => this.selectedGroups.includes(g.groupId))
-          .map(g => g.longGroup.trim())
-        filters.push(this.filter('Group', 'In', selectedGroups, false))
+      if (this.selectedCategories.length > 0) {
+        let selectedCategories = this.categories
+          .filter(g => this.selectedCategories.includes(g.catId))
+          .map(g => g.longCategory.trim())
+        filters.push(this.filter('Category', 'In', selectedCategories, false))
       } else {
-        filters.push(this.filter('Group', 'All', [], false))
+        filters.push(this.filter('Category', 'All', [], false))
       }
 
       if (this.selectedChapters.length > 0) {
@@ -244,12 +243,12 @@ export default {
 
       scheduleBPageFilters.push(this.advancedFilter('Schedule B', 'And', 'IsNotBlank', null))
 
-      /* If search by Category => Group & SchedB tab defaults to Country = `WORLD`. */
+      /* If search by Category => Category & SchedB tab defaults to Country = `WORLD`. */
       if (!this.onlyCountry) {
         let world = this.countries
           .filter(c => (c.ctryNumber === 0))
           .map(c => c.ctryDescription.trim())
-        groupPageFilters.push(this.filter('Country', 'In', world, false))
+        categoryPageFilters.push(this.filter('Country', 'In', world, false))
         scheduleBPageFilters.push(this.filter('Country', 'In', world, false))
       }
 
@@ -281,12 +280,12 @@ export default {
 
         let pages = await report.getPages()
         let countryPage = pages.filter(p => p.displayName === 'Country')[0]
-        let groupPage = pages.filter(p => p.displayName === 'Group')[0]
+        let categoryPage = pages.filter(p => p.displayName === 'Category')[0]
         let scheduleBPage = pages.filter(p => p.displayName === 'Schedule B')[0]
 
         report.setFilters(filters)
         countryPage.setFilters(countryPageFilters)
-        groupPage.setFilters(groupPageFilters)
+        categoryPage.setFilters(categoryPageFilters)
         scheduleBPage.setFilters(scheduleBPageFilters)
 
         if (!this.onlyCountry) {
@@ -298,7 +297,7 @@ export default {
     },
     reset () {
       this.selectedCountries = []
-      this.selectedGroups = []
+      this.selectedCategories = []
       this.selectedChapters = []
       this.selectedScheduleB = []
       this.scheduleB = []
@@ -306,7 +305,7 @@ export default {
       this.isReportVisible = false
     },
     filter (column, operator, values, requireSingleSelection) {
-      let table = 'OTEXA_EXPORTS_VW';
+      let table = 'OTEXA_EXPORT_FOOTWEAR_VW';
       return {
         requireSingleSelection,
         operator,
@@ -320,7 +319,7 @@ export default {
       }
     },
     advancedFilter (column, logicalOperator, operator, value) {
-      let table = 'OTEXA_EXPORTS_VW'
+      let table = 'OTEXA_EXPORT_FOOTWEAR_VW'
       return {
         logicalOperator,
         conditions: [

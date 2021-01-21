@@ -112,4 +112,15 @@ public class ProductionMetadataService implements MetadataService {
   public List<ScheduleB> getScheduleBByChapters(List<Long> chapters) {
     return scheduleBRepository.findByScheduleBChapterChapterInOrderByScheduleB(chapters);
   }
+
+  @Override
+  public List<ScheduleB> getScheduleBByCategoriesAndChapters(List<Long> categories, List<Long> chapters) {
+    return scheduleBRepository.findByCatIdInAndScheduleBChapterChapterInOrderByScheduleB(categories, chapters);
+  }
+
+  @Override
+  public List<ScheduleB> getScheduleBByCategories(List<Long> categoryIds) {
+    return scheduleBRepository.findByCatIdIn(categoryIds);
+  }
+
 }

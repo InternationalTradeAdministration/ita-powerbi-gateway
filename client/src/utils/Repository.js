@@ -61,6 +61,10 @@ export default class Repository {
     return await axios.get('/api/otexa/scheduleb?exportGroups=' + groupIds + '&chapters=' + chapterIds).then(response => response.data)
   }
 
+  async getOtexaScheduleBByCat(categoryIds, chapterIds) {
+    return await axios.get('/api/otexa/scheduleb?categories=' + categoryIds + '&chapters=' + chapterIds).then(response => response.data)
+  }
+
   async getOtexaYears() {
     return await axios.get('/api/otexa/years').then(response => response.data)
   }

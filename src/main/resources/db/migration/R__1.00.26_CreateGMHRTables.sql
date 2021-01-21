@@ -28,10 +28,10 @@ CREATE TABLE [dbo].[DH_DUTY_STATION_LOOKUP]
 )
 GO
 
-DROP TABLE IF EXISTS [dbo].[GMHR_DH_FLAT_FILE]
+DROP TABLE IF EXISTS [dbo].[GMHR_DH_INPUT_TABLE]
 GO
 
-CREATE TABLE [dbo].[GMHR_DH_FLAT_FILE]
+CREATE TABLE [dbo].[GMHR_DH_INPUT_TABLE]
 (
     [Bureau Code]   INTEGER,
     [Fund Code] INTEGER,
@@ -52,13 +52,13 @@ CREATE TABLE [dbo].[GMHR_DH_FLAT_FILE]
     [Hours Worked Project]  DECIMAL(10),
     [Labor Cost Project]    DECIMAL(10),
     [Employee Name] VARCHAR(MAX),
-    [Employee No]   INTEGER,
+    [Emp No]   INTEGER,
     [Title] VARCHAR(MAX),
     [FullPart Time] VARCHAR(MAX),
     [Duty Station City] INTEGER,
     [Duty Station State]    VARCHAR(MAX),
     [Grade and Step]    VARCHAR(MAX),
-    [Pay Plane] VARCHAR(MAX),
+    [Pay Plan] VARCHAR(MAX),
     [Active Status] VARCHAR(1),
     [PP Applied]    INTEGER,
     [PP Covered]    INTEGER,
@@ -75,6 +75,7 @@ CREATE TABLE [dbo].[GMHR_DH_FLAT_FILE]
     [Comp Earned Hours] DECIMAL(10),
     [Comp Earned Dollars]   DECIMAL(10),
     [AL/SL Used]    DECIMAL(10),
+    [Other Used]    DECIMAL(10),
     [Comp Used] DECIMAL(10),
     [Hours Worked PP]   DECIMAL(10)
 )
@@ -118,10 +119,10 @@ CREATE TABLE [dbo].[GM_HR_PAYPLAN_LOOKUP]
 )
 GO
 
-DROP TABLE IF EXISTS [dbo].[GMHR_LES_FLAT_FILE]
+DROP TABLE IF EXISTS [dbo].[GMHR_LES_INPUT_TABLE]
 GO
 
-CREATE TABLE [dbo].[GMHR_LES_FLAT_FILE]
+CREATE TABLE [dbo].[GMHR_LES_INPUT_TABLE]
 (
     [Line No.]  INTEGER,
     [Period ID] VARCHAR(MAX),
@@ -132,7 +133,7 @@ CREATE TABLE [dbo].[GMHR_LES_FLAT_FILE]
     [Agy]   INTEGER,
     [Bur]   INTEGER,
     [Bureau Name]   VARCHAR(MAX),
-    [Budget FY] INTEGER,
+    [Bdgt FY] INTEGER,
     [Appropriation] VARCHAR(MAX),
     [Bgn FY]    INTEGER,
     [End FY]    INTEGER,
@@ -168,4 +169,33 @@ CREATE TABLE [dbo].[GMHR_LES_FLAT_FILE]
     [Payroll Status]    VARCHAR(MAX),
     [Run Date]  DATETIME,
     [Service Center]    VARCHAR(MAX)
+)
+
+
+DROP TABLE IF EXISTS [dbo].[GM_HR_FUNDS_TABLE]
+GO
+
+CREATE TABLE [dbo].[GM_HR_FUNDS_TABLE]
+(
+    Bur INTEGER,
+    Fund    INTEGER,
+    [project type]    VARCHAR(MAX),
+    [charging org]  VARCHAR(MAX),
+    Project INTEGER,
+    Task    INTEGER,
+    [owning org]    VARCHAR(MAX),
+    [object class]  VARCHAR(MAX),
+    [feeder system number]  VARCHAR(MAX),
+    [reference no]  VARCHAR(MAX),
+    [vendor name]   VARCHAR(MAX),
+    [vendor entity type]    VARCHAR(MAX),
+    [trans source]  VARCHAR(MAX),
+    [gl end date]   DATETIME,
+    [cfs trans no]  INTEGER,
+    [fund code fiscal year] INTEGER,
+    recoveries  DECIMAL(10),
+    [UDOs without recoveries]   DECIMAL(10),
+    [unpaid accruals without revoceries]    DECIMAL(10),
+    [paid accruals without recoveries]  DECIMAL(10),
+    [site]  VARCHAR(MAX)
 )

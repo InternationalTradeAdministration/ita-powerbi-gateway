@@ -124,7 +124,7 @@ GO
 
 CREATE TABLE [dbo].[GMHR_LES_INPUT_TABLE]
 (
-    [Line No.]  INTEGER,
+    [Line No]  INTEGER,
     [Period ID] VARCHAR(MAX),
     [Cntry] INTEGER,
     [Country Name]  VARCHAR(MAX),
@@ -181,8 +181,8 @@ CREATE TABLE [dbo].[GM_HR_FUNDS_TABLE]
     Fund    INTEGER,
     [project type]    VARCHAR(MAX),
     [charging org]  VARCHAR(MAX),
-    Project INTEGER,
-    Task    INTEGER,
+    Project VARCHAR(MAX),
+    Task    VARCHAR(MAX),
     [owning org]    VARCHAR(MAX),
     [object class]  VARCHAR(MAX),
     [feeder system number]  VARCHAR(MAX),

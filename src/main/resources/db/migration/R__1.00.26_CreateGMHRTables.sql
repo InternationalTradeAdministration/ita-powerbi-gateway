@@ -124,7 +124,7 @@ GO
 
 CREATE TABLE [dbo].[GMHR_LES_INPUT_TABLE]
 (
-    [Line No.]  INTEGER,
+    [Line No]  INTEGER,
     [Period ID] VARCHAR(MAX),
     [Cntry] INTEGER,
     [Country Name]  VARCHAR(MAX),

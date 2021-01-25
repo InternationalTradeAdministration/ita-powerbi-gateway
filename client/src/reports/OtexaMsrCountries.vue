@@ -11,7 +11,6 @@
                 v-model="selectedCountries"
                 :name=region
                 :id=region
-                multiple
                 size="20"
               >
                 <option
@@ -121,10 +120,14 @@ export default {
         filters.push(this.filter('Display In', 'In', [this.displayIn], true))
       }
 
-      let selectedCountries = this.countries
-        .filter(c => this.selectedCountries.includes(c.ctryId))
-        .map(c => c.ctryDescription.trim())
-      filters.push(this.filter('Country', 'In', selectedCountries, false))
+      if (this.selectedCountries.length > 0) {
+        let selectedCountries = this.countries
+          .filter(c => this.selectedCountries.includes(c.ctryId))
+          .map(c => c.ctryDescription.trim())
+        filters.push(this.filter('Country', 'In', selectedCountries, false))
+      } else {
+        filters.push(this.filter('Country', 'All', [], false))
+      }
 
       filters.push(this.filter('Category', 'All', [], false))
 

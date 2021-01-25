@@ -131,9 +131,9 @@ export default {
   async created () {
     this.onlyCountry = true
 
-    let source = this.reportName.includes('Footwear')
-      ? 'ANNUAL_FOOTWEAR'
-      : 'ANNUAL'
+    let source = this.reportName.includes('Merged')
+      ? 'MERGED_CAT'
+      : 'PART_CAT'
 
     this.countries = await this.repository.getOtexaCountries(source)
     this.categories = this.reportName.includes('Merged') 
@@ -154,7 +154,6 @@ export default {
     },
     async viewReport () {
       let filters = []
-      let categoryPageFilters = []
 
       if (this.displayIn.length === 0) {
         filters.push(this.filter('Display In', 'In', ['DOLLARS'], true))
@@ -193,11 +192,6 @@ export default {
         }
       }
 
-      let world = this.countries
-        .filter(c => (c.ctryNumber === 0))
-        .map(c => c.ctryDescription.trim())
-      categoryPageFilters.push(this.filter('Country', 'In', world, false))
-
       this.report = await this.repository.generateToken(
         this.$route.params.workspaceName,
         this.$route.params.reportName
@@ -224,11 +218,7 @@ export default {
         this.loadingReport = false
         this.setTokenExpirationListener(this.report.powerBiToken.expiration)
 
-        let pages = await report.getPages()
-        let categoryPage = pages.filter(p => p.displayName.includes('Category'))[0]
-
         report.setFilters(filters)
-        categoryPage.setFilters(categoryPageFilters)
 
         if (!this.onlyCountry) {
           let pages = await report.getPages()

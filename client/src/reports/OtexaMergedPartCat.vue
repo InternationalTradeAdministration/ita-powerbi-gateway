@@ -6,7 +6,7 @@
         <div class="filter-fields">
           <div class="filter-field">
             <label>Data By:</label>
-            <select v-model="onlyCountry" @click="reset()">
+            <select v-model="onlyCountry" @click="reset()" size="2">
               <option :value="true">Country</option>
               <option :value="false">Category</option>
             </select>
@@ -18,7 +18,6 @@
                 v-model="selectedCountries"
                 :name=region
                 :id=region
-                multiple
                 size="20"
               >
                 <option
@@ -211,7 +210,7 @@ export default {
         tokenType: this.pbi.models.TokenType.Embed,
         permissions: this.pbi.models.Permissions.All,
         settings: {
-          filterPaneEnabled: true
+          filterPaneEnabled: false
         }
       }
 
@@ -301,7 +300,7 @@ label {
 }
 
 [multiple] {
-  width: 282px;
+  width: auto;
 }
 
 .filter-field {

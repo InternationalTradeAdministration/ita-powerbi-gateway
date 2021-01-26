@@ -373,7 +373,7 @@ label {
 }
 
 [multiple] {
-  width: 282px;
+  min-width: 100px;
 }
 
 .filter-field {

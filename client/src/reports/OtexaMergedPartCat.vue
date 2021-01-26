@@ -193,11 +193,13 @@ export default {
         }
       }
 
-      let world = this.countries
-        .filter(c => (c.ctryNumber === 0))
-        .map(c => c.ctryDescription.trim())
-      categoryPageFilters.push(this.filter('Country', 'In', world, false))
-      htsPageFilters.push(this.filter('Country', 'In', world, false))
+      if (!this.onlyCountry) {
+        let world = this.countries
+          .filter(c => (c.ctryNumber === 0))
+          .map(c => c.ctryDescription.trim())
+        categoryPageFilters.push(this.filter('Country', 'In', world, false))
+        htsPageFilters.push(this.filter('Country', 'In', world, false))
+      }
 
       this.report = await this.repository.generateToken(
         this.$route.params.workspaceName,

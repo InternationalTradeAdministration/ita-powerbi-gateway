@@ -120,9 +120,9 @@ export default {
         filters.push(this.filter('Display In', 'In', [this.displayIn], true))
       }
 
-      if (this.selectedCountries.length > 0) {
+      if (this.selectedCountries != "") {
         let selectedCountries = this.countries
-          .filter(c => this.selectedCountries.includes(c.ctryId))
+          .filter(c => [this.selectedCountries].includes(c.ctryId))
           .map(c => c.ctryDescription.trim())
         filters.push(this.filter('Country', 'In', selectedCountries, false))
       } else {

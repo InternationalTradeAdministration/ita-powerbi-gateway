@@ -284,10 +284,6 @@ label {
   display: block;
 }
 
-[multiple] {
-  width: 282px;
-}
-
 .filter-field {
   padding: 8px 12px;
 }

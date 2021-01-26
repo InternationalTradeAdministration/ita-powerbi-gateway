@@ -36,7 +36,6 @@
               v-model="selectedCategories"
               name="categories"
               id="categories"
-              multiple
               size="20"
             >
               <option
@@ -51,7 +50,6 @@
               v-model="selectedCategories"
               name="categories"
               id="categories"
-              multiple
               size="20"
             >
               <option
@@ -76,10 +74,6 @@
             </select>
           </div>
         </div>
-        <p v-if="(!onlyCountry)">
-          *Multiple selections will be added together (use the Shift key for
-          sequential selections and the Ctrl key for non-sequential ones).
-        </p>
         <div class="filter-buttons">
           <button @click="viewReport()" id="submit-button">Submit</button>
           <button @click="reset()" id="reset-button">Reset</button>
@@ -233,7 +227,7 @@ export default {
 
         report.setFilters(filters)
         categoryPage.setFilters(categoryPageFilters)
-        htsPage.setFilters(htsPageFilters)
+        if (htsPage) { htsPage.setFilters(htsPageFilters) }
 
         if (!this.onlyCountry) {
           let pages = await report.getPages()
@@ -303,10 +297,6 @@ export default {
 input,
 label {
   display: block;
-}
-
-[multiple] {
-  width: auto;
 }
 
 .filter-field {

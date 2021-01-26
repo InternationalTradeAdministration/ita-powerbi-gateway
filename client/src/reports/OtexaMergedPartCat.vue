@@ -153,6 +153,8 @@ export default {
     },
     async viewReport () {
       let filters = []
+      let categoryPageFilters = []
+      let htsPageFilters = []
 
       if (this.displayIn.length === 0) {
         filters.push(this.filter('Display In', 'In', ['DOLLARS'], true))
@@ -160,9 +162,9 @@ export default {
         filters.push(this.filter('Display In', 'In', [this.displayIn], true))
       }
 
-      if (this.selectedCountries.length > 0) {
+      if (this.selectedCountries != "") {
         let selectedCountries = this.countries
-          .filter(c => this.selectedCountries.includes(c.ctryId))
+          .filter(c => [this.selectedCountries].includes(c.ctryId))
           .map(c => c.ctryDescription.trim())
         filters.push(this.filter('Country', 'In', selectedCountries, false))
       } else {
@@ -191,6 +193,12 @@ export default {
         }
       }
 
+      let world = this.countries
+        .filter(c => (c.ctryNumber === 0))
+        .map(c => c.ctryDescription.trim())
+      categoryPageFilters.push(this.filter('Country', 'In', world, false))
+      htsPageFilters.push(this.filter('Country', 'In', world, false))
+
       this.report = await this.repository.generateToken(
         this.$route.params.workspaceName,
         this.$route.params.reportName
@@ -217,7 +225,13 @@ export default {
         this.loadingReport = false
         this.setTokenExpirationListener(this.report.powerBiToken.expiration)
 
+        let pages = await report.getPages()
+        let categoryPage = pages.filter(p => p.displayName.includes('Category'))[0]
+        let htsPage = pages.filter(p => p.displayName === 'HTS')[0]
+
         report.setFilters(filters)
+        categoryPage.setFilters(categoryPageFilters)
+        htsPage.setFilters(htsPageFilters)
 
         if (!this.onlyCountry) {
           let pages = await report.getPages()

@@ -277,6 +277,7 @@ export default {
 
 .filter-fields {
   display: flex;
+  flex-wrap: wrap;
 }
 
 input,

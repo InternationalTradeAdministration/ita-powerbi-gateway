@@ -6,7 +6,7 @@
         <div class="filter-fields">
           <div class="filter-field">
             <label>Data By:</label>
-            <select v-model="onlyCountry" @click="reset()">
+            <select v-model="onlyCountry" @click="reset()" size="2">
               <option :value="true">Country</option>
               <option :value="false">Category</option>
             </select>

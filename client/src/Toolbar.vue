@@ -30,7 +30,8 @@
         </button>
       </div>
     </div>
-    <dialog ref="export-dialog">
+    <modal name="export-dialog" :reset="true" height="auto" :pivotY="0.25">
+      <div class="dialog-content">
       <header>
         <span class="dialog-title">Export Data</span>
       </header>
@@ -65,9 +66,11 @@
           Close
         </button>
       </div>
-    </dialog>
+      </div>
+    </modal>
 
-    <dialog ref="export-report-dialog">
+    <modal name="export-report-dialog" :reset="true" height="auto" :pivotY="0.25">
+      <div class="dialog-content">
       <div v-if="exportReportFileFormat === null" class="select-export-format">
         <header>
           <span class="dialog-title">Select Export Format</span>
@@ -128,12 +131,16 @@
           Close
         </button>
       </div>
-    </dialog>
+      </div>
+    </modal>
   </div>
 </template>
 <script>
 
 const querystring = require('querystring')
+import Vue from 'vue'
+import VueModal from 'vue-js-modal'
+Vue.use(VueModal)
 
 export default {
   name: 'Toolbar',
@@ -168,7 +175,7 @@ export default {
     },
     async displayExportDialog () {
       this.loadingExportDialog = true
-      this.$refs['export-dialog'].showModal()
+      this.$modal.show('export-dialog')
       const report = this.getReport()
       let pages = await report.getPages()
       this.activePageIndex = pages.findIndex(p => p.isActive)
@@ -177,7 +184,7 @@ export default {
       this.loadingExportDialog = false
     },
     async exportData (visualIndex, summarized) {
-      const visual = this.activePageVisuals[visualIndex]
+      const visual = this.getVisualsWithData()[visualIndex]
       const exportType = summarized
         ? this.pbi.models.ExportDataType.Summarized
         : this.pbi.models.ExportDataType.Underlying
@@ -191,7 +198,7 @@ export default {
       link.click()
     },
     closeExportDialog () {
-      this.$refs['export-dialog'].close()
+      this.$modal.hide('export-dialog')
     },
     getVisualsWithData () {
       return this.activePageVisuals.filter(v =>
@@ -209,7 +216,7 @@ export default {
     },
     selectExportFormat() {
       this.exportReportFileFormat = null
-      this.$refs['export-report-dialog'].showModal()
+      this.$modal.show('export-report-dialog')
     },
     exportReport (format) {
       this.exportReportFileFormat = format
@@ -224,12 +231,10 @@ export default {
       .then(exportStatus => this.processFinalExportStatus(workspaceName, reportName, exportStatus))
     },
     closeExportToPdfDialog () {
-      this.$refs['export-report-dialog'].close()
+      this.$modal.hide('export-report-dialog')
     },
     startExportToFile(workspaceName, reportName, bookmarkState, format) {
-      if (!this.$refs['export-report-dialog'].open) {
-        this.$refs['export-report-dialog'].showModal()
-      }
+      this.$modal.show('export-report-dialog')
       return this.repository.exportToFile(workspaceName, reportName, bookmarkState, format)
     },
     getFinalExportStatus(workspaceName, reportName, exportStatusId, timeout = 2000) {
@@ -266,11 +271,10 @@ export default {
         this.isExportToPdfSuccessful = false
         this.isExportReportInProgress = false
       }
-      if (!this.$refs['export-report-dialog'].open) {
-        this.$refs['export-report-dialog'].showModal()
-      }
+      this.$modal.show('export-report-dialog')
     },
     async getDownloadFileName(reportName, format) {
+      console.log('format ' + format)
       let extension = null
       if (format === 'PNG') {
         let report = this.getReport()
@@ -346,6 +350,10 @@ td button {
 
 td button:hover {
   text-decoration: underline;
+}
+
+.dialog-content {
+  padding: 0 2em 1em;
 }
 
 .dialog-title {

@@ -26,4 +26,5 @@ h1 {
 
 iframe {
   border: none;
+  min-height: 1000px;
 }

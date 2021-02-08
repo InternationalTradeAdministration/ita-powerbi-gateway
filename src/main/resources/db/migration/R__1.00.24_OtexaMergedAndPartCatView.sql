@@ -3,6 +3,7 @@ AS
 SELECT details.[Country]
     , details.[MERG_CAT] as 'MERGED_CATEGORY'
     , details.[Description]
+    , hts.[LONG_HTS] as 'HTS'
     , hdr.[HEADER_DESCRIPTION] as 'DATA_KEY'
     , details.[VAL] AS 'DATA_VALUE'
     , hdr.[HEADER_TYPE] as 'DATA_TYPE'
@@ -11,6 +12,8 @@ SELECT details.[Country]
 FROM [dbo].[OTEXA_MERGED_CAT] details
 INNER JOIN [dbo].[OTEXA_HEADER_REF] hdr
     ON details.[HEADER_ID] = hdr.[HEADER_ID]
+FULL OUTER JOIN [dbo].[OTEXA_HTS_REF_VW] hts
+    ON hts.[HTS] = details.[HTS]
 WHERE hdr.[HEADER_DESCRIPTION] IS NOT NULL
 
 UNION ALL
@@ -18,6 +21,7 @@ UNION ALL
 SELECT details.[Country]
     , details.[MERG_CAT] as 'MERGED_CATEGORY'
     , details.[Description]
+    , hts.[LONG_HTS] as 'HTS'
     , hdr.[HEADER_DESCRIPTION] as 'DATA_KEY'
     , CASE 
         WHEN hdr.[HEADER_DESCRIPTION] = 'Current Month' THEN details.[VAL]
@@ -29,6 +33,8 @@ SELECT details.[Country]
 FROM [dbo].[OTEXA_MERGED_CAT] details
 INNER JOIN [dbo].[OTEXA_HEADER_REF] hdr
     ON details.[HEADER_ID] = hdr.[HEADER_ID]
+FULL OUTER JOIN [dbo].[OTEXA_HTS_REF_VW] hts
+    ON hts.[HTS] = details.[HTS]
 WHERE hdr.[HEADER_TYPE] = 'SME'
 AND hdr.[HEADER_DESCRIPTION] IS NOT NULL
 
@@ -37,6 +43,7 @@ UNION ALL
 SELECT details.[Country]
     , details.[MERG_CAT] as 'MERGED_CATEGORY'
     , details.[Description]
+    , hts.[LONG_HTS] as 'HTS'
     , hdr.[HEADER_DESCRIPTION] as 'DATA_KEY'
     , details.[VAL] * details.[SYEF] AS 'DATA_VALUE'
     , 'SME' as 'DATA_TYPE'
@@ -45,6 +52,8 @@ SELECT details.[Country]
 FROM [dbo].[OTEXA_MERGED_CAT] details
 INNER JOIN [dbo].[OTEXA_HEADER_REF] hdr
     ON details.[HEADER_ID] = hdr.[HEADER_ID]
+FULL OUTER JOIN [dbo].[OTEXA_HTS_REF_VW] hts
+    ON hts.[HTS] = details.[HTS]
 WHERE hdr.[HEADER_TYPE] = 'UNITS'
 AND hdr.[HEADER_DESCRIPTION] IS NOT NULL
 

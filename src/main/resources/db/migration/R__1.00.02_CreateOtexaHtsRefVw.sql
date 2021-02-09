@@ -1,8 +1,7 @@
 CREATE OR ALTER VIEW [dbo].[OTEXA_HTS_REF_VW]
 AS
-    SELECT hts.[HTS], hts_cat.[CAT_ID], CONCAT(hts.[HTS], ' - ', hts.[DESCRIPTION]) as 'LONG_HTS'
+    SELECT hts_cat.[HTS], hts_cat.[CAT_ID], CONCAT(hts_cat.[HTS], ' - ', hts.[DESCRIPTION]) as 'LONG_HTS'
     FROM [dbo].[OTEXA_HTS_REF] hts
-    RIGHT JOIN [dbo].[OTEXA_HTS_CAT_REF] hts_cat
+    FULL OUTER JOIN [dbo].[OTEXA_HTS_CAT_REF] hts_cat
     ON hts.HTS = hts_cat.HTS
-    WHERE hts.HTS IS NOT NULL
 GO

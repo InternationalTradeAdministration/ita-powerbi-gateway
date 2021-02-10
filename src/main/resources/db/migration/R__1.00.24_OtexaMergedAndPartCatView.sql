@@ -1,6 +1,7 @@
 CREATE OR ALTER VIEW [dbo].[OTEXA_MERGED_CAT_VW]
 AS
 SELECT details.[Country]
+    , details.[CAT_ID] as 'Category ID'
     , details.[MERG_CAT] as 'MERGED_CATEGORY'
     , details.[Description]
     , hts.[LONG_HTS] as 'HTS'
@@ -19,6 +20,7 @@ WHERE hdr.[HEADER_DESCRIPTION] IS NOT NULL
 UNION ALL
 
 SELECT details.[Country]
+    , details.[CAT_ID] as 'Category ID'
     , details.[MERG_CAT] as 'MERGED_CATEGORY'
     , details.[Description]
     , hts.[LONG_HTS] as 'HTS'
@@ -41,6 +43,7 @@ AND hdr.[HEADER_DESCRIPTION] IS NOT NULL
 UNION ALL
 
 SELECT details.[Country]
+    , details.[CAT_ID] as 'Category ID'
     , details.[MERG_CAT] as 'MERGED_CATEGORY'
     , details.[Description]
     , hts.[LONG_HTS] as 'HTS'
@@ -64,6 +67,7 @@ GO
 CREATE OR ALTER VIEW [dbo].[OTEXA_PART_CAT_VW]
 AS
 SELECT details.[Country]
+    , details.[CAT_ID] as 'Category ID'
     , details.[PART_CAT] as 'PART_CATEGORY'
     , category.[LONG_CATEGORY] as 'Category'
     , hts.[LONG_HTS] as 'HTS'
@@ -85,6 +89,7 @@ WHERE hdr.[HEADER_DESCRIPTION] IS NOT NULL
 UNION ALL
 
 SELECT details.[Country]
+    , details.[CAT_ID] as 'Category ID'
     , details.[PART_CAT] as 'PART_CATEGORY'
     , category.[LONG_CATEGORY] as 'Category'
     , hts.[LONG_HTS] as 'HTS'
@@ -110,6 +115,7 @@ AND hdr.[HEADER_DESCRIPTION] IS NOT NULL
 UNION ALL
 
 SELECT details.[Country]
+    , details.[CAT_ID] as 'Category ID'
     , details.[PART_CAT] as 'PART_CATEGORY'
     , category.[LONG_CATEGORY] as 'Category'
     , hts.[LONG_HTS] as 'HTS'

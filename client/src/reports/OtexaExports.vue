@@ -249,8 +249,8 @@ export default {
         let world = this.countries
           .filter(c => (c.ctryNumber === 0))
           .map(c => c.ctryDescription.trim())
-        groupPageFilters.push(this.filter('Country', 'In', world, false))
-        scheduleBPageFilters.push(this.filter('Country', 'In', world, false))
+        groupPageFilters.push(this.filter('Country', 'In', world, false, true, true))
+        scheduleBPageFilters.push(this.filter('Country', 'In', world, false, true, true))
       }
 
       this.report = await this.repository.generateToken(
@@ -305,7 +305,7 @@ export default {
       this.displayIn = 'DOLLARS'
       this.isReportVisible = false
     },
-    filter (column, operator, values, requireSingleSelection) {
+    filter (column, operator, values, requireSingleSelection, isHidden = false) {
       let table = 'OTEXA_EXPORTS_VW';
       return {
         requireSingleSelection,
@@ -316,7 +316,10 @@ export default {
           column,
           table
         },
-        filterType: 1
+        filterType: 1,
+        displaySettings: {
+          isHiddenInViewMode: isHidden
+        }
       }
     },
     advancedFilter (column, logicalOperator, operator, value) {

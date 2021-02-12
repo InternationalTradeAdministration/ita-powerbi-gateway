@@ -191,8 +191,8 @@ export default {
         let world = this.countries
           .filter(c => (c.ctryNumber === 0))
           .map(c => c.ctryDescription.trim())
-        categoryPageFilters.push(this.filter('Country', 'In', world, false))
-        htsPageFilters.push(this.filter('Country', 'In', world, false))
+        categoryPageFilters.push(this.filter('Country', 'In', world, false, true))
+        htsPageFilters.push(this.filter('Country', 'In', world, false, true))
       }
 
       this.report = await this.repository.generateToken(
@@ -243,7 +243,7 @@ export default {
       this.displayIn = 'DOLLARS'
       this.isReportVisible = false
     },
-    filter (column, operator, values, requireSingleSelection) {
+    filter (column, operator, values, requireSingleSelection, isHidden = false) {
       let table;
       if (this.reportName.includes('Merged')) {
         table = 'OTEXA_MERGED_CAT_VW'
@@ -259,7 +259,10 @@ export default {
           column,
           table
         },
-        filterType: 1
+        filterType: 1,
+        displaySettings: {
+          isHiddenInViewMode: isHidden
+        }
       }
     }
   }

@@ -12,6 +12,12 @@
       :pbi="pbi"
       :reportName="reportName"
     />
+    <otexa-msr-categories
+      v-else-if="workspaceName.includes('OTEXA') && (reportName.includes('MSR Categories') || reportName.includes('MSR Groups'))"
+      :repository="repository"
+      :pbi="pbi"
+      :reportName="reportName"
+    />
     <otexa-exports
       v-else-if="workspaceName.includes('OTEXA') && reportName.includes('Export')"
       :repository="repository"
@@ -20,12 +26,6 @@
     />
     <otexa-msr-countries
       v-else-if="workspaceName.includes('OTEXA') && reportName.includes('MSR Countries')"
-      :repository="repository"
-      :pbi="pbi"
-      :reportName="reportName"
-    />
-    <otexa-msr-categories
-      v-else-if="workspaceName.includes('OTEXA') && reportName.includes('MSR Categories')"
       :repository="repository"
       :pbi="pbi"
       :reportName="reportName"

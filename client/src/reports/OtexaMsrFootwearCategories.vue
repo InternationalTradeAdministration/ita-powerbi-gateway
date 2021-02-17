@@ -4,7 +4,6 @@
     <div v-else-if="!isReportVisible">
       <div class="filter-pane">
         <div class="filter-fields">
-
           <div class="filter-field">
             <label for="categoryFootwearProducts">Footwear, Leather and Fur Products:</label>
             <select
@@ -21,7 +20,6 @@
               >
             </select>
           </div>
-
           <div class="filter-field">
             <label for="categoryTravelGoods">Travelgoods:</label>
             <select
@@ -38,9 +36,6 @@
               >
             </select>
           </div>
-        </div>
-
-        <div class="filter-pane">
           <div class="filter-field">
             <label for="displayIn">Display In:</label>
             <select
@@ -54,7 +49,6 @@
             </select>
           </div>
         </div>
-
         <div class="filter-buttons">
           <button @click="viewReport()" id="submit-button">Submit</button>
           <button @click="reset()" id="reset-button">Reset</button>
@@ -98,7 +92,7 @@ export default {
       : 'ANNUAL'
     const MSR_CATEGORIES = {
       'categoryFootwearProducts': [10, 100, 101, 105, 110, 111, 112, 113, 114, 119, 120, 132, 133, 134, 139, 140, 141, 142, 143, 144],
-      'categoryTravelGoods': [190, 191, 192 ,193, 195, 196],
+      'categoryTravelGoods': [19, 190, 191, 192 ,193, 195, 196],
     }
 
     let allCategories = await this.repository.getOtexaCategories(source)
@@ -219,6 +213,7 @@ export default {
 
 .filter-fields {
   display: flex;
+  flex-wrap: wrap;
 }
 
 input,

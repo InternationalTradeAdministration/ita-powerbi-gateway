@@ -28,6 +28,7 @@
               v-model="displayIn"
               name="displayIn"
               id="displayIn"
+              size="2"
             >
               <option value='DOLLARS'>DOLLARS</option>
               <option value='QTY'>QTY</option>

@@ -82,6 +82,22 @@
               }}</option>
             </select>
           </div>
+          <div class="filter-field years" v-if="reportName.includes('Historical')">
+            <label for="years">*Years:</label>
+            <select
+              v-model="selectedYears"
+              name="years"
+              id="years"
+              multiple
+              size="20"
+            >
+              <option
+                v-for="item in years"
+                :key="item[yearKey]"
+                :value="item[yearKey]"
+              >{{ item[yearKey] }}</option>
+            </select>
+          </div>
           <div class="filter-field">
             <label for="displayIn">Display In:</label>
             <select
@@ -131,10 +147,13 @@ export default {
     groups: [],
     chapters: [],
     scheduleB: [],
+    years: [],
+    yearKey: null,
     selectedCountries: [],
     selectedGroups: [],
     selectedChapters: [],
     selectedScheduleB: [],
+    selectedYears: [],
     displayIn: [],
     isReportVisible: false,
     loading: true,
@@ -170,6 +189,10 @@ export default {
     })
 
     this.chapters = await this.repository.getOtexaChapters()
+
+    let years = await this.repository.getOtexaYears()
+    this.years = years.filter(year => !year.headerDescription.includes('Quarter'))
+    this.yearKey = 'headerDescription'
 
     this.displayIn = 'DOLLARS'
 
@@ -244,6 +267,15 @@ export default {
 
       scheduleBPageFilters.push(this.advancedFilter('Schedule B', 'And', 'IsNotBlank', null))
 
+      if (this.reportName.includes('Historical')) {
+        if (this.selectedYears.length > 0) {
+          let selectedYears = this.selectedYears
+          filters.push(this.filter('Year', 'In', selectedYears, false))
+        } else {
+          filters.push(this.filter('Year', 'All', [], false))
+        }
+      }
+
       /* If search by Category => Group & SchedB tab defaults to Country = `WORLD`. */
       if (!this.onlyCountry) {
         let world = this.countries
@@ -301,6 +333,7 @@ export default {
       this.selectedGroups = []
       this.selectedChapters = []
       this.selectedScheduleB = []
+      this.selectedYears = []
       this.scheduleB = []
       this.displayIn = 'DOLLARS'
       this.isReportVisible = false

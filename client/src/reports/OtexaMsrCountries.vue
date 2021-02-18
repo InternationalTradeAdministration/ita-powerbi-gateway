@@ -94,11 +94,19 @@ export default {
     source: 'ANNUAL'
   }),
   async created () {
-    this.source = this.reportName.includes('Export')
-      ? 'EXPORT'
-      : 'ANNUAL'
+    let source;
+    if (this.reportName.includes('Annual Footwear')) {
+      source = 'ANNUAL_FOOTWEAR'
+    } else if (this.reportName.includes('Export Footwear')) {
+      source = 'EXPORT_FOOTWEAR'
+    } else if (this.reportName.includes('Export')) {
+      source = 'EXPORT'
+    } else {
+      source = 'ANNUAL'
+    }
 
-    this.countries = await this.repository.getOtexaCountries(this.source)
+    this.countries = await this.repository.getOtexaCountries(source)
+    this.categories = await this.repository.getOtexaCategories(source)
 
     Object.keys(this.countryRegions).forEach(region => {
       this.countryRegions[region] = this.countries.filter(country => country.ctryGroup === region)
@@ -168,12 +176,16 @@ export default {
       this.isReportVisible = false
     },
     filter (column, operator, values, requireSingleSelection) {
-      let table;
-      if (this.reportName.includes('Export')) {
-        table = 'OTEXA_EXPORTS_VW'
-      } else {
-        table = 'OTEXA_ANNUAL_VW'
-      }
+    let table;
+    if (this.reportName.includes('Annual Footwear')) {
+      table = 'OTEXA_ANNUAL_FOOTWEAR_VW'
+    } else if (this.reportName.includes('Export Footwear')) {
+      table = 'OTEXA_EXPORT_FOOTWEAR_VW'
+    } else if (this.reportName.includes('Export')) {
+      table = 'OTEXA_EXPORTS_VW'
+    } else {
+      table = 'OTEXA_ANNUAL_VW'
+    }
       return {
         requireSingleSelection,
         operator,

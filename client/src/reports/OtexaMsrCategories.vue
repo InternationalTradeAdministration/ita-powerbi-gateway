@@ -21,23 +21,6 @@
               >
             </select>
           </div>
-          <div class="filter-field" v-else-if="source==='EXPORT'">
-            <label for="categoryNotions">Notions:</label>
-            <select
-              v-model="selectedGroups"
-              name="categoryNotions"
-              id="categoryNotions"
-              size="20"
-            >
-              <option
-                v-for="item in categoryNotions"
-                :key="item.groupId"
-                :value="item.groupId"
-                >{{ item.longGroup }}</option
-              >
-            </select>
-          </div>
-
           <div class="filter-field" v-if="source==='ANNUAL'">
             <label for="categoryYarn">Yarn:</label>
             <select
@@ -54,23 +37,6 @@
               >
             </select>
           </div>
-          <div class="filter-field" v-else-if="source==='EXPORT'">
-            <label for="categoryYarn">Yarn:</label>
-            <select
-              v-model="selectedGroups"
-              name="categoryYarn"
-              id="categoryYarn"
-              size="20"
-            >
-              <option
-                v-for="item in categoryYarn"
-                :key="item.groupId"
-                :value="item.groupId"
-                >{{ item.longGroup }}</option
-              >
-            </select>
-          </div>
-
           <div class="filter-field" v-if="source==='ANNUAL'">
             <label for="categoryFabric">Fabrics:</label>
             <select
@@ -87,23 +53,6 @@
               >
             </select>
           </div>
-          <div class="filter-field" v-else-if="source==='EXPORT'">
-            <label for="categoryFabric">Fabrics:</label>
-            <select
-              v-model="selectedGroups"
-              name="categoryFabric"
-              id="categoryFabric"
-              size="20"
-            >
-              <option
-                v-for="item in categoryFabric"
-                :key="item.groupId"
-                :value="item.groupId"
-                >{{ item.longGroup }}</option
-              >
-            </select>
-          </div>
-
           <div class="filter-field" v-if="source==='ANNUAL'">
             <label for="categoryApparel">Apparel:</label>
             <select
@@ -120,23 +69,6 @@
               >
             </select>
           </div>
-          <div class="filter-field" v-else-if="source==='EXPORT'">
-            <label for="categoryApparel">Apparel:</label>
-            <select
-              v-model="selectedGroups"
-              name="categoryApparel"
-              id="categoryApparel"
-              size="20"
-            >
-              <option
-                v-for="item in categoryApparel"
-                :key="item.groupId"
-                :value="item.groupId"
-                >{{ item.longGroup }}</option
-              >
-            </select>
-          </div>
-
           <div class="filter-field" v-if="source==='ANNUAL'">
             <label for="categoryMadeUps">Made Ups:</label>
             <select
@@ -153,25 +85,72 @@
               >
             </select>
           </div>
-          <div class="filter-field" v-else-if="source==='EXPORT'">
-            <label for="categoryMadeUps">Made Ups:</label>
+
+          <div class="filter-field" v-if="source==='EXPORT'">
+            <label for="groupApparel">Apparel:</label>
             <select
               v-model="selectedGroups"
-              name="categoryMadeUps"
-              id="categoryMadeUps"
+              name="groupApparel"
+              id="groupApparel"
               size="20"
             >
               <option
-                v-for="item in categoryMadeUps"
+                v-for="item in groupApparel"
                 :key="item.groupId"
                 :value="item.groupId"
                 >{{ item.longGroup }}</option
               >
             </select>
           </div>
-        </div>
+          <div class="filter-field" v-if="source==='EXPORT'">
+            <label for="groupYarn">Yarn:</label>
+            <select
+              v-model="selectedGroups"
+              name="groupYarn"
+              id="groupYarn"
+              size="20"
+            >
+              <option
+                v-for="item in groupYarn"
+                :key="item.groupId"
+                :value="item.groupId"
+                >{{ item.longGroup }}</option
+              >
+            </select>
+          </div>
+          <div class="filter-field" v-if="source==='EXPORT'">
+            <label for="groupFabric">Fabrics:</label>
+            <select
+              v-model="selectedGroups"
+              name="groupFabric"
+              id="groupFabric"
+              size="20"
+            >
+              <option
+                v-for="item in groupFabric"
+                :key="item.groupId"
+                :value="item.groupId"
+                >{{ item.longGroup }}</option
+              >
+            </select>
+          </div>
+          <div class="filter-field" v-if="source==='EXPORT'">
+            <label for="groupMadeUps">Made Ups:</label>
+            <select
+              v-model="selectedGroups"
+              name="groupMadeUps"
+              id="groupMadeUps"
+              size="20"
+            >
+              <option
+                v-for="item in groupMadeUps"
+                :key="item.groupId"
+                :value="item.groupId"
+                >{{ item.longGroup }}</option
+              >
+            </select>
+          </div>
 
-        <div class="filter-pane">
           <div class="filter-field">
             <label for="displayIn">Display In:</label>
             <select
@@ -217,9 +196,13 @@ export default {
     report: null,
     categoryNotions: [],
     categoryYarn: [],
+    groupYarn: [],
     categoryFabric: [],
+    groupFabric: [],
     categoryApparel: [],
+    groupApparel: [],
     categoryMadeUps: [],
+    groupMadeUps: [],
     allCategories: [],
     allGroups: [],
     selectedCategories: [],
@@ -242,6 +225,13 @@ export default {
       'categoryMadeUps': [360, 361, 362, 363, 369, 464, 465, 469, 665, 666, 669, 670, 863, 870, 871, 899]
     }
 
+    const MSR_GROUPS = {
+      'groupApparel': [30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60],
+      'groupYarn': [101, 102, 103],
+      'groupFabric': [200, 201, 202, 203, 204, 205, 206],
+      'groupMadeUps': [400, 401, 402, 403, 404, 405, 406, 408]
+    }
+
     if (this.source === 'ANNUAL') {
       let allCategories = await this.repository.getOtexaCategories(this.source)
       this.allCategories = allCategories
@@ -251,8 +241,8 @@ export default {
     } else if (this.source === 'EXPORT') {
       let allGroups = await this.repository.getOtexaExportGroups()
       this.allGroups = allGroups.sort((a,b) => a.groupId - b.groupId)
-      Object.keys(MSR_CATEGORIES).forEach(grp => {
-        this[grp] = allGroups.filter(item => MSR_CATEGORIES[grp].includes(item.groupId))
+      Object.keys(MSR_GROUPS).forEach(grp => {
+        this[grp] = allGroups.filter(item => MSR_GROUPS[grp].includes(item.groupId))
       })
     }
 
@@ -282,7 +272,6 @@ export default {
           .map(c => c.longCategory.trim())
         filters.push(this.filter('Category', 'In', selectedCategories, false))
       } else if (this.source === 'EXPORT') {
-        console.log(this.selectedGroups)
         let selectedGroups = this.allGroups
           .filter(c => [this.selectedGroups].includes(c.groupId))
           .map(c => c.longGroup.trim())

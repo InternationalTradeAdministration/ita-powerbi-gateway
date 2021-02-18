@@ -87,9 +87,9 @@ export default {
     loadingReport: true,
   }),
   async created () {
-    let source = this.reportName.includes('Footwear')
-      ? 'ANNUAL_FOOTWEAR'
-      : 'ANNUAL'
+    let source = this.reportName.includes('Export')
+      ? 'EXPORT_FOOTWEAR'
+      : 'ANNUAL_FOOTWEAR'
     const MSR_CATEGORIES = {
       'categoryFootwearProducts': [10, 100, 101, 105, 110, 111, 112, 113, 114, 119, 120, 132, 133, 134, 139, 140, 141, 142, 143, 144],
       'categoryTravelGoods': [19, 190, 191, 192 ,193, 195, 196],
@@ -126,13 +126,6 @@ export default {
         .filter(c => [this.selectedCategories].includes(c.catId))
         .map(c => c.longCategory.trim())
       filters.push(this.filter('Category', 'In', selectedCategories, false))
-
-      filters.push(this.filter('Chapter', 'All', [], false))
-      filters.push(this.filter('HTS', 'All', [], false))
-
-      if (this.reportName.includes('Historical')) {
-        filters.push(this.filter('Year', 'All', [], false))
-      }
 
       this.report = await this.repository.generateToken(
         this.$route.params.workspaceName,
@@ -175,10 +168,10 @@ export default {
     },
     filter (column, operator, values, requireSingleSelection) {
       let table;
-      if (this.reportName.includes('Footwear')) {
-        table = 'OTEXA_ANNUAL_FOOTWEAR_VW'
+      if (this.reportName.includes('Export')) {
+        table = 'OTEXA_EXPORT_FOOTWEAR_VW'
       } else {
-        table = 'OTEXA_ANNUAL_VW'
+        table = 'OTEXA_ANNUAL_FOOTWEAR_VW'
       }
       return {
         requireSingleSelection,

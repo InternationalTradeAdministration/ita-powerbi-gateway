@@ -82,6 +82,22 @@
               }}</option>
             </select>
           </div>
+          <div class="filter-field years" v-if="reportName.includes('Historical')">
+            <label for="years">*Years:</label>
+            <select
+              v-model="selectedYears"
+              name="years"
+              id="years"
+              multiple
+              size="20"
+            >
+              <option
+                v-for="item in years"
+                :key="item[yearKey]"
+                :value="item[yearKey]"
+              >{{ item[yearKey] }}</option>
+            </select>
+          </div>
           <div class="filter-field">
             <label for="displayIn">Display In:</label>
             <select
@@ -131,10 +147,13 @@ export default {
     categories: [],
     chapters: [],
     scheduleB: [],
+    years: [],
+    yearKey: null,
     selectedCountries: [],
     selectedCategories: [],
     selectedChapters: [],
     selectedScheduleB: [],
+    selectedYears: [],
     displayIn: [],
     isReportVisible: false,
     loading: true,
@@ -170,6 +189,9 @@ export default {
 
     this.chapters = await this.repository.getOtexaChapters()
 
+    this.years = await this.repository.getOtexaFootwearYears()
+    this.yearKey = 'dataKey'
+
     this.displayIn = 'DOLLARS'
 
     this.loading = false
@@ -203,6 +225,15 @@ export default {
         filters.push(this.filter('Display In', 'In', ['DOLLARS'], true))
       } else {
         filters.push(this.filter('Display In', 'In', [this.displayIn], true))
+      }
+
+      if (this.reportName.includes('Historical')) {
+        if (this.selectedYears.length > 0) {
+          let selectedYears = this.selectedYears
+          filters.push(this.filter('Year', 'In', selectedYears, false))
+        } else {
+          filters.push(this.filter('Year', 'All', [], false))
+        }
       }
 
       if (this.selectedCountries.length > 0) {
@@ -301,6 +332,7 @@ export default {
       this.selectedChapters = []
       this.selectedScheduleB = []
       this.scheduleB = []
+      this.selectedYears = []
       this.displayIn = 'DOLLARS'
       this.isReportVisible = false
     },

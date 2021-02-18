@@ -18,14 +18,14 @@
       :pbi="pbi"
       :reportName="reportName"
     />
-    <otexa-exports
-      v-else-if="workspaceName.includes('OTEXA') && reportName.includes('Export')"
+    <otexa-msr-countries
+      v-else-if="workspaceName.includes('OTEXA') && reportName.includes('MSR Countries')"
       :repository="repository"
       :pbi="pbi"
       :reportName="reportName"
     />
-    <otexa-msr-countries
-      v-else-if="workspaceName.includes('OTEXA') && reportName.includes('MSR Countries')"
+    <otexa-exports
+      v-else-if="workspaceName.includes('OTEXA') && reportName.includes('Export')"
       :repository="repository"
       :pbi="pbi"
       :reportName="reportName"

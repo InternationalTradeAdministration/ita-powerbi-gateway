@@ -77,7 +77,6 @@ export default {
   data: () => ({
     report: null,
     countries: [],
-    categories: [],
     selectedCountries: [],
     displayIn: [],
     isReportVisible: false,
@@ -91,14 +90,15 @@ export default {
       'Europe': [],
       'North and Central America': [],
       'South America': [],
-    }
+    },
+    source: 'ANNUAL'
   }),
   async created () {
-    let source = this.reportName.includes('Footwear')
-      ? 'ANNUAL_FOOTWEAR'
+    this.source = this.reportName.includes('Export')
+      ? 'EXPORT'
       : 'ANNUAL'
-    this.countries = await this.repository.getOtexaCountries(source)
-    this.categories = await this.repository.getOtexaCategories(source)
+
+    this.countries = await this.repository.getOtexaCountries(this.source)
 
     Object.keys(this.countryRegions).forEach(region => {
       this.countryRegions[region] = this.countries.filter(country => country.ctryGroup === region)
@@ -128,16 +128,6 @@ export default {
         filters.push(this.filter('Country', 'In', selectedCountries, false))
       } else {
         filters.push(this.filter('Country', 'All', [], false))
-      }
-
-      filters.push(this.filter('Category', 'All', [], false))
-
-      filters.push(this.filter('Chapter', 'All', [], false))
-
-      filters.push(this.filter('HTS', 'All', [], false))
-
-      if (this.reportName.includes('Historical')) {
-        filters.push(this.filter('Year', 'All', [], false))
       }
 
       this.report = await this.repository.generateToken(
@@ -179,8 +169,8 @@ export default {
     },
     filter (column, operator, values, requireSingleSelection) {
       let table;
-      if (this.reportName.includes('Footwear')) {
-        table = 'OTEXA_ANNUAL_FOOTWEAR_VW'
+      if (this.reportName.includes('Export')) {
+        table = 'OTEXA_EXPORTS_VW'
       } else {
         table = 'OTEXA_ANNUAL_VW'
       }

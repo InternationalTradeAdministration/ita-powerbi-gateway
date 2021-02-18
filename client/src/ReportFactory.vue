@@ -6,8 +6,8 @@
       :pbi="pbi"
       :reportName="reportName"
     />
-    <otexa-export-footwear
-      v-else-if="workspaceName.includes('OTEXA') && reportName.includes('Export') && reportName.includes('Footwear')"
+    <otexa-msr-countries
+      v-else-if="workspaceName.includes('OTEXA') && reportName.includes('MSR Countries')"
       :repository="repository"
       :pbi="pbi"
       :reportName="reportName"
@@ -18,8 +18,8 @@
       :pbi="pbi"
       :reportName="reportName"
     />
-    <otexa-msr-countries
-      v-else-if="workspaceName.includes('OTEXA') && reportName.includes('MSR Countries')"
+    <otexa-export-footwear
+      v-else-if="workspaceName.includes('OTEXA') && reportName.includes('Export') && reportName.includes('Footwear')"
       :repository="repository"
       :pbi="pbi"
       :reportName="reportName"
@@ -66,7 +66,7 @@ export default {
     'otexa-merged-part-cat': OtexaMergedPartCat,
     'otexa-msr-countries': OtexaMsrCountries,
     'otexa-msr-categories': OtexaMsrCategories,
-    'otexa-msr-footwear-categories': OtexaMsrFootwearCategories,
+    'otexa-msr-footwear-categories': OtexaMsrFootwearCategories
   },
   data: () => ({
     workspaceName: null,

@@ -9,6 +9,8 @@ SELECT details.[Country]
     , details.[HEADER_ID] as 'DATA_KEY'
     , details.[VAL] AS 'DATA_VALUE'
     , details.[DATA_TYPE]
+    , details.[Quantity] as 'Quantity'
+    , details.[DOLLAR_SIGN] as 'Dollar Sign'
     , details.[REPORT_MONTH] as 'Report Month'
     , details.[REPORT_YEAR] as 'Report Year'
 FROM [dbo].[OTEXA_EXPORT_FOOTWEAR] details

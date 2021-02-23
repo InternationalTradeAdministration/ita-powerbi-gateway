@@ -1,7 +1,13 @@
 <template>
   <div class="report-factory">
+    <otexa-annual-experimental
+      v-if="workspaceName.includes('OTEXA') && reportName.includes('Experimental')"
+      :repository="repository"
+      :pbi="pbi"
+      :reportName="reportName"
+    />
     <otexa-msr-footwear-categories
-      v-if="workspaceName.includes('OTEXA') && reportName.includes('MSR Categories') && reportName.includes('Footwear')"
+      v-else-if="workspaceName.includes('OTEXA') && reportName.includes('MSR Categories') && reportName.includes('Footwear')"
       :repository="repository"
       :pbi="pbi"
       :reportName="reportName"
@@ -54,6 +60,7 @@ import OtexaMsrCountries from '@/reports/OtexaMsrCountries'
 import OtexaMsrCategories from '@/reports/OtexaMsrCategories'
 import OtexaMsrFootwearCategories from '@/reports/OtexaMsrFootwearCategories'
 import OtexaExportFootwear from '@/reports/OtexaExportFootwear.vue'
+import OtexaAnnualExperimental from '@/reports/OtexaAnnualExperimental.vue'
 
 export default {
   name: 'ReportFactory',
@@ -66,7 +73,8 @@ export default {
     'otexa-merged-part-cat': OtexaMergedPartCat,
     'otexa-msr-countries': OtexaMsrCountries,
     'otexa-msr-categories': OtexaMsrCategories,
-    'otexa-msr-footwear-categories': OtexaMsrFootwearCategories
+    'otexa-msr-footwear-categories': OtexaMsrFootwearCategories,
+    'otexa-annual-experimental': OtexaAnnualExperimental
   },
   data: () => ({
     workspaceName: null,

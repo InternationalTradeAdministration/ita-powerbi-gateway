@@ -240,9 +240,7 @@ export default {
     },
     async viewReport () {
       let filters = []
-      let categoryPageFilters = []
       let htsPageFilters = []
-      let countryPageFilters = []
 
       if (this.displayIn.length === 0) {
         filters.push(this.filter('Display In', 'In', ['DOLLARS'], true))
@@ -250,20 +248,21 @@ export default {
         filters.push(this.filter('Display In', 'In', [this.displayIn], true))
       }
 
-      if (this.selectedCountries.length > 0) {
+      let worldId = this.reportName.includes('Footwear') ? 420 : 237
+      if ((this.selectedCountries.length === 0) || this.selectedCountries.includes(worldId)) {
+        filters.push(this.filter('Country', 'All', [], false))
+      } else {
         let selectedCountries = this.countries
           .filter(c => this.selectedCountries.includes(c.ctryId))
           .map(c => c.ctryDescription.trim())
-        filters.push(this.filter('Country', 'In', selectedCountries, false))
-      } else {
-        filters.push(this.filter('Country', 'All', [], false))
+        filters.push(this.filter('Country', 'In', selectedCountries, false, true))
       }
 
       if (this.selectedCategories.length > 0) {
         let selectedCategories = this.categories
           .filter(c => this.selectedCategories.includes(c.catId))
           .map(c => c.longCategory.trim())
-        filters.push(this.filter('Category', 'In', selectedCategories, false))
+        filters.push(this.filter('Category', 'In', selectedCategories, false, true))
       } else {
         filters.push(this.filter('Category', 'All', [], false))
       }
@@ -285,7 +284,7 @@ export default {
       } else {
         filters.push(this.filter('HTS', 'All', [], false))
       }
-      
+
       htsPageFilters.push(this.advancedFilter('HTS', 'And', 'IsNotBlank', null))
 
       if (this.reportName.includes('Historical')) {
@@ -295,27 +294,6 @@ export default {
         } else {
           filters.push(this.filter('Year', 'All', [], false))
         }
-      }
-
-      /* For Annual Data */
-      /* If search by Category => Category & HTS tab defaults to Country = `WORLD`. */
-      /* If search by Country => Country tab defaults to Category = 0. */
-      /* For Footwear Data */
-      /* If search by Category => Category & HTS tab defaults to Country = `World`. */
-      /* If search by Country => Country tab defaults to Category = 101. */
-      
-      let cat0 = (this.reportName.includes('Footwear')) ? (101) : (0)
-      let catZero = this.categories
-            .filter(c => (c.catId === cat0))
-            .map(c => c.longCategory.trim())
-      if (this.onlyCountry) {
-        countryPageFilters.push(this.filter('Category', 'In', catZero, false, true))
-      } else {
-        let world = this.countries
-          .filter(c => (c.ctryNumber === 0))
-          .map(c => c.ctryDescription.trim())
-        categoryPageFilters.push(this.filter('Country', 'In', world, false, true))
-        htsPageFilters.push(this.filter('Country', 'In', world, false, true))
       }
 
       this.report = await this.repository.generateToken(
@@ -345,14 +323,11 @@ export default {
         this.setTokenExpirationListener(this.report.powerBiToken.expiration)
 
         let pages = await report.getPages()
-        let categoryPage = pages.filter(p => p.displayName === 'Category')[0]
         let htsPage = pages.filter(p => p.displayName === 'HTS')[0]
         let countryPage = pages.filter(p => p.displayName === 'Country')[0]
 
         report.setFilters(filters)
-        categoryPage.setFilters(categoryPageFilters)
         htsPage.setFilters(htsPageFilters)
-        countryPage.setFilters(countryPageFilters)
 
         if (!this.onlyCountry) {
           countryPage.setActive()

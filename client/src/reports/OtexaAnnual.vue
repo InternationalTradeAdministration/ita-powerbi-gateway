@@ -248,14 +248,17 @@ export default {
         filters.push(this.filter('Display In', 'In', [this.displayIn], true))
       }
 
-      let worldId = this.reportName.includes('Footwear') ? 420 : 237
-      if ((this.selectedCountries.length === 0) || this.selectedCountries.includes(worldId)) {
+      if (this.selectedCountries.length === 0) {
         filters.push(this.filter('Country', 'All', [], false))
       } else {
         let selectedCountries = this.countries
           .filter(c => this.selectedCountries.includes(c.ctryId))
           .map(c => c.ctryDescription.trim())
-        filters.push(this.filter('Country', 'In', selectedCountries, false, true))
+        if ( selectedCountries.includes('World') || selectedCountries.includes('WORLD') ) {
+          filters.push(this.filter('Country', 'All', [], false))
+        } else {
+          filters.push(this.filter('Country', 'In', selectedCountries, false, true))
+        }
       }
 
       if (this.selectedCategories.length > 0) {

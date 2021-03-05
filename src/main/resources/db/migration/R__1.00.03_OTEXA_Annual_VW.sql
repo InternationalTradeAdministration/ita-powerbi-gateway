@@ -7,6 +7,9 @@ SELECT details.[Country]
     , hdr.[HEADER_DESCRIPTION] as 'DATA_KEY'
     , details.[VAL] AS 'DATA_VALUE'
     , hdr.[HEADER_TYPE] as 'DATA_TYPE'
+    , details.[UOM] as 'Unit of Measure'
+    , details.[M2] as 'M2'
+    , details.[DOLLAR_SIGN] as 'Dollar Sign'
     , details.[REPORT_MONTH] as 'Report Month'
     , details.[REPORT_YEAR] as 'Report Year'
 FROM [dbo].[OTEXA_ANNUAL] details
@@ -34,6 +37,9 @@ SELECT details.[Country]
         ELSE details.[VAL] / details.[SYEF]
         END as 'DATA_VALUE'
     , 'UNITS' as 'DATA_TYPE'
+    , details.[UOM] as 'Unit of Measure'
+    , details.[M2] as 'M2'
+    , details.[DOLLAR_SIGN] as 'Dollar Sign'
     , details.[REPORT_MONTH] as 'Report Month'
     , details.[REPORT_YEAR] as 'Report Year'
 FROM [dbo].[OTEXA_ANNUAL] details
@@ -59,6 +65,9 @@ SELECT details.[Country]
     , hdr.[HEADER_DESCRIPTION] as 'DATA_KEY'
     , details.[VAL] * details.[SYEF] AS 'DATA_VALUE'
     , 'SME' as 'DATA_TYPE'
+    , details.[UOM] as 'Unit of Measure'
+    , details.[M2] as 'M2'
+    , details.[DOLLAR_SIGN] as 'Dollar Sign'
     , details.[REPORT_MONTH] as 'Report Month'
     , details.[REPORT_YEAR] as 'Report Year'
 FROM [dbo].[OTEXA_ANNUAL] details

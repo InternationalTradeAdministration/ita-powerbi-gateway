@@ -266,20 +266,20 @@ export default {
     loadingReport: true,
     loadingHts: false,
     onlyCountry: true,
-    'CountryGroups': [],
-    'selectedCountryGroups': [],
-    'Africa': [],
-    'selectedAfrica': [],
-    'Asia': [],
-    'selectedAsia': [],
-    'AustraliaAndOceania': [],
-    'selectedAustraliaAndOceania': [],
-    'Europe': [],
-    'selectedEurope': [],
-    'NorthAndCentralAmerica': [],
-    'selectedNorthAndCentralAmerica': [],
-    'SouthAmerica': [],
-    'selectedSouthAmerica': [],
+    CountryGroups: [],
+    selectedCountryGroups: [],
+    Africa: [],
+    selectedAfrica: [],
+    Asia: [],
+    selectedAsia: [],
+    AustraliaAndOceania: [],
+    selectedAustraliaAndOceania: [],
+    Europe: [],
+    selectedEurope: [],
+    NorthAndCentralAmerica: [],
+    selectedNorthAndCentralAmerica: [],
+    SouthAmerica: [],
+    selectedSouthAmerica: [],
   }),
   async created () {
     this.onlyCountry = this.reportName.includes('Country')
@@ -298,7 +298,6 @@ export default {
     this['Europe'] = this.countries.filter(country => country.ctryGroup === 'Europe')
     this['NorthAndCentralAmerica'] = this.countries.filter(country => country.ctryGroup === 'North and Central America')
     this['SouthAmerica'] = this.countries.filter(country => country.ctryGroup === 'South America')
-
 
     if (this.reportName.includes('Footwear')) {
       this.years = await this.repository.getOtexaFootwearYears()

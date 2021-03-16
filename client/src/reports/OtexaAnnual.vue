@@ -12,17 +12,119 @@
             </select>
           </div>
           <div class="regions" v-if="onlyCountry">
-            <div class="filter-field" v-for="(countries, region) in countryRegions" :key="region">
-              <label for="region">{{ region }}:</label>
+            <div class="filter-field">
+              <label for="CountryGroups">Country Groups:</label>
               <select
-                v-model="selectedCountries"
-                :name=region
-                :id=region
+                v-model="selectedCountryGroups"
+                :name=CountryGroups
+                :id=CountryGroups
                 multiple
                 size="20"
               >
                 <option
-                  v-for="item in countries"
+                  v-for="item in CountryGroups"
+                  :key="item.ctryId"
+                  :value="item.ctryId"
+                  >{{ item.ctryDescription }}</option
+                >
+              </select>
+            </div>
+            <div class="filter-field">
+              <label for="Africa">Africa:</label>
+              <select
+                v-model="selectedAfrica"
+                :name=Africa
+                :id=Africa
+                multiple
+                size="20"
+              >
+                <option
+                  v-for="item in Africa"
+                  :key="item.ctryId"
+                  :value="item.ctryId"
+                  >{{ item.ctryDescription }}</option
+                >
+              </select>
+            </div>
+            <div class="filter-field">
+              <label for="Asia">Asia:</label>
+              <select
+                v-model="selectedAsia"
+                :name=Asia
+                :id=Asia
+                multiple
+                size="20"
+              >
+                <option
+                  v-for="item in Asia"
+                  :key="item.ctryId"
+                  :value="item.ctryId"
+                  >{{ item.ctryDescription }}</option
+                >
+              </select>
+            </div>
+            <div class="filter-field">
+              <label for="AustraliaAndOceania">Australia and Oceania:</label>
+              <select
+                v-model="selectedAustraliaAndOceania"
+                :name=AustraliaAndOceania
+                :id=AustraliaAndOceania
+                multiple
+                size="20"
+              >
+                <option
+                  v-for="item in AustraliaAndOceania"
+                  :key="item.ctryId"
+                  :value="item.ctryId"
+                  >{{ item.ctryDescription }}</option
+                >
+              </select>
+            </div>
+            <div class="filter-field">
+              <label for="Europe">Europe:</label>
+              <select
+                v-model="selectedEurope"
+                :name=Europe
+                :id=Europe
+                multiple
+                size="20"
+              >
+                <option
+                  v-for="item in Europe"
+                  :key="item.ctryId"
+                  :value="item.ctryId"
+                  >{{ item.ctryDescription }}</option
+                >
+              </select>
+            </div>
+            <div class="filter-field">
+              <label for="NorthAndCentralAmerica">North and Central America:</label>
+              <select
+                v-model="selectedNorthAndCentralAmerica"
+                :name=NorthAndCentralAmerica
+                :id=NorthAndCentralAmerica
+                multiple
+                size="20"
+              >
+                <option
+                  v-for="item in NorthAndCentralAmerica"
+                  :key="item.ctryId"
+                  :value="item.ctryId"
+                  >{{ item.ctryDescription }}</option
+                >
+              </select>
+            </div>
+            <div class="filter-field">
+              <label for="SouthAmerica">South America:</label>
+              <select
+                v-model="selectedSouthAmerica"
+                :name=SouthAmerica
+                :id=SouthAmerica
+                multiple
+                size="20"
+              >
+                <option
+                  v-for="item in SouthAmerica"
                   :key="item.ctryId"
                   :value="item.ctryId"
                   >{{ item.ctryDescription }}</option
@@ -162,7 +264,6 @@ export default {
     hts: [],
     years: [],
     yearKey: null,
-    selectedCountries: [],
     selectedCategories: [],
     selectedChapters: [],
     selectedHts: [],
@@ -173,15 +274,20 @@ export default {
     loadingReport: true,
     loadingHts: false,
     onlyCountry: null,
-    countryRegions: {
-      'Country Groups': [],
-      'Africa': [],
-      'Asia': [],
-      'Australia and Oceania': [],
-      'Europe': [],
-      'North and Central America': [],
-      'South America': [],
-    }
+    CountryGroups: [],
+    selectedCountryGroups: [],
+    Africa: [],
+    selectedAfrica: [],
+    Asia: [],
+    selectedAsia: [],
+    AustraliaAndOceania: [],
+    selectedAustraliaAndOceania: [],
+    Europe: [],
+    selectedEurope: [],
+    NorthAndCentralAmerica: [],
+    selectedNorthAndCentralAmerica: [],
+    SouthAmerica: [],
+    selectedSouthAmerica: [],
   }),
   async created () {
     this.onlyCountry = (this.$route.query.onlyCountry || this.reportName.includes('Category'))
@@ -195,9 +301,13 @@ export default {
     this.countries = await this.repository.getOtexaCountries(source)
     this.categories = await this.repository.getOtexaCategories(source)
 
-    Object.keys(this.countryRegions).forEach(region => {
-      this.countryRegions[region] = this.countries.filter(country => country.ctryGroup === region)
-    })
+    this['CountryGroups'] = this.countries.filter(country => country.ctryGroup === 'Country Groups')
+    this['Africa'] = this.countries.filter(country => country.ctryGroup === 'Africa')
+    this['Asia'] = this.countries.filter(country => country.ctryGroup === 'Asia')
+    this['AustraliaAndOceania'] = this.countries.filter(country => country.ctryGroup === 'Australia and Oceania')
+    this['Europe'] = this.countries.filter(country => country.ctryGroup === 'Europe')
+    this['NorthAndCentralAmerica'] = this.countries.filter(country => country.ctryGroup === 'North and Central America')
+    this['SouthAmerica'] = this.countries.filter(country => country.ctryGroup === 'South America')
 
     if (this.reportName.includes('Footwear')) {
       this.years = await this.repository.getOtexaFootwearYears()
@@ -241,18 +351,19 @@ export default {
     async viewReport () {
       let filters = []
       let htsPageFilters = []
+      let allSelectedCountries = [].concat(this.selectedCountryGroups, this.selectedAfrica, this.selectedAsia, this.selectedAustraliaAndOceania, this.selectedEurope, this.selectedNorthAndCentralAmerica, this.selectedSouthAmerica)
 
       if (this.displayIn.length === 0) {
-        filters.push(this.filter('Display In', 'In', ['DOLLARS'], true))
+        filters.push(this.filter('Display In', 'In', ['DOLLARS'], true, true))
       } else {
-        filters.push(this.filter('Display In', 'In', [this.displayIn], true))
+        filters.push(this.filter('Display In', 'In', [this.displayIn], true, true))
       }
 
-      if (this.selectedCountries.length === 0) {
+      if (allSelectedCountries.length === 0) {
         filters.push(this.filter('Country', 'All', [], false))
       } else {
         let selectedCountries = this.countries
-          .filter(c => this.selectedCountries.includes(c.ctryId))
+          .filter(c => allSelectedCountries.includes(c.ctryId))
           .map(c => c.ctryDescription.trim())
         if ( selectedCountries.includes('World') || selectedCountries.includes('WORLD') ) {
           filters.push(this.filter('Country', 'All', [], false))
@@ -312,7 +423,8 @@ export default {
         tokenType: this.pbi.models.TokenType.Embed,
         permissions: this.pbi.models.Permissions.All,
         settings: {
-          filterPaneEnabled: true
+          filterPaneEnabled: true,
+          navContentPaneEnabled: false,
         }
       }
 
@@ -340,7 +452,13 @@ export default {
       this.isReportVisible = true
     },
     reset () {
-      this.selectedCountries = []
+      this.selectedCountryGroups = []
+      this.selectedAfrica = []
+      this.selectedAsia = []
+      this.selectedAustraliaAndOceania = []
+      this.selectedEurope = []
+      this.selectedNorthAndCentralAmerica = []
+      this.selectedSouthAmerica = []
       this.selectedCategories = []
       this.selectedChapters = []
       this.selectedHts = []

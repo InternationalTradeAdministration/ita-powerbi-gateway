@@ -79,8 +79,13 @@ public class ProductionMetadataService implements MetadataService {
   }
 
   @Override
-  public List<Chapter> getChapters() {
-    return htsChapterRepository.findAllChapters();
+  public List<Chapter> getChapters(String source) {
+    return htsChapterRepository.findBySource(source);
+  }
+
+  @Override
+  public List<Chapter> getScheduleBChapters(String source) {
+    return scheduleBChapterRepository.findBySource(source);
   }
 
   @Override

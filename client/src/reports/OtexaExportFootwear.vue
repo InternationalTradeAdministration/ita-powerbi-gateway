@@ -187,7 +187,7 @@ export default {
       this.countryRegions[region] = this.countries.filter(country => country.ctryGroup === region)
     })
 
-    this.chapters = await this.repository.getOtexaChapters()
+    this.chapters = await this.repository.getScheduleBChapters(source)
 
     this.years = await this.repository.getOtexaFootwearYears()
     this.yearKey = 'dataKey'

@@ -49,8 +49,20 @@ export default class Repository {
     return await axios.get('api/otexa/partcategories').then(response => response.data)
   }
 
-  async getOtexaChapters() {
-    return await axios.get('/api/otexa/chapters').then(response => response.data)
+  async getOtexaChapters(source) {
+    return await axios.get('/api/otexa/chapters', {
+      params: {
+        source
+      }
+    }).then(response => response.data)
+  }
+
+  async getScheduleBChapters(source) {
+    return await axios.get('api/otexa/schedulebchapters', {
+      params: {
+        source
+      }
+    }).then(response => response.data)
   }
 
   async getOtexaHts(categoryIds, chapterIds) {

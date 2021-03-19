@@ -62,10 +62,10 @@ class OtexaControllerTest {
 
   @Test
   public void otexa_controller_returns_distinct_chapters() throws Exception {
-    htsChapterRepository.save(new HtsChapter(354L, "123123", 11L, "Very Awesome"));
-    htsChapterRepository.save(new HtsChapter(359L, "333333", 22L, "Very Cool"));
-    htsChapterRepository.save(new HtsChapter(359L, "133334", 22L, "Very Cool"));
-    mockMvc.perform(get("/api/otexa/chapters"))
+    htsChapterRepository.save(new HtsChapter(354L, "123123", 11L, "Very Awesome", "ANNUAL"));
+    htsChapterRepository.save(new HtsChapter(359L, "333333", 22L, "Very Cool", "ANNUAL_FOOTWEAR"));
+    htsChapterRepository.save(new HtsChapter(359L, "133334", 22L, "Very Cool", "ANNUAL"));
+    mockMvc.perform(get("/api/otexa/chapters?source=ANNUAL"))
       .andExpect(status().isOk())
       .andExpect(content().contentType(MediaType.APPLICATION_JSON))
       .andExpect(jsonPath("$", hasSize(2)))
@@ -77,11 +77,11 @@ class OtexaControllerTest {
 
   @Test
   public void otexa_controller_returns_hts_by_category() throws Exception {
-    HtsChapter awesomeChapter = new HtsChapter(88L, "123123", 11L, "Very Awesome");
+    HtsChapter awesomeChapter = new HtsChapter(88L, "123123", 11L, "Very Awesome", "ANNUAL");
     Hts anAwesomeHts = new Hts(88L,"123123", "An Awesome HTS", awesomeChapter);
     htsRepository.save(anAwesomeHts);
 
-    HtsChapter coolChapter = new HtsChapter(99L, "333333", 22L, "Very Cool");
+    HtsChapter coolChapter = new HtsChapter(99L, "333333", 22L, "Very Cool", "ANNUAL");
     Hts aCoolHts = new Hts(99L, "333333", "A Cool HTS", coolChapter);
     htsRepository.save(aCoolHts);
 
@@ -104,11 +104,11 @@ class OtexaControllerTest {
 
   @Test
   public void otexa_controller_returns_hts_by_chapter() throws Exception {
-    HtsChapter awesomeChapter = new HtsChapter(88L, "123123", 11L, "Very Awesome");
+    HtsChapter awesomeChapter = new HtsChapter(88L, "123123", 11L, "Very Awesome", "EXPORT");
     Hts anAwesomeHts = new Hts(88L,"123123", "An Awesome HTS", awesomeChapter);
     htsRepository.save(anAwesomeHts);
 
-    HtsChapter coolChapter = new HtsChapter(99L, "333333", 22L, "Very Cool");
+    HtsChapter coolChapter = new HtsChapter(99L, "333333", 22L, "Very Cool", "ANNUAL_FOOTWEAR");
     Hts aCoolHts = new Hts(99L, "333333", "A Cool HTS", coolChapter);
     htsRepository.save(aCoolHts);
 

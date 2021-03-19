@@ -188,7 +188,7 @@ export default {
       this.countryRegions[region] = this.countries.filter(country => country.ctryGroup === region)
     })
 
-    this.chapters = await this.repository.getOtexaChapters()
+    this.chapters = await this.repository.getScheduleBChapters(source)
 
     let years = await this.repository.getOtexaYears()
     this.years = years.filter(year => !year.headerDescription.includes('Quarter'))

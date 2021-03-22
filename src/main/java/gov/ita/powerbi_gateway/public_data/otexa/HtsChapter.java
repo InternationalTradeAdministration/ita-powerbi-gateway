@@ -23,4 +23,5 @@ public class HtsChapter {
 
   public Long chapter;
   public String longChapter;
+  public String source;
 }

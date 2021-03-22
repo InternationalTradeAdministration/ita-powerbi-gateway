@@ -54,8 +54,13 @@ public class OtexaController {
   }
 
   @GetMapping("/chapters")
-  public List<Chapter> getChapters() {
-    return metadataService.getChapters();
+  public List<Chapter> getChapters(@RequestParam String source) {
+    return metadataService.getChapters(source);
+  }
+
+  @GetMapping("/schedulebchapters")
+  public List<Chapter> getScheduleBChapters(@RequestParam String source) {
+    return metadataService.getScheduleBChapters(source);
   }
 
   @GetMapping("/hts")

@@ -30,4 +30,5 @@ public class ScheduleBChapter {
 
   public Long chapter;
   public String longChapter;
+  public String source;
 }

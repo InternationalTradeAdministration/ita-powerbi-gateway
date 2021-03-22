@@ -13,7 +13,9 @@ public interface MetadataService {
 
   List<ExportGroup> getExportGroups();
 
-  List<Chapter> getChapters();
+  List<Chapter> getChapters(String source);
+
+  List<Chapter> getScheduleBChapters(String source);
 
   List<Year> getYears();
 

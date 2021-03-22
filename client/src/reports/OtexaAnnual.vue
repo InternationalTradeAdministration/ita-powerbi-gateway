@@ -318,12 +318,7 @@ export default {
       this.yearKey = 'headerDescription'
     }
 
-    let chapters = await this.repository.getOtexaChapters()
-
-    const footwearChapters = [39, 41, 42, 43, 46, 64, 65, 83, 94, 96]
-    if (source === 'ANNUAL_FOOTWEAR') {
-      this.chapters = Object.values(chapters).filter(item => footwearChapters.includes(item.chapter))
-    } else { this.chapters = chapters }
+    this.chapters = await this.repository.getOtexaChapters(source)
 
     this.displayIn = 'DOLLARS'
 

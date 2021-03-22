@@ -67,11 +67,20 @@ public class DevelopmentMetadataService implements MetadataService {
   }
 
   @Override
-  public List<Chapter> getChapters() {
+  public List<Chapter> getChapters(String source) {
     return Arrays.asList(
       new Chapter(1L, "1 - Matrix"),
       new Chapter(2L, "2 - Logan"),
       new Chapter(3L, "3 - Frank Slade")
+    );
+  }
+
+  @Override
+  public List<Chapter> getScheduleBChapters(String source) {
+    return Arrays.asList(
+      new Chapter(4L, "4 - Maxwell"),
+      new Chapter(5L, "5 - Wu"),
+      new Chapter(6L, "6 - Franklin")
     );
   }
 

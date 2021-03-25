@@ -7,9 +7,9 @@ import java.util.List;
 
 @Repository
 interface HtsRepository extends JpaRepository<Hts, String> {
-  List<Hts> findByCatIdInAndHtsChapterChapterInOrderByHts(List<Long> categories, List<Long> chapters);
+  List<Hts> findDistinctByCatIdInAndChapterInAndSourceOrderByHts(List<Long> categories, List<Long> chapters, String source);
 
-  List<Hts> findByCatIdIn(List<Long> categoryIds);
+  List<Hts> findDistinctByCatIdInAndSource(List<Long> categoryIds, String source);
 
-  List<Hts> findByHtsChapterChapterInOrderByHts(List<Long> chapters);
+  List<Hts> findDistinctByChapterInAndSourceOrderByHts(List<Long> chapters, String source);
 }

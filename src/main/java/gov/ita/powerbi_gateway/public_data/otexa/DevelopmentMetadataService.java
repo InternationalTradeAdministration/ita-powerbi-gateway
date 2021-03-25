@@ -85,60 +85,69 @@ public class DevelopmentMetadataService implements MetadataService {
   }
 
   @Override
-  public List<Hts> getHtsByCategoriesAndChapters(List<Long> categories, List<Long> chapters) {
-    return Arrays.asList(new Hts("123456", "123456 - Socks"), new Hts("123321", "123321 - Hats"));
-  }
-
-  @Override
-  public List<Hts> getHtsByCategories(List<Long> categoryIds) {
+  public List<Hts> getHtsByCategoriesAndChapters(List<Long> categories, List<Long> chapters, String source) {
     return Arrays.asList(
-      new Hts("123456", "123456 - Socks"),
-      new Hts("123321", "123321 - Hats"),
-      new Hts("123323", "123323 - Shoes")
+      new Hts("123456", "123456 - Bumbleflex", 1L, 39L, "39 - Other things", "ANNUAL"),
+      new Hts("123321", "123321 - Nanofiber", 2L, 39L, "42 - Luggage locks", "ANNUAL_FOOTWEAR")
     );
   }
 
   @Override
-  public List<Hts> getHtsByChapters(List<Long> chapters) {
+  public List<Hts> getHtsByCategories(List<Long> categoryIds, String source) {
     return Arrays.asList(
-      new Hts("123456", "123456 - Socks"),
-      new Hts("123323", "123323 - Shoes")
+      new Hts("123456", "123456 - Rayon", 1L, 39L, "39 - Other things", "ANNUAL"),
+      new Hts("123321", "123321 - Modal", 2L, 42L, "42 - Luggage locks", "ANNUAL_FOOTWEAR"),
+      new Hts("123323", "123323 - Chainmail", 3L, 56L, "56 - Plastic stuff", "ANNUAL")
     );
   }
 
   @Override
-  public List<ScheduleB> getScheduleBByExportGroupsAndChapters(List<Long> exportGroups, List<Long> chapters) {
-    return Arrays.asList(new ScheduleB("123456", "123456 - Socks"), new ScheduleB("123321", "123321 - Hats"));
-  }
-
-  @Override
-  public List<ScheduleB> getScheduleBByExportGroups(List<Long> groupIds) {
+  public List<Hts> getHtsByChapters(List<Long> chapters, String source) {
     return Arrays.asList(
-      new ScheduleB("123456", "123456 - Socks"),
-      new ScheduleB("123321", "123321 - Hats"),
-      new ScheduleB("123323", "123323 - Shoes")
+      new Hts("123456", "123456 - Rayon", 1L, 39L, "39 - Other things", "ANNUAL"),
+      new Hts("123321", "123321 - Modal", 2L, 42L, "42 - Luggage locks", "ANNUAL_FOOTWEAR")
     );
   }
 
   @Override
-  public List<ScheduleB> getScheduleBByChapters(List<Long> chapters) {
+  public List<ScheduleB> getScheduleBByExportGroupsAndChapters(List<Long> exportGroups, List<Long> chapters, String source) {
     return Arrays.asList(
-      new ScheduleB("123456", "123456 - Socks"),
-      new ScheduleB("123323", "123323 - Shoes")
+      new ScheduleB("123456", "123456 - Woven Etc", 1L, 2L, 39L, "39 - Other things", "EXPORT"),
+      new ScheduleB("123321", "123321 - Metallic", 3L, 4L, 42L, "42 - Luggage locks", "EXPORT_FOOTWEAR")
     );
   }
 
   @Override
-  public List<ScheduleB> getScheduleBByCategoriesAndChapters(List<Long> categories, List<Long> chapters) {
-    return Arrays.asList(new ScheduleB("123456", "123456 - Socks"), new ScheduleB("123321", "123321 - Hats"));
+  public List<ScheduleB> getScheduleBByExportGroups(List<Long> groupIds, String source) {
+    return Arrays.asList(
+      new ScheduleB("123456", "123456 - Woven Etc", 1L, 2L, 39L, "39 - Other things", "EXPORT"),
+      new ScheduleB("123321", "123321 - Metallic", 3L, 4L, 42L, "42 - Luggage locks", "EXPORT_FOOTWEAR"),
+      new ScheduleB("123323", "123323 - Polyester", 5L, 6L, 56L, "56 - Plastic stuff", "EXPORT")
+    );
   }
 
   @Override
-  public List<ScheduleB> getScheduleBByCategories(List<Long> categoryIds) {
+  public List<ScheduleB> getScheduleBByChapters(List<Long> chapters, String source) {
     return Arrays.asList(
-      new ScheduleB("123456", "123456 - Socks"),
-      new ScheduleB("123321", "123321 - Hats"),
-      new ScheduleB("123323", "123323 - Shoes")
+      new ScheduleB("123456", "123321 - Metallic", 3L, 4L, 39L, "39 - Other things", "EXPORT"),
+      new ScheduleB("123323", "123456 - Woven Etc", 1L, 5L, 42L, "42 - Luggage locks", "EXPORT_FOOTWEAR")
+    );
+  }
+
+  @Override
+  public List<ScheduleB> getScheduleBByCategoriesAndChapters(List<Long> categories, List<Long> chapters, String source) {
+    return Arrays.asList(
+      new ScheduleB("123456", "123456 - Woven Etc", 1L, 2L, 39L, "39 - Other things", "EXPORT"),
+      new ScheduleB("123321", "123321 - Metallic", 3L, 4L, 42L, "42 - Luggage locks", "EXPORT_FOOTWEAR")
+    );
+  }
+
+  @Override
+  public List<ScheduleB> getScheduleBByCategories(List<Long> categoryIds, String source) {
+    return Arrays.asList(
+      new ScheduleB("123456", "123456 - Woven Etc", 1L, 2L, 39L, "39 - Other things", "EXPORT"),
+      new ScheduleB("123321", "123321 - Metallic", 3L, 4L, 42L, "42 - Luggage locks", "EXPORT_FOOTWEAR"),
+      new ScheduleB("123323", "123323 - Polyester", 5L, 6L, 56L, "56 - Plastic stuff", "EXPORT")
     );
   }
 

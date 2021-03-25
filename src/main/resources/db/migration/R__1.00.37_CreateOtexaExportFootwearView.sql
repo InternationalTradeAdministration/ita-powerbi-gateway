@@ -3,8 +3,8 @@ AS
 SELECT details.[Country]
     , details.[CAT_ID] as 'Category ID'
     , details.[CAT_DESC] as 'Category Description'
-    , details.[SCHEDULE_B] as 'Schedule B'
-    , details.[SCHEDULE_B_DESC] as 'Schedule B Description'
+    , chapter.[SCHEDULE_B] as 'Schedule B'
+    , chapter.[LONG_SCHEDB] as 'Schedule B Description'
     , chapter.[LONG_CHAPTER] as 'Chapter'
     , details.[HEADER_ID] as 'DATA_KEY'
     , details.[VAL] AS 'DATA_VALUE'
@@ -15,10 +15,14 @@ SELECT details.[Country]
     , details.[REPORT_YEAR] as 'Report Year'
 FROM [dbo].[OTEXA_EXPORT_FOOTWEAR] details
 
-FULL OUTER JOIN [dbo].[OTEXA_HTS_CHAPTER_REF_VW] chapter
-    ON details.[SCHEDULE_B] = chapter.[HTS]
+LEFT OUTER JOIN [dbo].[OTEXA_SCHEDULEB_CHAPTER_REF_VW] chapter
+    ON details.[SCHEDULE_B] = chapter.[SCHEDULE_B]
     AND details.[CAT_ID] = chapter.[CAT_ID]
     AND chapter.[SOURCE] = 'EXPORT_FOOTWEAR'
+
+LEFT OUTER JOIN [dbo].[otexa_category_ref_vw] category
+    ON details.[CAT_ID] = category.[CAT_ID]
+    AND category.[SOURCE] = 'EXPORT_FOOTWEAR'
 
 WHERE details.[HEADER_ID] IS NOT NULL
 GO

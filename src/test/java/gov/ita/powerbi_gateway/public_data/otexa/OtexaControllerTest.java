@@ -62,9 +62,9 @@ class OtexaControllerTest {
 
   @Test
   public void otexa_controller_returns_distinct_chapters() throws Exception {
-    htsChapterRepository.save(new HtsChapter(354L, "123123", 11L, "Very Awesome", "ANNUAL"));
-    htsChapterRepository.save(new HtsChapter(359L, "333333", 22L, "Very Cool", "ANNUAL_FOOTWEAR"));
-    htsChapterRepository.save(new HtsChapter(359L, "133334", 22L, "Very Cool", "ANNUAL"));
+    htsChapterRepository.save(new HtsChapter("123123", 354L, 11L, "Very Awesome", "ANNUAL"));
+    htsChapterRepository.save(new HtsChapter("333333", 359L, 22L, "Very Cool", "ANNUAL_FOOTWEAR"));
+    htsChapterRepository.save(new HtsChapter("133334", 359L, 22L, "Very Cool", "ANNUAL"));
     mockMvc.perform(get("/api/otexa/chapters?source=ANNUAL"))
       .andExpect(status().isOk())
       .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -77,22 +77,22 @@ class OtexaControllerTest {
 
   @Test
   public void otexa_controller_returns_hts_by_category() throws Exception {
-    HtsChapter awesomeChapter = new HtsChapter(88L, "123123", 11L, "Very Awesome", "ANNUAL");
-    Hts anAwesomeHts = new Hts(88L,"123123", "An Awesome HTS", awesomeChapter);
+    HtsChapter awesomeChapter = new HtsChapter("123123", 88L, 11L, "Very Awesome", "ANNUAL");
+    Hts anAwesomeHts = new Hts("123123", "An Awesome HTS", 88L, 11L, "Very Awesome", "ANNUAL");
     htsRepository.save(anAwesomeHts);
 
-    HtsChapter coolChapter = new HtsChapter(99L, "333333", 22L, "Very Cool", "ANNUAL");
-    Hts aCoolHts = new Hts(99L, "333333", "A Cool HTS", coolChapter);
+    HtsChapter coolChapter = new HtsChapter("333333", 99L, 22L, "Very Cool", "ANNUAL");
+    Hts aCoolHts = new Hts("333333", "A Cool HTS", 99L, 22L, "Very Cool", "ANNUAL");
     htsRepository.save(aCoolHts);
 
-    mockMvc.perform(get("/api/otexa/hts?categories=88"))
+    mockMvc.perform(get("/api/otexa/hts?categories=88&source=ANNUAL"))
       .andExpect(status().isOk())
       .andExpect(content().contentType(MediaType.APPLICATION_JSON))
       .andExpect(jsonPath("$", hasSize(1)))
       .andExpect(jsonPath("$[0].hts", is("123123")))
       .andExpect(jsonPath("$[0].longHts", is("An Awesome HTS")));
 
-    mockMvc.perform(get("/api/otexa/hts?categories=88,99&chapters=11,22"))
+    mockMvc.perform(get("/api/otexa/hts?categories=88,99&chapters=11,22&source=ANNUAL"))
       .andExpect(status().isOk())
       .andExpect(content().contentType(MediaType.APPLICATION_JSON))
       .andExpect(jsonPath("$", hasSize(2)))
@@ -104,15 +104,15 @@ class OtexaControllerTest {
 
   @Test
   public void otexa_controller_returns_hts_by_chapter() throws Exception {
-    HtsChapter awesomeChapter = new HtsChapter(88L, "123123", 11L, "Very Awesome", "EXPORT");
-    Hts anAwesomeHts = new Hts(88L,"123123", "An Awesome HTS", awesomeChapter);
+    HtsChapter awesomeChapter = new HtsChapter("123123", 88L, 11L, "Very Awesome", "EXPORT");
+    Hts anAwesomeHts = new Hts("123123", "An Awesome HTS", 88L, 11L, "Very Awesome", "EXPORT");
     htsRepository.save(anAwesomeHts);
 
-    HtsChapter coolChapter = new HtsChapter(99L, "333333", 22L, "Very Cool", "ANNUAL_FOOTWEAR");
-    Hts aCoolHts = new Hts(99L, "333333", "A Cool HTS", coolChapter);
+    HtsChapter coolChapter = new HtsChapter("333333", 99L, 22L, "Very Cool", "ANNUAL_FOOTWEAR");
+    Hts aCoolHts = new Hts("333333", "A Cool HTS", 99L, 22L, "Very Cool", "ANNUAL_FOOTWEAR");
     htsRepository.save(aCoolHts);
 
-    mockMvc.perform(get("/api/otexa/hts?chapters=11"))
+    mockMvc.perform(get("/api/otexa/hts?chapters=11&source=EXPORT"))
       .andExpect(status().isOk())
       .andExpect(content().contentType(MediaType.APPLICATION_JSON))
       .andExpect(jsonPath("$", hasSize(1)))

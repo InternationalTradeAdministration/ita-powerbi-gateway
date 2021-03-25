@@ -143,6 +143,7 @@ export default {
   mixins: [TokenExpirationListenerMixin],
   data: () => ({
     report: null,
+    source: null,
     countries: [],
     categories: [],
     chapters: [],
@@ -175,19 +176,19 @@ export default {
       ? (this.$route.query.onlyCountry === 'true' || this.reportName.includes('Country'))
       : true
 
-    let source = this.reportName.includes('Footwear')
+    this.source = this.reportName.includes('Footwear')
       ? 'EXPORT_FOOTWEAR'
       : 'EXPORT'
 
-    this.countries = await this.repository.getOtexaCountries(source)
+    this.countries = await this.repository.getOtexaCountries(this.source)
 
-    this.categories = await this.repository.getOtexaCategories(source)
+    this.categories = await this.repository.getOtexaCategories(this.source)
 
     Object.keys(this.countryRegions).forEach(region => {
       this.countryRegions[region] = this.countries.filter(country => country.ctryGroup === region)
     })
 
-    this.chapters = await this.repository.getScheduleBChapters(source)
+    this.chapters = await this.repository.getScheduleBChapters(this.source)
 
     this.years = await this.repository.getOtexaFootwearYears()
     this.yearKey = 'dataKey'
@@ -205,7 +206,8 @@ export default {
         this.loadingScheduleB = true
         this.scheduleB = await this.repository.getOtexaScheduleBByCat(
           this.selectedCategories,
-          this.selectedChapters
+          this.selectedChapters,
+          this.source
         )
         this.loadingScheduleB = false
       }
@@ -217,22 +219,20 @@ export default {
     },
     async viewReport () {
       let filters = []
-      let countryPageFilters = []
-      let categoryPageFilters = []
       let scheduleBPageFilters = []
 
       if (this.displayIn.length === 0) {
-        filters.push(this.filter('Display In', 'In', ['DOLLARS'], true))
+        filters.push(this.filter('Display In', 'In', ['DOLLARS'], true, true))
       } else {
-        filters.push(this.filter('Display In', 'In', [this.displayIn], true))
+        filters.push(this.filter('Display In', 'In', [this.displayIn], true, true))
       }
 
       if (this.reportName.includes('Historical')) {
         if (this.selectedYears.length > 0) {
           let selectedYears = this.selectedYears
-          filters.push(this.filter('Year', 'In', selectedYears, false))
+          filters.push(this.filter('Year', 'In', selectedYears, false, false))
         } else {
-          filters.push(this.filter('Year', 'All', [], false))
+          filters.push(this.filter('Year', 'All', [], false, false))
         }
       }
 
@@ -240,48 +240,39 @@ export default {
         let selectedCountries = this.countries
           .filter(c => this.selectedCountries.includes(c.ctryId))
           .map(c => c.ctryDescription.trim())
-        filters.push(this.filter('Country', 'In', selectedCountries, false))
+        filters.push(this.filter('Country', 'In', selectedCountries, false, true))
       } else {
-        filters.push(this.filter('Country', 'All', [], false))
+        filters.push(this.filter('Country', 'All', [], false, false))
       }
 
       if (this.selectedCategories.length > 0) {
         let selectedCategories = this.categories
           .filter(g => this.selectedCategories.includes(g.catId))
           .map(g => g.longCategory.trim())
-        filters.push(this.filter('Category', 'In', selectedCategories, false))
+        filters.push(this.filter('Category', 'In', selectedCategories, false, true))
       } else {
-        filters.push(this.filter('Category', 'All', [], false))
+        filters.push(this.filter('Category', 'All', [], false, false))
       }
 
       if (this.selectedChapters.length > 0) {
         let selectedChapters = this.chapters
           .filter(c => this.selectedChapters.includes(c.chapter))
           .map(c => c.longChapter.trim())
-        filters.push(this.filter('Chapter', 'In', selectedChapters, false))
+        filters.push(this.filter('Chapter', 'In', selectedChapters, false, false))
       } else {
-        filters.push(this.filter('Chapter', 'All', [], false))
+        filters.push(this.filter('Chapter', 'All', [], false, false))
       }
 
       if (this.selectedScheduleB.length > 0) {
         let selectedScheduleB = this.scheduleB
           .filter(c => this.selectedScheduleB.includes(c.scheduleB))
           .map(c => c.longSchedb.trim())
-        filters.push(this.filter('Schedule B', 'In', selectedScheduleB, false))
+        filters.push(this.filter('Schedule B', 'In', selectedScheduleB, false, false))
       } else {
-        filters.push(this.filter('Schedule B', 'All', [], false))
+        filters.push(this.filter('Schedule B', 'All', [], false, false))
       }
 
       scheduleBPageFilters.push(this.advancedFilter('Schedule B', 'And', 'IsNotBlank', null))
-
-      /* If search by Category => Category & SchedB tab defaults to Country = `WORLD`. */
-      if (!this.onlyCountry) {
-        let world = this.countries
-          .filter(c => (c.ctryNumber === 0))
-          .map(c => c.ctryDescription.trim())
-        categoryPageFilters.push(this.filter('Country', 'In', world, false, true))
-        scheduleBPageFilters.push(this.filter('Country', 'In', world, false, true))
-      }
 
       this.report = await this.repository.generateToken(
         this.$route.params.workspaceName,
@@ -311,12 +302,9 @@ export default {
 
         let pages = await report.getPages()
         let countryPage = pages.filter(p => p.displayName === 'Country')[0]
-        let categoryPage = pages.filter(p => p.displayName === 'Category')[0]
         let scheduleBPage = pages.filter(p => p.displayName === 'Schedule B')[0]
 
         report.setFilters(filters)
-        countryPage.setFilters(countryPageFilters)
-        categoryPage.setFilters(categoryPageFilters)
         scheduleBPage.setFilters(scheduleBPageFilters)
 
         if (!this.onlyCountry) {

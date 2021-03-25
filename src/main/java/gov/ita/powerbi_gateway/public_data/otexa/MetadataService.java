@@ -21,20 +21,20 @@ public interface MetadataService {
 
   List<FootwearYear> getFootwearYears();
 
-  List<Hts> getHtsByCategoriesAndChapters(List<Long> categories, List<Long> chapters);
+  List<Hts> getHtsByCategoriesAndChapters(List<Long> categories, List<Long> chapters, String source);
 
-  List<Hts> getHtsByCategories(List<Long> categoryIds);
+  List<Hts> getHtsByCategories(List<Long> categoryIds, String source);
 
-  List<Hts> getHtsByChapters(List<Long> chapters);
+  List<Hts> getHtsByChapters(List<Long> chapters, String source);
 
-  List<ScheduleB> getScheduleBByExportGroupsAndChapters(List<Long> exportGroups, List<Long> chapters);
+  List<ScheduleB> getScheduleBByExportGroupsAndChapters(List<Long> exportGroups, List<Long> chapters, String source);
 
-  List<ScheduleB> getScheduleBByExportGroups(List<Long> groupIds);
+  List<ScheduleB> getScheduleBByExportGroups(List<Long> groupIds, String source);
 
-  List<ScheduleB> getScheduleBByChapters(List<Long> chapters);
+  List<ScheduleB> getScheduleBByChapters(List<Long> chapters, String source);
 
-  List<ScheduleB> getScheduleBByCategoriesAndChapters(List<Long> categories, List<Long> chapters);
+  List<ScheduleB> getScheduleBByCategoriesAndChapters(List<Long> categories, List<Long> chapters, String source);
 
-  List<ScheduleB> getScheduleBByCategories(List<Long> categoryIds);
+  List<ScheduleB> getScheduleBByCategories(List<Long> categoryIds, String source);
 
 }

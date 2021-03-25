@@ -65,16 +65,16 @@ export default class Repository {
     }).then(response => response.data)
   }
 
-  async getOtexaHts(categoryIds, chapterIds) {
-    return await axios.get('/api/otexa/hts?categories=' + categoryIds + '&chapters=' + chapterIds).then(response => response.data)
+  async getOtexaHts(categoryIds, chapterIds, source) {
+    return await axios.get('/api/otexa/hts?categories=' + categoryIds + '&chapters=' + chapterIds + '&source=' + source).then(response => response.data)
   }
 
-  async getOtexaScheduleB(groupIds, chapterIds) {
-    return await axios.get('/api/otexa/scheduleb?exportGroups=' + groupIds + '&chapters=' + chapterIds).then(response => response.data)
+  async getOtexaScheduleB(groupIds, chapterIds, source) {
+    return await axios.get('/api/otexa/scheduleb?exportGroups=' + groupIds + '&chapters=' + chapterIds + '&source=' + source).then(response => response.data)
   }
 
-  async getOtexaScheduleBByCat(categoryIds, chapterIds) {
-    return await axios.get('/api/otexa/scheduleb?categories=' + categoryIds + '&chapters=' + chapterIds).then(response => response.data)
+  async getOtexaScheduleBByCat(categoryIds, chapterIds, source) {
+    return await axios.get('/api/otexa/scheduleb?categories=' + categoryIds + '&chapters=' + chapterIds + '&source=' + source).then(response => response.data)
   }
 
   async getOtexaYears() {

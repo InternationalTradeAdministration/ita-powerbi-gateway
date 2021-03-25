@@ -11,30 +11,13 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "OtexaHtsRefVw")
-@IdClass(CategoryHts.class)
+@Table(name = "OtexaHtsChapterRefVw")
 public class Hts {
   @Id
-  @JsonIgnore
-  public Long catId;
-
-  @Id
   public String hts;
-
   public String longHts;
-
-  @JsonIgnore
-  @MapsId
-  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  @JoinColumns({
-      @JoinColumn(name = "catId"),
-      @JoinColumn(name = "hts")
-  })
-  public HtsChapter htsChapter;
-
-
-  public Hts(String hts, String longHts) {
-    this.hts = hts;
-    this.longHts = longHts;
-  }
+  public Long catId;
+  public Long chapter;
+  public String longChapter;
+  public String source;
 }

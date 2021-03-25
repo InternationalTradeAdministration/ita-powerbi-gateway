@@ -11,33 +11,15 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "OtexaSchedulebRefVw")
-@IdClass(ExportGroupScheduleB.class)
+@Table(name = "OtexaSchedulebChapterRefVw")
 public class ScheduleB {
   @Id
-  @JsonIgnore
-  public Long groupId;
-
-  public Long catId;
-
-  @Id
+  @Column(name="SCHEDULE_B")
   public String scheduleB;
-
   public String longSchedb;
-
-  @JsonIgnore
-  @MapsId
-  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  @JoinColumns({
-      @JoinColumn(name = "GROUP_ID"),
-      @JoinColumn(name = "CAT_ID"),
-      @JoinColumn(name = "SCHEDULE_B")
-  })
-  public ScheduleBChapter scheduleBChapter;
-
-
-  public ScheduleB(String scheduleB, String longSchedb) {
-    this.scheduleB = scheduleB;
-    this.longSchedb = longSchedb;
-  }
+  public Long groupId;
+  public Long catId;
+  public Long chapter;
+  public String longChapter;
+  public String source;
 }

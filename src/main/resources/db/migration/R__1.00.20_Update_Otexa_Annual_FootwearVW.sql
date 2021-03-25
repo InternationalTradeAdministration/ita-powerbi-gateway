@@ -27,6 +27,7 @@ FULL OUTER JOIN [dbo].[OTEXA_HTS_REF_VW] hts
 FULL OUTER JOIN [dbo].[OTEXA_HTS_CHAPTER_REF_VW] chapter
     ON hts.[HTS] = chapter.[HTS]
     AND hts.[CAT_ID] = chapter.[CAT_ID]
+    AND chapter.[SOURCE] = 'ANNUAL_FOOTWEAR'
 
 WHERE details.[HEADER_ID] IS NOT NULL
 GO

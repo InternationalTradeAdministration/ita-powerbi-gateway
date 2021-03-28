@@ -17,12 +17,14 @@ INNER JOIN [dbo].[OTEXA_HEADER_REF] hdr
     ON details.[HEADER_ID] = hdr.[HEADER_ID]
 INNER JOIN [dbo].[OTEXA_CATEGORY_REF_VW] category
     ON details.[CAT_ID] = category.[CAT_ID]
+    AND category.[SOURCE] = 'ANNUAL'
 FULL OUTER JOIN [dbo].[OTEXA_HTS_REF_VW] hts
     ON hts.[HTS] = details.[HTS]
     AND hts.[CAT_ID] = details.[CAT_ID]
 FULL OUTER JOIN [dbo].[OTEXA_HTS_CHAPTER_REF_VW] chapter
     ON hts.[HTS] = chapter.[HTS]
     AND hts.[CAT_ID] = chapter.[CAT_ID]
+    AND chapter.[SOURCE] = 'ANNUAL'
 WHERE hdr.[HEADER_DESCRIPTION] IS NOT NULL
 
 UNION ALL
@@ -47,12 +49,14 @@ INNER JOIN [dbo].[OTEXA_HEADER_REF] hdr
     ON details.[HEADER_ID] = hdr.[HEADER_ID]
 INNER JOIN [dbo].[OTEXA_CATEGORY_REF_VW] category
     ON details.[CAT_ID] = category.[CAT_ID]
+    AND category.[SOURCE] = 'ANNUAL'
 FULL OUTER JOIN [dbo].[OTEXA_HTS_REF_VW] hts
     ON hts.[HTS] = details.[HTS]
     AND hts.[CAT_ID] = details.[CAT_ID]
 FULL OUTER JOIN [dbo].[OTEXA_HTS_CHAPTER_REF_VW] chapter
     ON hts.[HTS] = chapter.[HTS]
     AND hts.[CAT_ID] = chapter.[CAT_ID]
+    AND chapter.[SOURCE] = 'ANNUAL'
 WHERE hdr.[HEADER_TYPE] = 'SME'
 AND hdr.[HEADER_DESCRIPTION] IS NOT NULL
 
@@ -75,12 +79,14 @@ INNER JOIN [dbo].[OTEXA_HEADER_REF] hdr
     ON details.[HEADER_ID] = hdr.[HEADER_ID]
 INNER JOIN [dbo].[OTEXA_CATEGORY_REF_VW] category
     ON details.[CAT_ID] = category.[CAT_ID]
+    AND category.[SOURCE] = 'ANNUAL'
 FULL OUTER JOIN [dbo].[OTEXA_HTS_REF_VW] hts
     ON hts.[HTS] = details.[HTS]
     AND hts.[CAT_ID] = details.[CAT_ID]
 FULL OUTER JOIN [dbo].[OTEXA_HTS_CHAPTER_REF_VW] chapter
     ON hts.[HTS] = chapter.[HTS]
     AND hts.[CAT_ID] = chapter.[CAT_ID]
+    AND chapter.[SOURCE] = 'ANNUAL'
 WHERE hdr.[HEADER_TYPE] = 'UNITS'
 AND hdr.[HEADER_DESCRIPTION] IS NOT NULL
 

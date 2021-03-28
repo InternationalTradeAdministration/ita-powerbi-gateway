@@ -18,6 +18,7 @@ FROM [dbo].[OTEXA_EXPORT_FOOTWEAR] details
 FULL OUTER JOIN [dbo].[OTEXA_HTS_CHAPTER_REF_VW] chapter
     ON details.[SCHEDULE_B] = chapter.[HTS]
     AND details.[CAT_ID] = chapter.[CAT_ID]
+    AND chapter.[SOURCE] = 'EXPORT_FOOTWEAR'
 
 WHERE details.[HEADER_ID] IS NOT NULL
 GO

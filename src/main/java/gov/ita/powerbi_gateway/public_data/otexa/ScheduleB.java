@@ -22,4 +22,10 @@ public class ScheduleB {
   public Long chapter;
   public String longChapter;
   public String source;
+
+  public ScheduleB (String scheduleB, String longSchedb) {
+    super();
+    this.scheduleB = scheduleB;
+    this.longSchedb = longSchedb;
+  }
 }

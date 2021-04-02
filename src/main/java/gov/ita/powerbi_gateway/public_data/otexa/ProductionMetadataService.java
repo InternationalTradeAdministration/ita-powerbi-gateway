@@ -90,42 +90,42 @@ public class ProductionMetadataService implements MetadataService {
 
   @Override
   public List<Hts> getHtsByCategoriesAndChapters(List<Long> categories, List<Long> chapters, String source) {
-    return htsRepository.findDistinctByCatIdInAndChapterInAndSourceOrderByHts(categories, chapters, source);
+    return htsRepository.findByCategoryAndChapter(categories, chapters, source);
   }
 
   @Override
   public List<Hts> getHtsByCategories(List<Long> categoryIds, String source) {
-    return htsRepository.findDistinctByCatIdInAndSource(categoryIds, source);
+    return htsRepository.findByCategory(categoryIds, source);
   }
 
   @Override
   public List<Hts> getHtsByChapters(List<Long> chapters, String source) {
-    return htsRepository.findDistinctByChapterInAndSourceOrderByHts(chapters, source);
+    return htsRepository.findByChapter(chapters, source);
   }
 
   @Override
   public List<ScheduleB> getScheduleBByExportGroupsAndChapters(List<Long> exportGroups, List<Long> chapters, String source) {
-    return scheduleBRepository.findDistinctScheduleBByGroupIdInAndChapterInAndSourceOrderByScheduleB(exportGroups, chapters, source);
+    return scheduleBRepository.findByGroupAndChapter(exportGroups, chapters, source);
   }
 
   @Override
   public List<ScheduleB> getScheduleBByExportGroups(List<Long> groupIds, String source) {
-    return scheduleBRepository.findDistinctScheduleBByGroupIdInAndSource(groupIds, source);
+    return scheduleBRepository.findByGroup(groupIds, source);
   }
 
   @Override
   public List<ScheduleB> getScheduleBByChapters(List<Long> chapters, String source) {
-    return scheduleBRepository.findDistinctScheduleBByChapterInAndSourceOrderByScheduleB(chapters, source);
+    return scheduleBRepository.findByChapter(chapters, source);
   }
 
   @Override
   public List<ScheduleB> getScheduleBByCategoriesAndChapters(List<Long> categories, List<Long> chapters, String source) {
-    return scheduleBRepository.findDistinctScheduleBByCatIdInAndChapterInAndSourceOrderByScheduleB(categories, chapters, source);
+    return scheduleBRepository.findByCategoryAndChapter(categories, chapters, source);
   }
 
   @Override
   public List<ScheduleB> getScheduleBByCategories(List<Long> categoryIds, String source) {
-    return scheduleBRepository.findDistinctScheduleBByCatIdInAndSource(categoryIds, source);
+    return scheduleBRepository.findByCategory(categoryIds, source);
   }
 
 }

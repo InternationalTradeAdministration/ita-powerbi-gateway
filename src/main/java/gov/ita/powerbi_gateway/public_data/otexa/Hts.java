@@ -20,4 +20,10 @@ public class Hts {
   public Long chapter;
   public String longChapter;
   public String source;
+
+  public Hts (String hts, String longHts) {
+    super();
+    this.hts = hts;
+    this.longHts = longHts;
+  }
 }

@@ -102,6 +102,7 @@ export default {
   mixins: [TokenExpirationListenerMixin],
   data: () => ({
     report: null,
+    source: null,
     countries: [],
     categories: [],
     selectedCountries: [],
@@ -124,11 +125,11 @@ export default {
   async created () {
     this.onlyCountry = true
 
-    let source = this.reportName.includes('Merged')
+    this.source = this.reportName.includes('Merged')
       ? 'MERGED_CAT'
       : 'PART_CAT'
 
-    this.countries = await this.repository.getOtexaCountries(source)
+    this.countries = await this.repository.getOtexaCountries(this.source)
     this.categories = this.reportName.includes('Merged') 
       ? await this.repository.getOtexaMergedCategories() 
       : await this.repository.getOtexaPartCategories()

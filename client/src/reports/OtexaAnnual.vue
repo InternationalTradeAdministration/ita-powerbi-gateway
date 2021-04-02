@@ -258,6 +258,7 @@ export default {
   mixins: [TokenExpirationListenerMixin],
   data: () => ({
     report: null,
+    source: null,
     countries: [],
     categories: [],
     chapters: [],
@@ -294,12 +295,12 @@ export default {
       ? (this.$route.query.onlyCountry === 'true' || this.reportName.includes('Country'))
       : true
 
-    let source = this.reportName.includes('Footwear')
+    this.source = this.reportName.includes('Footwear')
       ? 'ANNUAL_FOOTWEAR'
       : 'ANNUAL'
 
-    this.countries = await this.repository.getOtexaCountries(source)
-    this.categories = await this.repository.getOtexaCategories(source)
+    this.countries = await this.repository.getOtexaCountries(this.source)
+    this.categories = await this.repository.getOtexaCategories(this.source)
 
     this['CountryGroups'] = this.countries.filter(country => country.ctryGroup === 'Country Groups')
     this['Africa'] = this.countries.filter(country => country.ctryGroup === 'Africa')
@@ -318,7 +319,7 @@ export default {
       this.yearKey = 'headerDescription'
     }
 
-    this.chapters = await this.repository.getOtexaChapters(source)
+    this.chapters = await this.repository.getOtexaChapters(this.source)
 
     this.displayIn = 'DOLLARS'
 
@@ -333,7 +334,8 @@ export default {
         this.loadingHts = true
         this.hts = await this.repository.getOtexaHts(
           this.selectedCategories,
-          this.selectedChapters
+          this.selectedChapters,
+          this.source
         )
         this.loadingHts = false
       }
@@ -360,7 +362,7 @@ export default {
           .map(c => c.ctryDescription.trim())
         filters.push(this.filter('Country', 'In', selectedCountries, false, true))
       } else {
-        filters.push(this.filter('Country', 'All', [], false))
+        filters.push(this.filter('Country', 'All', [], false, false))
       }
 
       if (this.selectedCategories.length > 0) {
@@ -369,25 +371,25 @@ export default {
           .map(c => c.longCategory.trim())
         filters.push(this.filter('Category', 'In', selectedCategories, false, true))
       } else {
-        filters.push(this.filter('Category', 'All', [], false))
+        filters.push(this.filter('Category', 'All', [], false, false))
       }
 
       if (this.selectedChapters.length > 0) {
         let selectedChapters = this.chapters
           .filter(c => this.selectedChapters.includes(c.chapter))
           .map(c => c.longChapter.trim())
-        filters.push(this.filter('Chapter', 'In', selectedChapters, false))
+        filters.push(this.filter('Chapter', 'In', selectedChapters, false, false))
       } else {
-        filters.push(this.filter('Chapter', 'All', [], false))
+        filters.push(this.filter('Chapter', 'All', [], false, false))
       }
 
       if (this.selectedHts.length > 0) {
         let selectedHts = this.hts
           .filter(c => this.selectedHts.includes(c.hts))
           .map(c => c.longHts.trim())
-        filters.push(this.filter('HTS', 'In', selectedHts, false))
+        filters.push(this.filter('HTS', 'In', selectedHts, false, false))
       } else {
-        filters.push(this.filter('HTS', 'All', [], false))
+        filters.push(this.filter('HTS', 'All', [], false, false))
       }
 
       htsPageFilters.push(this.advancedFilter('HTS', 'And', 'IsNotBlank', null))
@@ -395,9 +397,9 @@ export default {
       if (this.reportName.includes('Historical')) {
         if (this.selectedYears.length > 0) {
           let selectedYears = this.selectedYears
-          filters.push(this.filter('Year', 'In', selectedYears, false))
+          filters.push(this.filter('Year', 'In', selectedYears, false, false))
         } else {
-          filters.push(this.filter('Year', 'All', [], false))
+          filters.push(this.filter('Year', 'All', [], false, false))
         }
       }
 

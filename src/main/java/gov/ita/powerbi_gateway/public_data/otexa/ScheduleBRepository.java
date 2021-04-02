@@ -8,14 +8,14 @@ import java.util.List;
 
 @Repository
 interface ScheduleBRepository extends JpaRepository<ScheduleB, String> {
-  List<ScheduleB> findByGroupIdInAndScheduleBChapterChapterInOrderByScheduleB(List<Long> exportGroups, List<Long> chapters);
+  List<ScheduleB> findDistinctScheduleBByGroupIdInAndChapterInAndSourceOrderByScheduleB(List<Long> exportGroups, List<Long> chapters, String source);
 
-  List<ScheduleB> findByGroupIdIn(List<Long> groupIds);
+  List<ScheduleB> findDistinctScheduleBByGroupIdInAndSource(List<Long> groupIds, String source);
 
-  List<ScheduleB> findByScheduleBChapterChapterInOrderByScheduleB(List<Long> chapters);
+  List<ScheduleB> findDistinctScheduleBByChapterInAndSourceOrderByScheduleB(List<Long> chapters, String source);
 
-  List<ScheduleB> findByCatIdInAndScheduleBChapterChapterInOrderByScheduleB(List<Long> categories, List<Long> chapters);
+  List<ScheduleB> findDistinctScheduleBByCatIdInAndChapterInAndSourceOrderByScheduleB(List<Long> categories, List<Long> chapters, String source);
 
-  List<ScheduleB> findByCatIdIn(List<Long> categoryIds);
+  List<ScheduleB> findDistinctScheduleBByCatIdInAndSource(List<Long> categoryIds, String source);
 
 }

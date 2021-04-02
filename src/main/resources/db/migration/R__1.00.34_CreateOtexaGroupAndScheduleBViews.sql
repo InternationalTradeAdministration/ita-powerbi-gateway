@@ -21,12 +21,17 @@ GO
 
 CREATE VIEW [dbo].[OTEXA_SCHEDULEB_REF_VW]
 AS
-    SELECT schedb.[SCHEDULE_B], schedb_group.[GROUP_ID], schedb_cat.[CAT_ID], CONCAT(schedb.[SCHEDULE_B], ' - ', schedb.[DESCRIPTION]) as 'LONG_SCHEDB'
+    SELECT schedb_chapter.[SCHEDULE_B]
+         , schedb_group.[GROUP_ID]
+         , schedb_cat.[CAT_ID]
+         , CONCAT(schedb_chapter.[SCHEDULE_B], ' - ', schedb.[DESCRIPTION]) as 'LONG_SCHEDB'
     FROM [dbo].[OTEXA_SCHEDULEB_REF] schedb
-    INNER JOIN [dbo].[OTEXA_SCHEDULEB_GROUP_REF] schedb_group
+    RIGHT OUTER JOIN [dbo].[OTEXA_SCHEDULEB_GROUP_REF] schedb_group
       ON schedb.SCHEDULE_B = schedb_group.SCHEDULE_B
-    INNER JOIN [dbo].[OTEXA_SCHEDULEB_CAT_REF] schedb_cat
+    RIGHT OUTER JOIN [dbo].[OTEXA_SCHEDULEB_CAT_REF] schedb_cat
       ON schedb.SCHEDULE_B = schedb_cat.SCHEDULE_B
+    RIGHT OUTER JOIN [dbo].[OTEXA_SCHEDULEB_CHAPTER_REF] schedb_chapter
+      ON schedb.SCHEDULE_B = schedb_chapter.SCHEDULE_B
 GO
 
 
@@ -46,14 +51,19 @@ GO
 CREATE VIEW [dbo].[OTEXA_SCHEDULEB_CHAPTER_REF_VW]
 AS
     SELECT mapping.GROUP_ID
-        , OTEXA_SCHEDULEB_CAT_REF.CAT_ID
+        , schedb_cat.CAT_ID
         , mapping.SCHEDULE_B
+        , CONCAT(mapping.[SCHEDULE_B], ' - ', schedb.[DESCRIPTION]) as 'LONG_SCHEDB'
         , mapping.CHAPTER
-        , CONCAT(c.[CHAPTER], ' - ', c.[CHAPTER_DESCRIPTION]) as 'LONG_CHAPTER'
+        , CONCAT(mapping.[CHAPTER], ' - ', c.[CHAPTER_DESCRIPTION]) as 'LONG_CHAPTER'
         , mapping.SOURCE
     FROM OTEXA_SCHEDULEB_CHAPTER_REF mapping
-    INNER JOIN OTEXA_CHAPTER_REF c
+    LEFT OUTER JOIN OTEXA_CHAPTER_REF c
         ON mapping.CHAPTER = c.CHAPTER
-    INNER JOIN OTEXA_SCHEDULEB_CAT_REF
-        ON OTEXA_SCHEDULEB_CAT_REF.SCHEDULE_B = mapping.SCHEDULE_B
+    LEFT OUTER JOIN OTEXA_SCHEDULEB_CAT_REF schedb_cat
+        ON mapping.SCHEDULE_B = schedb_cat.SCHEDULE_B
+        AND mapping.CAT_ID = schedb_cat.CAT_ID
+    LEFT OUTER JOIN OTEXA_SCHEDULEB_REF schedb
+        ON mapping.SCHEDULE_B = schedb.[SCHEDULE_B]
+        AND mapping.GROUP_ID = schedb.GROUP_ID
 GO

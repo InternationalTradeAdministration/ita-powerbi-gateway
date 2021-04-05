@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     buildReportUrl (reportName) {
-      return '/workspace/' + this.workspaceName + '/report/' + reportName
+      return '/workspace/' + encodeURIComponent(this.workspaceName) + '/report/' + encodeURIComponent(reportName)
     }
   }
 }

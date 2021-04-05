@@ -12,7 +12,7 @@
         </tr>
         <tr v-for="g in groups" :key="g.id">
           <td>
-            <router-link :to="'/workspace/' + g.name">{{ g.name }}</router-link>
+            <router-link :to="'/workspace/' + encodeURIComponent(g.name)">{{ g.name }}</router-link>
           </td>
           <td class="dedicated-capacity">
             <span v-if="g.isOnDedicatedCapacity">✔</span>

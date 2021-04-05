@@ -11,7 +11,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
@@ -32,13 +36,13 @@ public class PowerBiAdminService {
 
   public Groups getPbiGroups(String workspaceName) {
     checkAccessTokenExpiration();
-    String groupsUrl = buildUrl("/groups", workspaceName);
-    return restTemplate.exchange(groupsUrl, HttpMethod.GET, new HttpEntity<>(buildHeaders()), Groups.class).getBody();
+    URI uri = buildUri("/groups", workspaceName);
+    return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(buildHeaders()), Groups.class).getBody();
   }
 
   public Reports getPbiReports(String groupId, String reportName) {
-    String url = buildUrl("/groups/" + groupId + "/reports", reportName);
-    return restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<>(buildHeaders()), Reports.class).getBody();
+    URI uri = buildUri("/groups/" + groupId + "/reports", reportName);
+    return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(buildHeaders()), Reports.class).getBody();
   }
 
   public Token generatePbiEmbedToken(String groupId, String reportId) {
@@ -81,12 +85,17 @@ public class PowerBiAdminService {
         byte[].class).getBody();
   }
 
-  private String buildUrl(String endPoint, String filterParam) {
-    return apiUrl + endPoint + buildFilter(filterParam);
+  private URI buildUri(String endPoint, String filterParam) {
+    UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(apiUrl + endPoint);
+    if (filterParam != null) {
+      builder.queryParam("$filter",
+          URLEncoder.encode("name eq '" + escapeSingleQuote(filterParam) + "'", StandardCharsets.UTF_8));
+    }
+    return builder.build(true).toUri();
   }
 
-  private String buildFilter(String filterParam) {
-    return (filterParam != null) ? "?$filter=name eq '" + filterParam + "'" : "";
+  private String escapeSingleQuote(String filterParam) {
+    return filterParam.replaceAll("'", "''");
   }
 
   private HttpHeaders buildHeaders() {

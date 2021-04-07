@@ -4,14 +4,14 @@
     <div v-else-if="!isReportVisible">
       <div class="filter-pane">
         <div class="filter-fields">
-          <div class="filter-field">
+          <div v-if="!reportName.includes('Monthly')" class="filter-field">
             <label>Data By:</label>
             <select v-model="onlyCountry" @click="reset()" size="2">
               <option :value="true">Country</option>
               <option :value="false">Category</option>
             </select>
           </div>
-          <div class="regions" v-if="onlyCountry">
+          <div class="regions" v-if="onlyCountry || reportName.includes('Monthly')">
             <div class="filter-field">
               <label for="CountryGroups">Country Groups:</label>
               <select
@@ -132,7 +132,7 @@
               </select>
             </div>
           </div>
-          <div class="filter-field" v-if="!onlyCountry">
+          <div class="filter-field" v-if="!onlyCountry || reportName.includes('Monthly')">
             <label for="categories">Categories:</label>
             <select
               v-model="selectedCategories"
@@ -150,7 +150,7 @@
               >
             </select>
           </div>
-          <div class="filter-field" v-if="!onlyCountry">
+          <div class="filter-field" v-if="!onlyCountry || reportName.includes('Monthly')">
             <label for="chapters">Chapters:</label>
             <select
               v-model="selectedChapters"
@@ -168,7 +168,7 @@
               >
             </select>
           </div>
-          <div class="filter-field" v-if="!onlyCountry">
+          <div class="filter-field" v-if="!onlyCountry || reportName.includes('Monthly')">
             <label for="hts">HTS:</label>
             <span v-if="loadingHts">loading...</span>
             <select
@@ -184,7 +184,7 @@
               }}</option>
             </select>
           </div>
-          <div class="filter-field years" v-if="reportName.includes('Historical')">
+          <div class="filter-field years" v-if="reportName.includes('Historical') || reportName.includes('Monthly')">
             <label for="years">*Years:</label>
             <select
               v-model="selectedYears"
@@ -212,7 +212,7 @@
               <option value='QTY'>QTY</option>
             </select>
           </div>
-          <div class="filter-field" v-else>
+          <div class="filter-field" v-else-if="!reportName.includes('Monthly')">
             <label for="displayIn">Display In:</label>
             <select
               v-model="displayIn"
@@ -226,7 +226,7 @@
             </select>
           </div>
         </div>
-        <p v-if="(!onlyCountry || reportName.includes('Historical'))">
+        <p v-if="(!onlyCountry || reportName.includes('Historical')) || reportName.includes('Monthly')">
           *Multiple selections will be added together (use the Shift key for
           sequential selections and the Ctrl key for non-sequential ones).
         </p>
@@ -313,6 +313,9 @@ export default {
     if (this.reportName.includes('Footwear')) {
       this.years = await this.repository.getOtexaFootwearYears()
       this.yearKey = 'dataKey'
+    } else if (this.reportName.includes('Monthly')) {
+      this.years = await this.repository.getOtexaMonthlyYears('MONTHLY')
+      this.yearKey = 'year'
     } else {
       let years = await this.repository.getOtexaYears()
       this.years = years.filter(year => !year.headerDescription.includes('Quarter'))
@@ -394,7 +397,7 @@ export default {
 
       htsPageFilters.push(this.advancedFilter('HTS', 'And', 'IsNotBlank', null))
 
-      if (this.reportName.includes('Historical')) {
+      if (this.reportName.includes('Historical') || this.reportName.includes('Monthly')) {
         if (this.selectedYears.length > 0) {
           let selectedYears = this.selectedYears
           filters.push(this.filter('Year', 'In', selectedYears, false, false))
@@ -430,15 +433,18 @@ export default {
         this.loadingReport = false
         this.setTokenExpirationListener(this.report.powerBiToken.expiration)
 
-        let pages = await report.getPages()
-        let htsPage = pages.filter(p => p.displayName === 'HTS')[0]
-        let countryPage = pages.filter(p => p.displayName === 'Country')[0]
-
         report.setFilters(filters)
-        htsPage.setFilters(htsPageFilters)
 
-        if (!this.onlyCountry) {
-          countryPage.setActive()
+        if (!this.reportName.includes('Monthly')) {
+          let pages = await report.getPages()
+          let htsPage = pages.filter(p => p.displayName === 'HTS')[0]
+          let countryPage = pages.filter(p => p.displayName === 'Country')[0]
+
+          htsPage.setFilters(htsPageFilters)
+
+          if (!this.onlyCountry) {
+            countryPage.setActive()
+          }
         }
       })
 
@@ -464,6 +470,8 @@ export default {
       let table;
       if (this.reportName.includes('Footwear')) {
         table = 'OTEXA_ANNUAL_FOOTWEAR_VW'
+      } else if (this.reportName.includes('Monthly')) {
+        table = 'OTEXA_MONTHLY_TQ_VW'
       } else {
         table = 'OTEXA_ANNUAL_VW'
       }
@@ -486,6 +494,9 @@ export default {
       let table;
         if (this.reportName.includes('Footwear')) {
         table = 'OTEXA_ANNUAL_FOOTWEAR_VW'
+            } else if (this.reportName.includes('Monthly')) {
+        table = 'OTEXA_MONTHLY_TQ_VW'
+  
       } else {
         table = 'OTEXA_ANNUAL_VW'
       }

@@ -21,6 +21,8 @@ public interface MetadataService {
 
   List<FootwearYear> getFootwearYears();
 
+  List<MonthlyYear> getMonthlyYears(String source);
+
   List<Hts> getHtsByCategoriesAndChapters(List<Long> categories, List<Long> chapters, String source);
 
   List<Hts> getHtsByCategories(List<Long> categoryIds, String source);

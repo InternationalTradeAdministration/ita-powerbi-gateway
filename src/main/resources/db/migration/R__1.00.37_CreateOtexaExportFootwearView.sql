@@ -3,8 +3,8 @@ AS
 SELECT details.[Country]
     , details.[CAT_ID] as 'Category ID'
     , details.[CAT_DESC] as 'Category Description'
-    , chapter.[SCHEDULE_B] as 'Schedule B'
-    , chapter.[LONG_SCHEDB] as 'Schedule B Description'
+    , chapter.[SCHEDULE_B] as 'Schedule B ID'
+    , chapter.[LONG_SCHEDB] as 'Schedule B'
     , chapter.[LONG_CHAPTER] as 'Chapter'
     , details.[HEADER_ID] as 'DATA_KEY'
     , details.[VAL] AS 'DATA_VALUE'

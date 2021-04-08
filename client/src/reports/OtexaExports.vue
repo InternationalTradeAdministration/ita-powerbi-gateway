@@ -8,21 +8,123 @@
             <label>Data By:</label>
             <select v-model="onlyCountry" @click="reset()" size="2">
               <option :value="true">Country</option>
-              <option :value="false">Group</option>
+              <option :value="false">Group/Category</option>
             </select>
           </div>
           <div class="regions" v-if="onlyCountry">
-            <div class="filter-field" v-for="(countries, region) in countryRegions" :key="region">
-              <label for="region">{{ region }}:</label>
+            <div class="filter-field">
+              <label for="CountryGroups">Country Groups:</label>
               <select
-                v-model="selectedCountries"
-                :name=region
-                :id=region
+                v-model="selectedCountryGroups"
+                :name=CountryGroups
+                :id=CountryGroups
                 multiple
                 size="20"
               >
                 <option
-                  v-for="item in countries"
+                  v-for="item in CountryGroups"
+                  :key="item.ctryId"
+                  :value="item.ctryId"
+                  >{{ item.ctryDescription }}</option
+                >
+              </select>
+            </div>
+            <div class="filter-field">
+              <label for="Africa">Africa:</label>
+              <select
+                v-model="selectedAfrica"
+                :name=Africa
+                :id=Africa
+                multiple
+                size="20"
+              >
+                <option
+                  v-for="item in Africa"
+                  :key="item.ctryId"
+                  :value="item.ctryId"
+                  >{{ item.ctryDescription }}</option
+                >
+              </select>
+            </div>
+            <div class="filter-field">
+              <label for="Asia">Asia:</label>
+              <select
+                v-model="selectedAsia"
+                :name=Asia
+                :id=Asia
+                multiple
+                size="20"
+              >
+                <option
+                  v-for="item in Asia"
+                  :key="item.ctryId"
+                  :value="item.ctryId"
+                  >{{ item.ctryDescription }}</option
+                >
+              </select>
+            </div>
+            <div class="filter-field">
+              <label for="AustraliaAndOceania">Australia and Oceania:</label>
+              <select
+                v-model="selectedAustraliaAndOceania"
+                :name=AustraliaAndOceania
+                :id=AustraliaAndOceania
+                multiple
+                size="20"
+              >
+                <option
+                  v-for="item in AustraliaAndOceania"
+                  :key="item.ctryId"
+                  :value="item.ctryId"
+                  >{{ item.ctryDescription }}</option
+                >
+              </select>
+            </div>
+            <div class="filter-field">
+              <label for="Europe">Europe:</label>
+              <select
+                v-model="selectedEurope"
+                :name=Europe
+                :id=Europe
+                multiple
+                size="20"
+              >
+                <option
+                  v-for="item in Europe"
+                  :key="item.ctryId"
+                  :value="item.ctryId"
+                  >{{ item.ctryDescription }}</option
+                >
+              </select>
+            </div>
+            <div class="filter-field">
+              <label for="NorthAndCentralAmerica">North and Central America:</label>
+              <select
+                v-model="selectedNorthAndCentralAmerica"
+                :name=NorthAndCentralAmerica
+                :id=NorthAndCentralAmerica
+                multiple
+                size="20"
+              >
+                <option
+                  v-for="item in NorthAndCentralAmerica"
+                  :key="item.ctryId"
+                  :value="item.ctryId"
+                  >{{ item.ctryDescription }}</option
+                >
+              </select>
+            </div>
+            <div class="filter-field">
+              <label for="SouthAmerica">South America:</label>
+              <select
+                v-model="selectedSouthAmerica"
+                :name=SouthAmerica
+                :id=SouthAmerica
+                multiple
+                size="20"
+              >
+                <option
+                  v-for="item in SouthAmerica"
                   :key="item.ctryId"
                   :value="item.ctryId"
                   >{{ item.ctryDescription }}</option
@@ -30,7 +132,25 @@
               </select>
             </div>
           </div>
-          <div class="filter-field" v-if="!onlyCountry">
+          <div class="filter-field" v-if="!onlyCountry && reportName.includes('Footwear')">
+            <label for="categories">Categories:</label>
+            <select
+              v-model="selectedCategories"
+              name="categories"
+              id="categories"
+              multiple
+              size="20"
+              @change="updateScheduleB()"
+            >
+              <option
+                v-for="item in categories"
+                :key="item.catId"
+                :value="item.catId"
+                >{{ item.longCategory }}</option
+              >
+            </select>
+          </div>
+          <div class="filter-field" v-else-if="!onlyCountry">
             <label for="groups">Groups:</label>
             <select
               v-model="selectedGroups"
@@ -145,12 +265,14 @@ export default {
     report: null,
     source: null,
     countries: [],
+    categories: [],
     groups: [],
     chapters: [],
     scheduleB: [],
     years: [],
     yearKey: null,
     selectedCountries: [],
+    selectedCategories: [],
     selectedGroups: [],
     selectedChapters: [],
     selectedScheduleB: [],
@@ -161,15 +283,20 @@ export default {
     loadingReport: true,
     loadingScheduleB: false,
     onlyCountry: null,
-    countryRegions: {
-      'Country Groups': [],
-      'Africa': [],
-      'Asia': [],
-      'Australia and Oceania': [],
-      'Europe': [],
-      'North and Central America': [],
-      'South America': [],
-    }
+    CountryGroups: [],
+    selectedCountryGroups: [],
+    Africa: [],
+    selectedAfrica: [],
+    Asia: [],
+    selectedAsia: [],
+    AustraliaAndOceania: [],
+    selectedAustraliaAndOceania: [],
+    Europe: [],
+    selectedEurope: [],
+    NorthAndCentralAmerica: [],
+    selectedNorthAndCentralAmerica: [],
+    SouthAmerica: [],
+    selectedSouthAmerica: []
   }),
   async created () {
     this.onlyCountry = (this.$route.query.onlyCountry || this.reportName.includes('Group'))
@@ -180,20 +307,34 @@ export default {
       ? 'EXPORT_FOOTWEAR'
       : 'EXPORT'
 
+    if (this.source == 'EXPORT') {
+      let groups = await this.repository.getOtexaExportGroups()
+      this.groups = groups.sort((a,b) => a.groupId - b.groupId)
+    }
+
+    if (this.source == 'EXPORT_FOOTWEAR') {
+      this.categories = await this.repository.getOtexaCategories(this.source)
+    }
+
     this.countries = await this.repository.getOtexaCountries(this.source)
-
-    let groups = await this.repository.getOtexaExportGroups()
-    this.groups = groups.sort((a,b) => a.groupId - b.groupId)
-
-    Object.keys(this.countryRegions).forEach(region => {
-      this.countryRegions[region] = this.countries.filter(country => country.ctryGroup === region)
-    })
+    this['CountryGroups'] = this.countries.filter(country => country.ctryGroup === 'Country Groups')
+    this['Africa'] = this.countries.filter(country => country.ctryGroup === 'Africa')
+    this['Asia'] = this.countries.filter(country => country.ctryGroup === 'Asia')
+    this['AustraliaAndOceania'] = this.countries.filter(country => country.ctryGroup === 'Australia and Oceania')
+    this['Europe'] = this.countries.filter(country => country.ctryGroup === 'Europe')
+    this['NorthAndCentralAmerica'] = this.countries.filter(country => country.ctryGroup === 'North and Central America')
+    this['SouthAmerica'] = this.countries.filter(country => country.ctryGroup === 'South America')
 
     this.chapters = await this.repository.getScheduleBChapters(this.source)
 
-    let years = await this.repository.getOtexaYears()
-    this.years = years.filter(year => !year.headerDescription.includes('Quarter'))
-    this.yearKey = 'headerDescription'
+    if (this.source == 'EXPORT') {
+      let years = await this.repository.getOtexaYears()
+      this.years = years.filter(year => !year.headerDescription.includes('Quarter'))
+      this.yearKey = 'headerDescription'
+    } else if (this.source == 'EXPORT_FOOTWEAR') {
+      this.years = await this.repository.getOtexaFootwearYears()
+      this.yearKey = 'dataKey'
+    }
 
     this.displayIn = 'DOLLARS'
 
@@ -206,22 +347,31 @@ export default {
     async updateScheduleB () {
       if (!this.scheduleBDisabled()) {
         this.loadingScheduleB = true
-        this.scheduleB = await this.repository.getOtexaScheduleB(
-          this.selectedGroups,
-          this.selectedChapters,
-          this.source
-        )
+        if (this.source == 'EXPORT') {
+          this.scheduleB = await this.repository.getOtexaScheduleB(
+            this.selectedGroups,
+            this.selectedChapters,
+            this.source
+          )
+        } else if (this.source == 'EXPORT_FOOTWEAR') {
+          this.scheduleB = await this.repository.getOtexaScheduleBByCat(
+            this.selectedCategories,
+            this.selectedChapters,
+            this.source
+          )
+        }
         this.loadingScheduleB = false
       }
     },
     scheduleBDisabled () {
       return !(
-        this.selectedGroups.length > 0 || this.selectedChapters.length > 0
+        this.selectedGroups.length > 0 || this.selectedCategories.length > 0 || this.selectedChapters.length > 0
       )
     },
     async viewReport () {
       let filters = []
       let scheduleBPageFilters = []
+      let allSelectedCountries = [].concat(this.selectedCountryGroups, this.selectedAfrica, this.selectedAsia, this.selectedAustraliaAndOceania, this.selectedEurope, this.selectedNorthAndCentralAmerica, this.selectedSouthAmerica)
 
       if (this.displayIn.length === 0) {
         filters.push(this.filter('Display In', 'In', ['DOLLARS'], true, true))
@@ -229,22 +379,34 @@ export default {
         filters.push(this.filter('Display In', 'In', [this.displayIn], true, true))
       }
 
-      if (this.selectedCountries.length > 0) {
+      if (allSelectedCountries.length > 0) {
         let selectedCountries = this.countries
-          .filter(c => this.selectedCountries.includes(c.ctryId))
+          .filter(c => allSelectedCountries.includes(c.ctryId))
           .map(c => c.ctryDescription.trim())
         filters.push(this.filter('Country', 'In', selectedCountries, false, true))
       } else {
         filters.push(this.filter('Country', 'All', [], false, false))
       }
 
-      if (this.selectedGroups.length > 0) {
-        let selectedGroups = this.groups
-          .filter(g => this.selectedGroups.includes(g.groupId))
-          .map(g => g.longGroup.trim())
-        filters.push(this.filter('Group', 'In', selectedGroups, false, true))
-      } else {
-        filters.push(this.filter('Group', 'All', [], false, false))
+      if (this.source == 'EXPORT') {
+        if (this.selectedGroups.length > 0) {
+          let selectedGroups = this.groups
+            .filter(g => this.selectedGroups.includes(g.groupId))
+            .map(g => g.longGroup.trim())
+          filters.push(this.filter('Group', 'In', selectedGroups, false, true))
+        } else {
+          filters.push(this.filter('Group', 'All', [], false, false))
+        }
+      } else if (this.source == 'EXPORT_FOOTWEAR') {
+        console.log('categories', this.selectedCategories)
+        if (this.selectedCategories.length > 0) {
+          let selectedCategories = this.categories
+            .filter(g => this.selectedCategories.includes(g.catId))
+            .map(g => g.longCategory.trim())
+          filters.push(this.filter('Category', 'In', selectedCategories, false, false)) //remember to make this true again
+        } else {
+          filters.push(this.filter('Category', 'All', [], false, false))
+        }
       }
 
       if (this.selectedChapters.length > 0) {
@@ -302,11 +464,11 @@ export default {
         this.loadingReport = false
         this.setTokenExpirationListener(this.report.powerBiToken.expiration)
 
+        report.setFilters(filters)
         let pages = await report.getPages()
         let countryPage = pages.filter(p => p.displayName === 'Country')[0]
         let scheduleBPage = pages.filter(p => p.displayName === 'Schedule B')[0]
 
-        report.setFilters(filters)
         scheduleBPage.setFilters(scheduleBPageFilters)
 
         if (!this.onlyCountry) {
@@ -317,7 +479,14 @@ export default {
       this.isReportVisible = true
     },
     reset () {
-      this.selectedCountries = []
+      this.selectedCountryGroups = []
+      this.selectedAfrica = []
+      this.selectedAsia = []
+      this.selectedAustraliaAndOceania = []
+      this.selectedEurope = []
+      this.selectedNorthAndCentralAmerica = []
+      this.selectedSouthAmerica = []
+      this.selectedCategories = []
       this.selectedGroups = []
       this.selectedChapters = []
       this.selectedScheduleB = []
@@ -327,7 +496,12 @@ export default {
       this.isReportVisible = false
     },
     filter (column, operator, values, requireSingleSelection, isHidden = false) {
-      let table = 'OTEXA_EXPORTS_VW';
+      let table;
+      if (this.reportName.includes('Footwear')) {
+        table = 'OTEXA_EXPORT_FOOTWEAR_VW'
+      } else {
+        table = 'OTEXA_EXPORTS_VW'
+      }
       return {
         requireSingleSelection,
         operator,
@@ -344,7 +518,12 @@ export default {
       }
     },
     advancedFilter (column, logicalOperator, operator, value) {
-      let table = 'OTEXA_EXPORTS_VW'
+      let table;
+      if (this.reportName.includes('Footwear')) {
+        table = 'OTEXA_EXPORT_FOOTWEAR_VW'
+      } else {
+        table = 'OTEXA_EXPORTS_VW'
+      }
       return {
         logicalOperator,
         conditions: [

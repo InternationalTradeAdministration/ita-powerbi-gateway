@@ -18,12 +18,6 @@
       :pbi="pbi"
       :reportName="reportName"
     />
-    <otexa-export-footwear
-      v-else-if="workspaceName.includes('OTEXA') && reportName.includes('Export') && reportName.includes('Footwear')"
-      :repository="repository"
-      :pbi="pbi"
-      :reportName="reportName"
-    />
     <otexa-exports
       v-else-if="workspaceName.includes('OTEXA') && reportName.includes('Export')"
       :repository="repository"
@@ -53,7 +47,6 @@ import OtexaMergedPartCat from '@/reports/OtexaMergedPartCat'
 import OtexaMsrCountries from '@/reports/OtexaMsrCountries'
 import OtexaMsrCategories from '@/reports/OtexaMsrCategories'
 import OtexaMsrFootwearCategories from '@/reports/OtexaMsrFootwearCategories'
-import OtexaExportFootwear from '@/reports/OtexaExportFootwear.vue'
 
 export default {
   name: 'ReportFactory',
@@ -61,7 +54,6 @@ export default {
   components: {
     default: Default,
     'otexa-annual': OtexaAnnual,
-    'otexa-export-footwear': OtexaExportFootwear,
     'otexa-exports': OtexaExports,
     'otexa-merged-part-cat': OtexaMergedPartCat,
     'otexa-msr-countries': OtexaMsrCountries,

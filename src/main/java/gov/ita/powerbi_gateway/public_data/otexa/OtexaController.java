@@ -33,6 +33,11 @@ public class OtexaController {
     return metadataService.getFootwearYears();
   }
 
+  @GetMapping("/monthlyyears")
+  public List<MonthlyYear>getMonthlyYears(@RequestParam String source) {
+    return metadataService.getMonthlyYears(source);
+  }
+
   @GetMapping("/categories")
   public List<Category> getCategories(@RequestParam String source) {
     return metadataService.getCategories(source);

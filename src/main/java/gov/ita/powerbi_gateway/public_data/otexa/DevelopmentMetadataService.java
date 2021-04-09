@@ -35,6 +35,14 @@ public class DevelopmentMetadataService implements MetadataService {
   }
 
   @Override
+  public List<MonthlyYear> getMonthlyYears(String source) {
+    return Arrays.asList(
+      new MonthlyYear(2020L, "MONTHLY"),
+      new MonthlyYear(2021L, "MONTHLY")
+    );
+  }
+
+  @Override
   public List<Category> getCategories(String source) {
     return Arrays.asList(
       new Category(1L, "1 - Frogs", "ANNUAL"),

@@ -1,6 +1,7 @@
 CREATE OR ALTER VIEW [dbo].[OTEXA_EXPORT_FOOTWEAR_VW]
 AS
-SELECT details.[Country]
+SELECT details.[Country Number]
+    , country.[CTRY_DESCRIPTION] as 'Country'
     , details.[CAT_ID] as 'Category ID'
     , details.[CAT_DESC] as 'Category Description'
     , chapter.[SCHEDULE_B] as 'Schedule B ID'
@@ -14,6 +15,10 @@ SELECT details.[Country]
     , details.[REPORT_MONTH] as 'Report Month'
     , details.[REPORT_YEAR] as 'Report Year'
 FROM [dbo].[OTEXA_EXPORT_FOOTWEAR] details
+
+LEFT OUTER JOIN [dbo].[OTEXA_COUNTRY_REF_VW] country
+    ON details.[Country Number] = country.[CTRY_NUMBER]
+    AND country.[SOURCE] = 'EXPORT_FOOTWEAR'
 
 LEFT OUTER JOIN [dbo].[OTEXA_SCHEDULEB_CHAPTER_REF_VW] chapter
     ON details.[SCHEDULE_B] = chapter.[SCHEDULE_B]

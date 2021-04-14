@@ -7,12 +7,16 @@ AS
         , details.[MON] as 'Month'
         , details.[QUANTITY] as 'Quantity'
         , details.[VAL] as 'Value'
-        , details.[COUNTRY] as 'Country'
+        , details.[CTRYNUM]
+        , country.[CTRY_DESCRIPTION] as 'Country'
         , details.[CAT] as 'Category ID'
         , category.[CAT_DESCRIPTION] as 'Category Description'
         , hts.[LONG_HTS] as 'HTS'
         , chapter.[LONG_CHAPTER] as 'Chapter'
     FROM OTEXA_MONTHLY_TQ details
+        LEFT OUTER JOIN [dbo].[OTEXA_COUNTRY_REF_VW] country
+        ON details.[CTRYNUM] = country.[CTRY_NUMBER]
+        AND country.[SOURCE] = 'ANNUAL'
     LEFT OUTER JOIN [dbo].[otexa_category_ref_vw] category
         ON details.[CAT] = category.[CAT_ID]
         AND category.[SOURCE] = 'ANNUAL'

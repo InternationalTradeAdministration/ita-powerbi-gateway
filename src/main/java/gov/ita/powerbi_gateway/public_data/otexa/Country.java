@@ -15,7 +15,6 @@ import javax.persistence.Table;
 @Table(name = "OtexaCountryRefVw")
 public class Country {
   @Id
-  private Long ctryId;
   private Long ctryNumber;
   private String ctryDescription;
   private String ctryGroup;

@@ -3,7 +3,8 @@ GO
 
 CREATE OR ALTER VIEW [dbo].[OTEXA_EXPORTS_VW]
 AS
-SELECT details.[COUNTRY] as 'Country'
+SELECT details.[CTRYNUM]
+    , country.[CTRY_DESCRIPTION] as 'Country'
     , group_table.[LONG_GROUP] as 'Group'
     , chapter.[LONG_CHAPTER] as 'Chapter'
     , chapter.[LONG_SCHEDB] as 'Schedule B'
@@ -15,6 +16,9 @@ SELECT details.[COUNTRY] as 'Country'
 FROM [dbo].[OTEXA_EXPORTS] details
 LEFT JOIN [dbo].[OTEXA_HEADER_EXPORTS_REF] hdr
     ON details.[HEADER_ID] = hdr.[HEADER_ID]
+LEFT OUTER JOIN [dbo].[OTEXA_COUNTRY_REF_VW] country
+    ON details.[CTRYNUM] = country.[CTRY_NUMBER]
+    AND country.[SOURCE] = 'EXPORT'
 LEFT JOIN [dbo].[OTEXA_GROUP_REF_VW] group_table
     ON details.[GROUP] = group_table.[GROUP_ID]
 LEFT OUTER JOIN [dbo].[OTEXA_SCHEDULEB_CHAPTER_REF_VW] chapter

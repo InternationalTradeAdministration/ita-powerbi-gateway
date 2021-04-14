@@ -23,8 +23,8 @@
               >
                 <option
                   v-for="item in CountryGroups"
-                  :key="item.ctryId"
-                  :value="item.ctryId"
+                  :key="item.ctryNumber"
+                  :value="item.ctryNumber"
                   >{{ item.ctryDescription }}</option
                 >
               </select>
@@ -40,8 +40,8 @@
               >
                 <option
                   v-for="item in Africa"
-                  :key="item.ctryId"
-                  :value="item.ctryId"
+                  :key="item.ctryNumber"
+                  :value="item.ctryNumber"
                   >{{ item.ctryDescription }}</option
                 >
               </select>
@@ -57,8 +57,8 @@
               >
                 <option
                   v-for="item in Asia"
-                  :key="item.ctryId"
-                  :value="item.ctryId"
+                  :key="item.ctryNumber"
+                  :value="item.ctryNumber"
                   >{{ item.ctryDescription }}</option
                 >
               </select>
@@ -74,8 +74,8 @@
               >
                 <option
                   v-for="item in AustraliaAndOceania"
-                  :key="item.ctryId"
-                  :value="item.ctryId"
+                  :key="item.ctryNumber"
+                  :value="item.ctryNumber"
                   >{{ item.ctryDescription }}</option
                 >
               </select>
@@ -91,8 +91,8 @@
               >
                 <option
                   v-for="item in Europe"
-                  :key="item.ctryId"
-                  :value="item.ctryId"
+                  :key="item.ctryNumber"
+                  :value="item.ctryNumber"
                   >{{ item.ctryDescription }}</option
                 >
               </select>
@@ -108,8 +108,8 @@
               >
                 <option
                   v-for="item in NorthAndCentralAmerica"
-                  :key="item.ctryId"
-                  :value="item.ctryId"
+                  :key="item.ctryNumber"
+                  :value="item.ctryNumber"
                   >{{ item.ctryDescription }}</option
                 >
               </select>
@@ -125,8 +125,8 @@
               >
                 <option
                   v-for="item in SouthAmerica"
-                  :key="item.ctryId"
-                  :value="item.ctryId"
+                  :key="item.ctryNumber"
+                  :value="item.ctryNumber"
                   >{{ item.ctryDescription }}</option
                 >
               </select>
@@ -381,7 +381,7 @@ export default {
 
       if (allSelectedCountries.length > 0) {
         let selectedCountries = this.countries
-          .filter(c => allSelectedCountries.includes(c.ctryId))
+          .filter(c => allSelectedCountries.includes(c.ctryNumber))
           .map(c => c.ctryDescription.trim())
         filters.push(this.filter('Country', 'In', selectedCountries, false, true))
       } else {

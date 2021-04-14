@@ -1,6 +1,7 @@
 CREATE OR ALTER VIEW [dbo].[OTEXA_ANNUAL_VW]
 AS
-SELECT details.[Country]
+SELECT details.[CTRYNUM]
+    , country.[CTRY_DESCRIPTION] as 'Country'
     , category.[LONG_CATEGORY] as 'Category'
     , hts.[LONG_HTS] as 'HTS'
     , chapter.[LONG_CHAPTER] as 'Chapter'
@@ -15,6 +16,9 @@ SELECT details.[Country]
 FROM [dbo].[OTEXA_ANNUAL] details
 INNER JOIN [dbo].[OTEXA_HEADER_REF] hdr
     ON details.[HEADER_ID] = hdr.[HEADER_ID]
+LEFT OUTER JOIN [dbo].[OTEXA_COUNTRY_REF_VW] country
+    ON details.[CTRYNUM] = country.[CTRY_NUMBER]
+    AND country.[SOURCE] = 'ANNUAL'
 INNER JOIN [dbo].[OTEXA_CATEGORY_REF_VW] category
     ON details.[CAT_ID] = category.[CAT_ID]
     AND category.[SOURCE] = 'ANNUAL'
@@ -29,7 +33,8 @@ WHERE hdr.[HEADER_DESCRIPTION] IS NOT NULL
 
 UNION ALL
 
-SELECT details.[Country]
+SELECT details.[CTRYNUM]
+    , country.[CTRY_DESCRIPTION] as 'Country'
     , category.[LONG_CATEGORY] as 'Category'
     , hts.[LONG_HTS] as 'HTS'
     , chapter.[LONG_CHAPTER] as 'Chapter'
@@ -47,6 +52,9 @@ SELECT details.[Country]
 FROM [dbo].[OTEXA_ANNUAL] details
 INNER JOIN [dbo].[OTEXA_HEADER_REF] hdr
     ON details.[HEADER_ID] = hdr.[HEADER_ID]
+LEFT OUTER JOIN [dbo].[OTEXA_COUNTRY_REF_VW] country
+    ON details.[CTRYNUM] = country.[CTRY_NUMBER]
+    AND country.[SOURCE] = 'ANNUAL'
 INNER JOIN [dbo].[OTEXA_CATEGORY_REF_VW] category
     ON details.[CAT_ID] = category.[CAT_ID]
     AND category.[SOURCE] = 'ANNUAL'
@@ -62,7 +70,8 @@ AND hdr.[HEADER_DESCRIPTION] IS NOT NULL
 
 UNION ALL
 
-SELECT details.[Country]
+SELECT details.[CTRYNUM]
+    , country.[CTRY_DESCRIPTION] as 'Country'
     , category.[LONG_CATEGORY] as 'Category'
     , hts.[LONG_HTS] as 'HTS'
     , chapter.[LONG_CHAPTER] as 'Chapter'
@@ -77,6 +86,9 @@ SELECT details.[Country]
 FROM [dbo].[OTEXA_ANNUAL] details
 INNER JOIN [dbo].[OTEXA_HEADER_REF] hdr
     ON details.[HEADER_ID] = hdr.[HEADER_ID]
+LEFT OUTER JOIN [dbo].[OTEXA_COUNTRY_REF_VW] country
+    ON details.[CTRYNUM] = country.[CTRY_NUMBER]
+    AND country.[SOURCE] = 'ANNUAL'
 INNER JOIN [dbo].[OTEXA_CATEGORY_REF_VW] category
     ON details.[CAT_ID] = category.[CAT_ID]
     AND category.[SOURCE] = 'ANNUAL'

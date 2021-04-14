@@ -15,8 +15,8 @@
               >
                 <option
                   v-for="item in countries"
-                  :key="item.ctryId"
-                  :value="item.ctryId"
+                  :key="item.ctryNumber"
+                  :value="item.ctryNumber"
                   >{{ item.ctryDescription }}</option
                 >
               </select>
@@ -131,7 +131,7 @@ export default {
 
       if (this.selectedCountries != "") {
         let selectedCountries = this.countries
-          .filter(c => [this.selectedCountries].includes(c.ctryId))
+          .filter(c => [this.selectedCountries].includes(c.ctryNumber))
           .map(c => c.ctryDescription.trim())
         filters.push(this.filter('Country', 'In', selectedCountries, false))
       } else {

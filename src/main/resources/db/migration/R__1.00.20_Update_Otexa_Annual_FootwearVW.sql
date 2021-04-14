@@ -3,7 +3,8 @@ GO
 
 CREATE VIEW [dbo].[OTEXA_ANNUAL_FOOTWEAR_VW]
 AS
-SELECT details.[Country]
+SELECT details.[CTRYNUM]
+    , country.[CTRY_DESCRIPTION] as 'Country'
     , category.[LONG_CATEGORY] as 'Category'
     , hts.[LONG_HTS] as 'HTS'
     , chapter.[LONG_CHAPTER] as 'Chapter'
@@ -15,6 +16,10 @@ SELECT details.[Country]
     , details.[REPORT_MONTH] as 'Report Month'
     , details.[REPORT_YEAR] as 'Report Year'
 FROM [dbo].[OTEXA_ANNUAL_FOOTWEAR] details
+
+LEFT OUTER JOIN [dbo].[OTEXA_COUNTRY_REF_VW] country
+    ON details.[CTRYNUM] = country.[CTRY_NUMBER]
+    AND country.[SOURCE] = 'ANNUAL_FOOTWEAR'
 
 FULL OUTER JOIN [dbo].[OTEXA_CATEGORY_REF_VW] category
     ON details.[CAT_ID] = category.[CAT_ID]

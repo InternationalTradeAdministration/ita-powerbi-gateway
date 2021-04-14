@@ -34,15 +34,15 @@ class OtexaControllerTest {
 
   @Test
   public void otexa_controller_returns_countries() throws Exception {
-    countryRepository.save(new Country(1L, 3L, "GREECE", "Europe", "MATRIX"));
-    countryRepository.save(new Country(2L, 4L, "JAPAN", "Asia", "MATRIX"));
+    countryRepository.save(new Country(3L, "GREECE", "Europe", "MATRIX"));
+    countryRepository.save(new Country(4L, "JAPAN", "Asia", "MATRIX"));
     mockMvc.perform(get("/api/otexa/countries?source=MATRIX"))
       .andExpect(status().isOk())
       .andExpect(content().contentType(MediaType.APPLICATION_JSON))
       .andExpect(jsonPath("$", hasSize(2)))
-      .andExpect(jsonPath("$[0].ctryId", is(1)))
+      .andExpect(jsonPath("$[0].ctryNumber", is(3)))
       .andExpect(jsonPath("$[0].ctryDescription", is("GREECE")))
-      .andExpect(jsonPath("$[1].ctryId", is(2)))
+      .andExpect(jsonPath("$[1].ctryNumber", is(4)))
       .andExpect(jsonPath("$[1].ctryDescription", is("JAPAN")));
   }
 

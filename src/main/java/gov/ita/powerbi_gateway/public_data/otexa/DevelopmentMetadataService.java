@@ -12,8 +12,8 @@ public class DevelopmentMetadataService implements MetadataService {
   @Override
   public List<Country> getCountries(String source) {
     return Arrays.asList(
-      new Country(1L, 3L, "WORLD", "Country Groups", "ANNUAL"),
-      new Country(2L, 4L, "GREECE", "Europe", "ANNUAL")
+      new Country(3L, "WORLD", "Country Groups", "ANNUAL"),
+      new Country(4L, "GREECE", "Europe", "ANNUAL")
     );
   }
 

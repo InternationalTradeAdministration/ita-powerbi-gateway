@@ -1,0 +1,2 @@
+IF SCHEMA_ID('imau') IS NULL
+    EXEC('CREATE SCHEMA [imau] AUTHORIZATION [dbo]')

@@ -168,7 +168,7 @@
               >
             </select>
           </div>
-          <div class="filter-field" v-if="!onlyCountry">
+          <div class="filter-field" v-if="!onlyCountry && (this.reportName !== 'Export Data (Historical)') ">
             <label for="chapters">Chapters:</label>
             <select
               v-model="selectedChapters"
@@ -186,7 +186,7 @@
               >
             </select>
           </div>
-          <div class="filter-field" v-if="!onlyCountry">
+          <div class="filter-field" v-if="!onlyCountry && (this.reportName !== 'Export Data (Historical)') ">
             <label for="scheduleB">Schedule B:</label>
             <span v-if="loadingScheduleB">loading...</span>
             <select
@@ -218,7 +218,7 @@
               >{{ item[yearKey] }}</option>
             </select>
           </div>
-          <div class="filter-field">
+          <div v-if="this.reportName !== 'Export Data (Historical)'" class="filter-field">
             <label for="displayIn">Display In:</label>
             <select
               v-model="displayIn"
@@ -347,7 +347,7 @@ export default {
     async updateScheduleB () {
       if (!this.scheduleBDisabled()) {
         this.loadingScheduleB = true
-        if (this.source == 'EXPORT') {
+        if (this.source == 'EXPORT' && this.reportName !== 'Export Data (Historical)') {
           this.scheduleB = await this.repository.getOtexaScheduleB(
             this.selectedGroups,
             this.selectedChapters,
@@ -375,7 +375,7 @@ export default {
 
       if (this.displayIn.length === 0) {
         filters.push(this.filter('Display In', 'In', ['DOLLARS'], true, true))
-      } else {
+      } else if (this.reportName !== 'Export Data (Historical)') {
         filters.push(this.filter('Display In', 'In', [this.displayIn], true, true))
       }
 
@@ -398,7 +398,6 @@ export default {
           filters.push(this.filter('Group', 'All', [], false, false))
         }
       } else if (this.source == 'EXPORT_FOOTWEAR') {
-        console.log('categories', this.selectedCategories)
         if (this.selectedCategories.length > 0) {
           let selectedCategories = this.categories
             .filter(g => this.selectedCategories.includes(g.catId))
@@ -414,7 +413,7 @@ export default {
           .filter(c => this.selectedChapters.includes(c.chapter))
           .map(c => c.longChapter.trim())
         filters.push(this.filter('Chapter', 'In', selectedChapters, false, false))
-      } else {
+      } else if (this.reportName !== 'Export Data (Historical)') {
         filters.push(this.filter('Chapter', 'All', [], false, false))
       }
 
@@ -423,11 +422,13 @@ export default {
           .filter(c => this.selectedScheduleB.includes(c.scheduleB))
           .map(c => c.longSchedb.trim())
         filters.push(this.filter('Schedule B', 'In', selectedScheduleB, false, false))
-      } else {
+      } else if (this.reportName !== 'Export Data (Historical)') {
         filters.push(this.filter('Schedule B', 'All', [], false, false))
       }
 
-      scheduleBPageFilters.push(this.advancedFilter('Schedule B', 'And', 'IsNotBlank', null))
+      if (this.reportName !== 'Export Data (Historical)') {
+        scheduleBPageFilters.push(this.advancedFilter('Schedule B', 'And', 'IsNotBlank', null))
+      }
 
       if (this.reportName.includes('Historical')) {
         if (this.selectedYears.length > 0) {
@@ -469,7 +470,9 @@ export default {
         let countryPage = pages.filter(p => p.displayName === 'Country')[0]
         let scheduleBPage = pages.filter(p => p.displayName === 'Schedule B')[0]
 
-        scheduleBPage.setFilters(scheduleBPageFilters)
+        if (this.reportName !== 'Export Data (Historical)') {
+          scheduleBPage.setFilters(scheduleBPageFilters)
+        }
 
         if (!this.onlyCountry) {
           countryPage.setActive()
@@ -499,6 +502,8 @@ export default {
       let table;
       if (this.reportName.includes('Footwear')) {
         table = 'OTEXA_EXPORT_FOOTWEAR_VW'
+      } else if (this.reportName == 'Export Data (Historical)') {
+        table = 'OTEXA_EXPORTS_HISTORICAL_VW'
       } else {
         table = 'OTEXA_EXPORTS_VW'
       }

@@ -4,14 +4,14 @@
     <div v-else-if="!isReportVisible">
       <div class="filter-pane">
         <div class="filter-fields">
-          <div class="filter-field">
+          <div class="filter-field" v-if="!reportName.includes('Monthly')">
             <label>Data By:</label>
             <select v-model="onlyCountry" @click="reset()" size="2">
               <option :value="true">Country</option>
               <option :value="false">Group/Category</option>
             </select>
           </div>
-          <div class="regions" v-if="onlyCountry">
+          <div class="regions" v-if="onlyCountry || reportName.includes('Monthly')">
             <div class="filter-field">
               <label for="CountryGroups">Country Groups:</label>
               <select
@@ -132,7 +132,7 @@
               </select>
             </div>
           </div>
-          <div class="filter-field" v-if="!onlyCountry && reportName.includes('Footwear')">
+          <div class="filter-field" v-if="(!onlyCountry || reportName.includes('Monthly')) && reportName.includes('Footwear')">
             <label for="categories">Categories:</label>
             <select
               v-model="selectedCategories"
@@ -168,7 +168,7 @@
               >
             </select>
           </div>
-          <div class="filter-field" v-if="!onlyCountry && (this.reportName !== 'Export Data (Historical)') ">
+          <div class="filter-field" v-if="(!onlyCountry || reportName.includes('Monthly')) && (this.reportName !== 'Export Data (Historical)') ">
             <label for="chapters">Chapters:</label>
             <select
               v-model="selectedChapters"
@@ -186,7 +186,7 @@
               >
             </select>
           </div>
-          <div class="filter-field" v-if="!onlyCountry && (this.reportName !== 'Export Data (Historical)') ">
+          <div class="filter-field" v-if="(!onlyCountry || reportName.includes('Monthly')) && (this.reportName !== 'Export Data (Historical)') ">
             <label for="scheduleB">Schedule B:</label>
             <span v-if="loadingScheduleB">loading...</span>
             <select
@@ -202,7 +202,7 @@
               }}</option>
             </select>
           </div>
-          <div class="filter-field years" v-if="reportName.includes('Historical')">
+          <div class="filter-field years" v-if="reportName.includes('Historical') || reportName.includes('Monthly')">
             <label for="years">*Years:</label>
             <select
               v-model="selectedYears"
@@ -218,7 +218,7 @@
               >{{ item[yearKey] }}</option>
             </select>
           </div>
-          <div v-if="this.reportName !== 'Export Data (Historical)'" class="filter-field">
+          <div v-if="this.reportName !== 'Export Data (Historical)' && !reportName.includes('Monthly')" class="filter-field">
             <label for="displayIn">Display In:</label>
             <select
               v-model="displayIn"
@@ -327,13 +327,19 @@ export default {
 
     this.chapters = await this.repository.getScheduleBChapters(this.source)
 
-    if (this.source == 'EXPORT') {
+    if (this.reportName.includes('Monthly') && this.reportName.includes('Footwear')) {
+      this.years = await this.repository.getOtexaMonthlyYears('MONTHLY_FOOTWEAR')
+      this.yearKey = 'year'
+    } else if (this.reportName.includes('Monthly')) {
+      this.years = await this.repository.getOtexaMonthlyYears('MONTHLY')
+      this.yearKey = 'year'
+    } else if (this.reportName.includes('Footwear')) {
+      this.years = await this.repository.getOtexaFootwearYears()
+      this.yearKey = 'dataKey'
+    } else {
       let years = await this.repository.getOtexaYears()
       this.years = years.filter(year => !year.headerDescription.includes('Quarter'))
       this.yearKey = 'headerDescription'
-    } else if (this.source == 'EXPORT_FOOTWEAR') {
-      this.years = await this.repository.getOtexaFootwearYears()
-      this.yearKey = 'dataKey'
     }
 
     this.displayIn = 'DOLLARS'
@@ -373,10 +379,12 @@ export default {
       let scheduleBPageFilters = []
       let allSelectedCountries = [].concat(this.selectedCountryGroups, this.selectedAfrica, this.selectedAsia, this.selectedAustraliaAndOceania, this.selectedEurope, this.selectedNorthAndCentralAmerica, this.selectedSouthAmerica)
 
-      if (this.displayIn.length === 0) {
-        filters.push(this.filter('Display In', 'In', ['DOLLARS'], true, true))
-      } else if (this.reportName !== 'Export Data (Historical)') {
-        filters.push(this.filter('Display In', 'In', [this.displayIn], true, true))
+      if (!this.reportName.includes('Monthly')) {
+        if (this.displayIn.length === 0) {
+          filters.push(this.filter('Display In', 'In', ['DOLLARS'], true, true))
+        } else if (this.reportName !== 'Export Data (Historical)') {
+          filters.push(this.filter('Display In', 'In', [this.displayIn], true, true))
+        }
       }
 
       if (allSelectedCountries.length > 0) {
@@ -402,7 +410,7 @@ export default {
           let selectedCategories = this.categories
             .filter(g => this.selectedCategories.includes(g.catId))
             .map(g => g.longCategory.trim())
-          filters.push(this.filter('Category', 'In', selectedCategories, false, false)) //remember to make this true again
+          filters.push(this.filter('Category', 'In', selectedCategories, false, true))
         } else {
           filters.push(this.filter('Category', 'All', [], false, false))
         }
@@ -430,7 +438,7 @@ export default {
         scheduleBPageFilters.push(this.advancedFilter('Schedule B', 'And', 'IsNotBlank', null))
       }
 
-      if (this.reportName.includes('Historical')) {
+      if (this.reportName.includes('Historical') || this.reportName.includes('Monthly')) {
         if (this.selectedYears.length > 0) {
           let selectedYears = this.selectedYears
           filters.push(this.filter('Year', 'In', selectedYears, false, false))
@@ -500,7 +508,9 @@ export default {
     },
     filter (column, operator, values, requireSingleSelection, isHidden = false) {
       let table;
-      if (this.reportName.includes('Footwear')) {
+      if (this.reportName.includes('Monthly') && this.reportName.includes('Footwear')) {
+        table = 'OTEXA_MONTHLY_FOOTWEAR_EXPORTS_VW'
+      } else if (this.reportName.includes('Footwear')) {
         table = 'OTEXA_EXPORT_FOOTWEAR_VW'
       } else if (this.reportName == 'Export Data (Historical)') {
         table = 'OTEXA_EXPORTS_HISTORICAL_VW'
@@ -524,8 +534,12 @@ export default {
     },
     advancedFilter (column, logicalOperator, operator, value) {
       let table;
-      if (this.reportName.includes('Footwear')) {
+      if (this.reportName.includes('Monthly') && this.reportName.includes('Footwear')) {
+        table = 'OTEXA_MONTHLY_FOOTWEAR_EXPORTS_VW'
+      } else if (this.reportName.includes('Footwear')) {
         table = 'OTEXA_EXPORT_FOOTWEAR_VW'
+      } else if (this.reportName == 'Export Data (Historical)') {
+        table = 'OTEXA_EXPORTS_HISTORICAL_VW'
       } else {
         table = 'OTEXA_EXPORTS_VW'
       }

@@ -200,7 +200,7 @@
               >{{ item[yearKey] }}</option>
             </select>
           </div>
-          <div class="filter-field" v-if="reportName.includes('Footwear')">
+          <div class="filter-field" v-if="reportName.includes('Footwear') && !reportName.includes('Monthly')">
             <label for="displayIn">Display In:</label>
             <select
               v-model="displayIn"
@@ -310,12 +310,15 @@ export default {
     this['NorthAndCentralAmerica'] = this.countries.filter(country => country.ctryGroup === 'North and Central America')
     this['SouthAmerica'] = this.countries.filter(country => country.ctryGroup === 'South America')
 
-    if (this.reportName.includes('Footwear')) {
-      this.years = await this.repository.getOtexaFootwearYears()
-      this.yearKey = 'dataKey'
+    if (this.reportName.includes('Monthly') && this.reportName.includes('Footwear')) {
+      this.years = await this.repository.getOtexaMonthlyYears('MONTHLY_FOOTWEAR')
+      this.yearKey = 'year'
     } else if (this.reportName.includes('Monthly')) {
       this.years = await this.repository.getOtexaMonthlyYears('MONTHLY')
       this.yearKey = 'year'
+    } else if (this.reportName.includes('Footwear')) {
+      this.years = await this.repository.getOtexaFootwearYears()
+      this.yearKey = 'dataKey'
     } else {
       let years = await this.repository.getOtexaYears()
       this.years = years.filter(year => !year.headerDescription.includes('Quarter'))
@@ -353,17 +356,19 @@ export default {
       let htsPageFilters = []
       let allSelectedCountries = [].concat(this.selectedCountryGroups, this.selectedAfrica, this.selectedAsia, this.selectedAustraliaAndOceania, this.selectedEurope, this.selectedNorthAndCentralAmerica, this.selectedSouthAmerica)
 
-      if (this.displayIn.length === 0) {
-        filters.push(this.filter('Display In', 'In', ['DOLLARS'], true, true))
-      } else {
-        filters.push(this.filter('Display In', 'In', [this.displayIn], true, true))
+      if (!this.reportName.includes('Monthly')) {
+        if (this.displayIn.length === 0) {
+          filters.push(this.filter('Display In', 'In', ['DOLLARS'], true, true))
+        } else {
+          filters.push(this.filter('Display In', 'In', [this.displayIn], true, true))
+        }
       }
 
       if (allSelectedCountries.length > 0) {
         let selectedCountries = this.countries
           .filter(c => allSelectedCountries.includes(c.ctryNumber))
           .map(c => c.ctryDescription.trim())
-        filters.push(this.filter('Country', 'In', selectedCountries, false, true))
+        filters.push(this.filter('Country', 'In', selectedCountries, false, false))
       } else {
         filters.push(this.filter('Country', 'All', [], false, false))
       }
@@ -372,7 +377,7 @@ export default {
         let selectedCategories = this.categories
           .filter(c => this.selectedCategories.includes(c.catId))
           .map(c => c.longCategory.trim())
-        filters.push(this.filter('Category', 'In', selectedCategories, false, true))
+        filters.push(this.filter('Category', 'In', selectedCategories, false, false))
       } else {
         filters.push(this.filter('Category', 'All', [], false, false))
       }
@@ -423,7 +428,6 @@ export default {
           navContentPaneEnabled: false,
         }
       }
-
       let embedContainer = this.$refs['embed-container']
 
       window.powerbi.embed(embedContainer, embedConfig)
@@ -435,17 +439,15 @@ export default {
 
         report.setFilters(filters)
 
-        if (!this.reportName.includes('Monthly')) {
           let pages = await report.getPages()
           let htsPage = pages.filter(p => p.displayName === 'HTS')[0]
-          let countryPage = pages.filter(p => p.displayName === 'Country')[0]
+          let countryPage = pages.filter(p => p.displayName.includes('Country'))[0]
 
           htsPage.setFilters(htsPageFilters)
 
           if (!this.onlyCountry) {
             countryPage.setActive()
           }
-        }
       })
 
       this.isReportVisible = true
@@ -468,10 +470,12 @@ export default {
     },
     filter (column, operator, values, requireSingleSelection, isHidden = false) {
       let table;
-      if (this.reportName.includes('Footwear')) {
+      if (this.reportName.includes('Monthly') && this.reportName.includes('Footwear')) {
+        table = 'OTEXA_MONTHLY_FOOTWEAR_IMPORTS_VW'
+      } else if (this.reportName.includes('Footwear')) {
         table = 'OTEXA_ANNUAL_FOOTWEAR_VW'
       } else if (this.reportName.includes('Monthly')) {
-        table = 'OTEXA_MONTHLY_TQ_VW'
+        table = 'OTEXA_MONTHLY_IMPORTS_VW'
       } else {
         table = 'OTEXA_ANNUAL_VW'
       }
@@ -492,10 +496,12 @@ export default {
     },
     advancedFilter (column, logicalOperator, operator, value) {
       let table;
-      if (this.reportName.includes('Footwear')) {
+      if (this.reportName.includes('Monthly') && this.reportName.includes('Footwear')) {
+        table = 'OTEXA_MONTHLY_FOOTWEAR_IMPORTS_VW'
+      } else if (this.reportName.includes('Footwear')) {
         table = 'OTEXA_ANNUAL_FOOTWEAR_VW'
       } else if (this.reportName.includes('Monthly')) {
-        table = 'OTEXA_MONTHLY_TQ_VW'
+        table = 'OTEXA_MONTHLY_IMPORTS_VW'
       } else {
         table = 'OTEXA_ANNUAL_VW'
       }

@@ -105,7 +105,7 @@ export default {
     source: null,
     countries: [],
     categories: [],
-    selectedCountries: [],
+    selectedCountries: null,
     selectedCategories: [],
     displayIn: [],
     isReportVisible: false,
@@ -148,8 +148,6 @@ export default {
     },
     async viewReport () {
       let filters = []
-      let categoryPageFilters = []
-      let htsPageFilters = []
 
       if (this.displayIn.length === 0) {
         filters.push(this.filter('Display In', 'In', ['DOLLARS'], true))
@@ -157,7 +155,7 @@ export default {
         filters.push(this.filter('Display In', 'In', [this.displayIn], true))
       }
 
-      if (this.selectedCountries != "") {
+      if (this.selectedCountries != null) {
         let selectedCountries = this.countries
           .filter(c => [this.selectedCountries].includes(c.ctryNumber))
           .map(c => c.ctryDescription.trim())
@@ -188,14 +186,6 @@ export default {
         }
       }
 
-      if (!this.onlyCountry) {
-        let world = this.countries
-          .filter(c => (c.ctryNumber === 0))
-          .map(c => c.ctryDescription.trim())
-        categoryPageFilters.push(this.filter('Country', 'In', world, false, true))
-        htsPageFilters.push(this.filter('Country', 'In', world, false, true))
-      }
-
       this.report = await this.repository.generateToken(
         this.$route.params.workspaceName,
         this.$route.params.reportName
@@ -222,13 +212,7 @@ export default {
         this.loadingReport = false
         this.setTokenExpirationListener(this.report.powerBiToken.expiration)
 
-        let pages = await report.getPages()
-        let categoryPage = pages.filter(p => p.displayName.includes('Category'))[0]
-        let htsPage = pages.filter(p => p.displayName === 'HTS')[0]
-
         report.setFilters(filters)
-        categoryPage.setFilters(categoryPageFilters)
-        if (htsPage) { htsPage.setFilters(htsPageFilters) }
 
         if (!this.onlyCountry) {
           let pages = await report.getPages()
@@ -239,7 +223,7 @@ export default {
       this.isReportVisible = true
     },
     reset () {
-      this.selectedCountries = []
+      this.selectedCountries = null
       this.selectedCategories = []
       this.displayIn = 'DOLLARS'
       this.isReportVisible = false

@@ -168,7 +168,7 @@
               >
             </select>
           </div>
-          <div class="filter-field" v-if="(!onlyCountry || reportName.includes('Monthly')) && (this.reportName !== 'Export Data (Historical)') ">
+          <div class="filter-field" v-if="(!onlyCountry && (!reportName.includes('Monthly') && this.reportName !== 'Export Data (Historical)' && !reportName.includes('all years'))) ">
             <label for="chapters">Chapters:</label>
             <select
               v-model="selectedChapters"
@@ -186,7 +186,7 @@
               >
             </select>
           </div>
-          <div class="filter-field" v-if="(!onlyCountry || reportName.includes('Monthly')) && (this.reportName !== 'Export Data (Historical)') ">
+          <div class="filter-field" v-if="(!onlyCountry && (!reportName.includes('Monthly') && this.reportName !== 'Export Data (Historical)' && !reportName.includes('all years')))">
             <label for="scheduleB">Schedule B:</label>
             <span v-if="loadingScheduleB">loading...</span>
             <select
@@ -416,25 +416,29 @@ export default {
         }
       }
 
-      if (this.selectedChapters.length > 0) {
-        let selectedChapters = this.chapters
-          .filter(c => this.selectedChapters.includes(c.chapter))
-          .map(c => c.longChapter.trim())
-        filters.push(this.filter('Chapter', 'In', selectedChapters, false, false))
-      } else if (this.reportName !== 'Export Data (Historical)') {
-        filters.push(this.filter('Chapter', 'All', [], false, false))
+      if (!this.reportName.includes('all years')) {
+        if (this.selectedChapters.length > 0 ) {
+          let selectedChapters = this.chapters
+            .filter(c => this.selectedChapters.includes(c.chapter))
+            .map(c => c.longChapter.trim())
+          filters.push(this.filter('Chapter', 'In', selectedChapters, false, false))
+        } else if (this.reportName !== 'Export Data (Historical)') {
+          filters.push(this.filter('Chapter', 'All', [], false, false))
+        }
       }
 
-      if (this.selectedScheduleB.length > 0) {
-        let selectedScheduleB = this.scheduleB
-          .filter(c => this.selectedScheduleB.includes(c.scheduleB))
-          .map(c => c.longSchedb.trim())
-        filters.push(this.filter('Schedule B', 'In', selectedScheduleB, false, false))
-      } else if (this.reportName !== 'Export Data (Historical)') {
-        filters.push(this.filter('Schedule B', 'All', [], false, false))
+      if (!this.reportName.includes('all years')) {
+        if (this.selectedScheduleB.length > 0 && !this.reportName.includes('all years')) {
+          let selectedScheduleB = this.scheduleB
+            .filter(c => this.selectedScheduleB.includes(c.scheduleB))
+            .map(c => c.longSchedb.trim())
+          filters.push(this.filter('Schedule B', 'In', selectedScheduleB, false, false))
+        } else if (this.reportName !== 'Export Data (Historical)') {
+          filters.push(this.filter('Schedule B', 'All', [], false, false))
+        }
       }
 
-      if (this.reportName !== 'Export Data (Historical)') {
+      if (this.reportName !== 'Export Data (Historical)' && !this.reportName.includes('all years')) {
         scheduleBPageFilters.push(this.advancedFilter('Schedule B', 'And', 'IsNotBlank', null))
       }
 
@@ -478,7 +482,7 @@ export default {
         let countryPage = pages.filter(p => p.displayName === 'Country')[0]
         let scheduleBPage = pages.filter(p => p.displayName === 'Schedule B')[0]
 
-        if (this.reportName !== 'Export Data (Historical)') {
+        if (this.reportName !== 'Export Data (Historical)' && !this.reportName.includes('all years')) {
           scheduleBPage.setFilters(scheduleBPageFilters)
         }
 
@@ -512,7 +516,7 @@ export default {
         table = 'OTEXA_MONTHLY_FOOTWEAR_EXPORTS_VW'
       } else if (this.reportName.includes('Footwear')) {
         table = 'OTEXA_EXPORT_FOOTWEAR_VW'
-      } else if (this.reportName == 'Export Data (Historical)') {
+      } else if (this.reportName == 'Export Data (Historical)' || this.reportName.includes('all years')) {
         table = 'OTEXA_EXPORTS_HISTORICAL_VW'
       } else {
         table = 'OTEXA_EXPORTS_VW'
@@ -538,7 +542,7 @@ export default {
         table = 'OTEXA_MONTHLY_FOOTWEAR_EXPORTS_VW'
       } else if (this.reportName.includes('Footwear')) {
         table = 'OTEXA_EXPORT_FOOTWEAR_VW'
-      } else if (this.reportName == 'Export Data (Historical)') {
+      } else if (this.reportName == 'Export Data (Historical)' || this.reportName.includes('all years')) {
         table = 'OTEXA_EXPORTS_HISTORICAL_VW'
       } else {
         table = 'OTEXA_EXPORTS_VW'

@@ -139,7 +139,7 @@
               name="categories"
               id="categories"
               multiple
-              size="20"
+              size="27"
               @change="updateHts()"
             >
               <option
@@ -157,7 +157,7 @@
               name="chapters"
               id="chapters"
               multiple
-              size="20"
+              size="27"
               @change="updateHts()"
             >
               <option
@@ -177,7 +177,7 @@
               name="hts"
               id="hts"
               multiple
-              size="20"
+              size="27"
             >
               <option v-for="item in hts" :key="item.hts" :value="item.hts">{{
                 item.longHts
@@ -293,7 +293,7 @@ export default {
   async created () {
     this.onlyCountry = (this.$route.query.onlyCountry || this.reportName.includes('Category'))
       ? (this.$route.query.onlyCountry === 'true' || this.reportName.includes('Country'))
-      : true
+      : false
 
     this.source = this.reportName.includes('Footwear')
       ? 'ANNUAL_FOOTWEAR'

@@ -139,7 +139,7 @@
               name="categories"
               id="categories"
               multiple
-              size="20"
+              size="25"
               @change="updateScheduleB()"
             >
               <option
@@ -157,7 +157,7 @@
               name="groups"
               id="groups"
               multiple
-              size="20"
+              size="25"
               @change="updateScheduleB()"
             >
               <option
@@ -175,7 +175,7 @@
               name="chapters"
               id="chapters"
               multiple
-              size="20"
+              size="25"
               @change="updateScheduleB()"
             >
               <option
@@ -195,7 +195,7 @@
               name="scheduleB"
               id="scheduleB"
               multiple
-              size="20"
+              size="25"
             >
               <option v-for="item in scheduleB" :key="item.scheduleB" :value="item.scheduleB">{{
                 item.longSchedb
@@ -301,7 +301,7 @@ export default {
   async created () {
     this.onlyCountry = (this.$route.query.onlyCountry || this.reportName.includes('Group'))
       ? (this.$route.query.onlyCountry === 'true' || this.reportName.includes('Country'))
-      : true
+      : false
 
     this.source = this.reportName.includes('Footwear')
       ? 'EXPORT_FOOTWEAR'

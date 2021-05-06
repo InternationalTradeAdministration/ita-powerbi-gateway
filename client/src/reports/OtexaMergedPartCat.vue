@@ -50,7 +50,7 @@
               v-model="selectedCategories"
               name="categories"
               id="categories"
-              size="20"
+              size="37"
             >
               <option
                 v-for="item in categories"
@@ -123,7 +123,7 @@ export default {
     }
   }),
   async created () {
-    this.onlyCountry = true
+    this.onlyCountry = false
 
     this.source = this.reportName.includes('Merged')
       ? 'MERGED_CAT'

@@ -227,7 +227,8 @@
               size="2"
             >
               <option value='DOLLARS'>DOLLARS</option>
-              <option value='UNITS'>UNITS</option>
+              <option v-if="this.reportName.includes('Footwear')" value='QTY'>QTY</option>
+              <option v-else value='UNITS'>UNITS</option>
             </select>
           </div>
         </div>

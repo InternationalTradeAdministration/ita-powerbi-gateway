@@ -33,7 +33,17 @@ export default {
       accessToken: r.powerBiToken.token,
       type: 'report',
       tokenType: this.pbi.models.TokenType.Embed,
-      permissions: this.pbi.models.Permissions.All
+      permissions: this.pbi.models.Permissions.All,
+      settings: {
+        panes: {
+          filters: {
+            visible: this.$route.query.filtersVisible !== 'false'
+          },
+          pageNavigation: {
+            visible: this.$route.query.pageNavigationVisible !== 'false'
+          }
+        }
+      }
     }
 
     let embedContainer = this.$refs['embed-container']

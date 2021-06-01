@@ -52,6 +52,7 @@ export default {
     report.on('loaded', () => {
       this.loadingReport = false
       this.setTokenExpirationListener(r.powerBiToken.expiration)
+      embedContainer.children[0].style.height = null;
     })
   }
 }

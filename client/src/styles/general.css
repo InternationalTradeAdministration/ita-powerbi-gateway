@@ -26,5 +26,35 @@ h1 {
 
 iframe {
   border: none;
-  min-height: 1000px;
+  height: 90vh;
+}
+
+@media (min-height: 600px) {
+  iframe {
+    height: 93.8vh;
+  }
+}
+
+@media (min-height: 700px) {
+  iframe {
+    height: 94.3vh;
+  }
+}
+
+@media (min-height: 800px) {
+  iframe {
+    height: 95.3vh;
+  }
+}
+
+@media (min-height: 1000px) {
+  iframe {
+    height: 95.8vh;
+  }
+}
+
+@media (min-height: 1200px) {
+  iframe {
+    height: 96.3vh;
+  }
 }

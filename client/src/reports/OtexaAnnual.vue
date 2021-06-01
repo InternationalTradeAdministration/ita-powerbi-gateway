@@ -436,6 +436,7 @@ export default {
       report.on('loaded', async () => {
         this.loadingReport = false
         this.setTokenExpirationListener(this.report.powerBiToken.expiration)
+        embedContainer.children[0].style.height = null;
 
         report.setFilters(filters)
 

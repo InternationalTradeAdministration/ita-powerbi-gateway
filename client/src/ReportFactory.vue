@@ -31,7 +31,7 @@
       :reportName="reportName"
     />
     <otexa-annual
-      v-else-if="workspaceName.includes('OTEXA') && !reportName.includes('Metrics')"
+      v-else-if="workspaceName.includes('OTEXA') && !reportName.includes('Metrics') && (reportName.includes('Annual') || reportName.includes('Monthly'))"
       :repository="repository"
       :pbi="pbi"
       :reportName="reportName"

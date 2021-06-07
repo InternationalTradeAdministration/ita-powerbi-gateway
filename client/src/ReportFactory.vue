@@ -1,37 +1,37 @@
 <template>
   <div class="report-factory">
     <otexa-msr-footwear-categories
-      v-if="workspaceName.includes('OTEXA') && reportName.includes('MSR Categories') && reportName.includes('Footwear')"
+      v-if="workspaceName.includes('OTEXA') && OtexaReportNames.OtexaMsrFootwearCategories.includes(reportName)"
       :repository="repository"
       :pbi="pbi"
       :reportName="reportName"
     />
     <otexa-msr-countries
-      v-else-if="workspaceName.includes('OTEXA') && reportName.includes('MSR Countries')"
+      v-else-if="workspaceName.includes('OTEXA') && OtexaReportNames.OtexaMsrCountries.includes(reportName)"
       :repository="repository"
       :pbi="pbi"
       :reportName="reportName"
     />
     <otexa-msr-categories
-      v-else-if="workspaceName.includes('OTEXA') && (reportName.includes('MSR Categories') || reportName.includes('MSR Groups'))"
+      v-else-if="workspaceName.includes('OTEXA') && OtexaReportNames.OtexaMsrCategories.includes(reportName)"
       :repository="repository"
       :pbi="pbi"
       :reportName="reportName"
     />
     <otexa-exports
-      v-else-if="workspaceName.includes('OTEXA') && reportName.includes('Export')"
+      v-else-if="workspaceName.includes('OTEXA') && OtexaReportNames.OtexaExports.includes(reportName)"
       :repository="repository"
       :pbi="pbi"
       :reportName="reportName"
     />
     <otexa-merged-part-cat
-      v-else-if="workspaceName.includes('OTEXA') && (reportName.includes('Merged') || reportName.includes('Part'))"
+      v-else-if="workspaceName.includes('OTEXA') && OtexaReportNames.OtexaMergedPartCat.includes(reportName)"
       :repository="repository"
       :pbi="pbi"
       :reportName="reportName"
     />
     <otexa-annual
-      v-else-if="workspaceName.includes('OTEXA') && !reportName.includes('Metrics') && (reportName.includes('Annual') || reportName.includes('Monthly'))"
+      v-else-if="workspaceName.includes('OTEXA') && OtexaReportNames.OtexaAnnual.includes(reportName)"
       :repository="repository"
       :pbi="pbi"
       :reportName="reportName"
@@ -41,6 +41,7 @@
 </template>
 <script>
 import Default from '@/reports/Default'
+import OtexaReportNames from '@/reports/OtexaReportNames'
 import OtexaAnnual from '@/reports/OtexaAnnual'
 import OtexaExports from '@/reports/OtexaExports'
 import OtexaMergedPartCat from '@/reports/OtexaMergedPartCat'
@@ -62,7 +63,8 @@ export default {
   },
   data: () => ({
     workspaceName: null,
-    reportName: null
+    reportName: null,
+    OtexaReportNames: OtexaReportNames,
   }),
   created () {
     this.workspaceName = this.$route.params.workspaceName

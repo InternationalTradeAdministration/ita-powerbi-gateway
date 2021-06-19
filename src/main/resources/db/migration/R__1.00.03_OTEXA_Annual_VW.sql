@@ -16,6 +16,7 @@ SELECT details.[CTRYNUM]
 FROM [dbo].[OTEXA_ANNUAL] details
 INNER JOIN [dbo].[OTEXA_HEADER_REF] hdr
     ON details.[HEADER_ID] = hdr.[HEADER_ID]
+    AND hdr.[SOURCE] = 'ANNUAL'
 LEFT OUTER JOIN [dbo].[OTEXA_COUNTRY_REF_VW] country
     ON details.[CTRYNUM] = country.[CTRY_NUMBER]
     AND country.[SOURCE] = 'ANNUAL'
@@ -52,6 +53,7 @@ SELECT details.[CTRYNUM]
 FROM [dbo].[OTEXA_ANNUAL] details
 INNER JOIN [dbo].[OTEXA_HEADER_REF] hdr
     ON details.[HEADER_ID] = hdr.[HEADER_ID]
+    AND hdr.[SOURCE] = 'ANNUAL'
 LEFT OUTER JOIN [dbo].[OTEXA_COUNTRY_REF_VW] country
     ON details.[CTRYNUM] = country.[CTRY_NUMBER]
     AND country.[SOURCE] = 'ANNUAL'
@@ -86,6 +88,7 @@ SELECT details.[CTRYNUM]
 FROM [dbo].[OTEXA_ANNUAL] details
 INNER JOIN [dbo].[OTEXA_HEADER_REF] hdr
     ON details.[HEADER_ID] = hdr.[HEADER_ID]
+    AND hdr.[SOURCE] = 'ANNUAL'
 LEFT OUTER JOIN [dbo].[OTEXA_COUNTRY_REF_VW] country
     ON details.[CTRYNUM] = country.[CTRY_NUMBER]
     AND country.[SOURCE] = 'ANNUAL'

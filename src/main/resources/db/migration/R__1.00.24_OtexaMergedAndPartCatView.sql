@@ -20,6 +20,7 @@ LEFT OUTER JOIN [dbo].[OTEXA_COUNTRY_REF_VW] country
     AND country.[SOURCE] = 'MERGED_CAT'
 INNER JOIN [dbo].[OTEXA_HEADER_REF] hdr
     ON details.[HEADER_ID] = hdr.[HEADER_ID]
+    AND hdr.[SOURCE] = 'ANNUAL'
 FULL OUTER JOIN [dbo].[OTEXA_HTS_REF_VW] hts
     ON hts.[HTS] = details.[HTS]
 WHERE hdr.[HEADER_DESCRIPTION] IS NOT NULL
@@ -49,6 +50,7 @@ LEFT OUTER JOIN [dbo].[OTEXA_COUNTRY_REF_VW] country
     AND country.[SOURCE] = 'MERGED_CAT'
 INNER JOIN [dbo].[OTEXA_HEADER_REF] hdr
     ON details.[HEADER_ID] = hdr.[HEADER_ID]
+    AND hdr.[SOURCE] = 'ANNUAL'
 FULL OUTER JOIN [dbo].[OTEXA_HTS_REF_VW] hts
     ON hts.[HTS] = details.[HTS]
 WHERE hdr.[HEADER_TYPE] = 'SME'
@@ -76,6 +78,7 @@ LEFT OUTER JOIN [dbo].[OTEXA_COUNTRY_REF_VW] country
     AND country.[SOURCE] = 'MERGED_CAT'
 INNER JOIN [dbo].[OTEXA_HEADER_REF] hdr
     ON details.[HEADER_ID] = hdr.[HEADER_ID]
+    AND hdr.[SOURCE] = 'ANNUAL'
 FULL OUTER JOIN [dbo].[OTEXA_HTS_REF_VW] hts
     ON hts.[HTS] = details.[HTS]
 WHERE hdr.[HEADER_TYPE] = 'UNITS'
@@ -107,6 +110,7 @@ LEFT OUTER JOIN [dbo].[OTEXA_COUNTRY_REF_VW] country
     AND country.[SOURCE] = 'PART_CAT'
 INNER JOIN [dbo].[OTEXA_HEADER_REF] hdr
     ON details.[HEADER_ID] = hdr.[HEADER_ID]
+    AND hdr.[SOURCE] = 'ANNUAL'
 INNER JOIN [dbo].[OTEXA_CATEGORY_REF_VW] category
     ON details.[CAT_ID] = category.[CAT_ID]
 FULL OUTER JOIN [dbo].[OTEXA_HTS_REF_VW] hts
@@ -139,6 +143,7 @@ LEFT OUTER JOIN [dbo].[OTEXA_COUNTRY_REF_VW] country
     AND country.[SOURCE] = 'PART_CAT'
 INNER JOIN [dbo].[OTEXA_HEADER_REF] hdr
     ON details.[HEADER_ID] = hdr.[HEADER_ID]
+    AND hdr.[SOURCE] = 'ANNUAL'
 INNER JOIN [dbo].[OTEXA_CATEGORY_REF_VW] category
     ON details.[CAT_ID] = category.[CAT_ID]
 FULL OUTER JOIN [dbo].[OTEXA_HTS_REF_VW] hts
@@ -169,6 +174,7 @@ LEFT OUTER JOIN [dbo].[OTEXA_COUNTRY_REF_VW] country
     AND country.[SOURCE] = 'PART_CAT'
 INNER JOIN [dbo].[OTEXA_HEADER_REF] hdr
     ON details.[HEADER_ID] = hdr.[HEADER_ID]
+    AND hdr.[SOURCE] = 'ANNUAL'
 INNER JOIN [dbo].[OTEXA_CATEGORY_REF_VW] category
     ON details.[CAT_ID] = category.[CAT_ID]
 FULL OUTER JOIN [dbo].[OTEXA_HTS_REF_VW] hts

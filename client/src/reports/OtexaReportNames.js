@@ -32,6 +32,10 @@ const OtexaReportNames = {
     'Annual Footwear Data (MSR Categories)',
     'Export Footwear Data (MSR Categories)',
   ],
+  'OtexaTradeBalance': [
+    'Trade_Balance_Annual',
+    'Trade_Balance_Annual (Historical)',
+  ],
 }
 
 export default OtexaReportNames;

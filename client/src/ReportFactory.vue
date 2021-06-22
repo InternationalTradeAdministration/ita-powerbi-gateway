@@ -30,6 +30,12 @@
       :pbi="pbi"
       :reportName="reportName"
     />
+    <otexa-trade-balance
+      v-else-if="workspaceName.includes('OTEXA') && OtexaReportNames.OtexaTradeBalance.includes(reportName)"
+      :repository="repository"
+      :pbi="pbi"
+      :reportName="reportName"
+    />
     <otexa-annual
       v-else-if="workspaceName.includes('OTEXA') && OtexaReportNames.OtexaAnnual.includes(reportName)"
       :repository="repository"
@@ -48,6 +54,7 @@ import OtexaMergedPartCat from '@/reports/OtexaMergedPartCat'
 import OtexaMsrCountries from '@/reports/OtexaMsrCountries'
 import OtexaMsrCategories from '@/reports/OtexaMsrCategories'
 import OtexaMsrFootwearCategories from '@/reports/OtexaMsrFootwearCategories'
+import OtexaTradeBalance from '@/reports/OtexaTradeBalance'
 
 export default {
   name: 'ReportFactory',
@@ -60,6 +67,7 @@ export default {
     'otexa-msr-countries': OtexaMsrCountries,
     'otexa-msr-categories': OtexaMsrCategories,
     'otexa-msr-footwear-categories': OtexaMsrFootwearCategories,
+    'otexa-trade-balance': OtexaTradeBalance,
   },
   data: () => ({
     workspaceName: null,

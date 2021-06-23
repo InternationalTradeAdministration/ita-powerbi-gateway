@@ -4,14 +4,7 @@
     <div v-else-if="!isReportVisible">
       <div class="filter-pane">
         <div class="filter-fields">
-          <div class="filter-field">
-            <label>Data By:</label>
-            <select v-model="onlyCountry" @click="reset()" size="2">
-              <option :value="true">Country</option>
-              <option :value="false">Aggregate Group</option>
-            </select>
-          </div>
-          <div class="regions" v-if="onlyCountry && this.$route.query.subset !== 'FTA'">
+          <div class="regions" v-if="this.$route.query.subset !== 'FTA' && this.$route.query.subset !== 'Major'">
             <div class="filter-field">
               <label for="CountryGroups">Country Groups:</label>
               <select
@@ -133,7 +126,7 @@
             </div>
           </div>
           <div class="filter-field" v-if="this.$route.query.subset === 'FTA' || this.$route.query.subset === 'Major'">
-            <label for="selectedCountries">FTA Partners</label>
+            <label for="selectedCountries">{{this.$route.query.subset == 'FTA' ? 'FTA Partners' : 'Major Countries'}}</label>
             <select
               v-model="selectedCountries"
               name="selectedCountries"
@@ -148,7 +141,7 @@
               >{{ item.ctryDescription }}</option>
             </select>
           </div>
-          <div class="filter-field" v-if="!onlyCountry">
+          <div class="filter-field">
             <label for="aggGroups">Aggregate Groups:</label>
             <select
               v-model="selectedAggGroups"
@@ -179,7 +172,7 @@
             </select>
           </div>
         </div>
-        <p v-if="(!onlyCountry)">
+        <p>
           *Multiple selections will be added together (use the Shift key for
           sequential selections and the Ctrl key for non-sequential ones).
         </p>
@@ -220,7 +213,6 @@ export default {
     isReportVisible: false,
     loading: true,
     loadingReport: true,
-    onlyCountry: null,
     tradeFlow: null,
     CountryGroups: [],
     selectedCountryGroups: [],
@@ -238,10 +230,6 @@ export default {
     selectedSouthAmerica: [],
   }),
   async created () {
-    this.onlyCountry = (this.$route.query.onlyCountry)
-      ? (this.$route.query.onlyCountry === 'true')
-      : false
-
     this.source = 'ANNUAL'
     this.countries = []
     if (this.$route.query.subset === 'FTA') {

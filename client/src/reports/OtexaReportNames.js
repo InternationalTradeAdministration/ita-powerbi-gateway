@@ -2,16 +2,20 @@ const OtexaReportNames = {
   'OtexaAnnual': [
     'Annual Data',
     'Annual Data (Historical)',
+    'Annual Data (all years)',
     'Annual Footwear Data',
-    'Annual Data (Historical)',
+    'Annual Footwear Data (Historical)',
+    'Annual Footwear Data (all years)',
     'Monthly_Imports',
     'Monthly_Footwear_Imports',
   ],
   'OtexaExports': [
     'Export Data',
     'Export Data (Historical)',
+    'Export Data (all years)',
     'Export Footwear Data',
     'Export Footwear Data (Historical)',
+    'Export Footwear Data (all years)',
     'Monthly_Footwear_Exports',
   ],
   'OtexaMergedPartCat': [

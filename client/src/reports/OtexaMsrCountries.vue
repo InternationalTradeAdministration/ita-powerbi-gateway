@@ -67,6 +67,7 @@
 <script>
 import Toolbar from '@/Toolbar'
 import TokenExpirationListenerMixin from '../TokenExpirationListenerMixin'
+import { uniqNames } from '@/utils/helpers'
 export default {
   name: 'OtexaMsrCountries',
   props: ['repository', 'pbi', 'reportName'],
@@ -105,7 +106,8 @@ export default {
       source = 'ANNUAL'
     }
 
-    this.countries = await this.repository.getOtexaCountries(source)
+    let COUNTRIES = await this.repository.getOtexaCountries(source)
+    this.countries = uniqNames(COUNTRIES, "ctryDescription")
     this.categories = await this.repository.getOtexaCategories(source)
 
     Object.keys(this.countryRegions).forEach(region => {

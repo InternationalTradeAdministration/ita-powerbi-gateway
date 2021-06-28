@@ -255,6 +255,7 @@
 <script>
 import Toolbar from '@/Toolbar'
 import TokenExpirationListenerMixin from '../TokenExpirationListenerMixin'
+import { uniqNames } from '@/utils/helpers'
 export default {
   name: 'OtexaExports',
   props: ['repository', 'pbi', 'reportName'],
@@ -318,13 +319,18 @@ export default {
     }
 
     this.countries = await this.repository.getOtexaCountries(this.source)
-    this['CountryGroups'] = this.countries.filter(country => country.ctryGroup === 'Country Groups')
-    this['Africa'] = this.countries.filter(country => country.ctryGroup === 'Africa')
-    this['Asia'] = this.countries.filter(country => country.ctryGroup === 'Asia')
-    this['AustraliaAndOceania'] = this.countries.filter(country => country.ctryGroup === 'Australia and Oceania')
-    this['Europe'] = this.countries.filter(country => country.ctryGroup === 'Europe')
-    this['NorthAndCentralAmerica'] = this.countries.filter(country => country.ctryGroup === 'North and Central America')
-    this['SouthAmerica'] = this.countries.filter(country => country.ctryGroup === 'South America')
+    let AFRICA = this.countries.filter(country => country.ctryGroup === 'Africa')
+    this['Africa'] = uniqNames(AFRICA, "ctryDescription")
+    let ASIA = this.countries.filter(country => country.ctryGroup === 'Asia')
+    this['Asia'] = uniqNames(ASIA, "ctryDescription")
+    let OCEANIA = this.countries.filter(country => country.ctryGroup === 'Australia and Oceania')
+    this['AustraliaAndOceania'] = uniqNames(OCEANIA, "ctryDescription")
+    let EUROPE = this.countries.filter(country => country.ctryGroup === 'Europe')
+    this['Europe'] = uniqNames(EUROPE, "ctryDescription")
+    let NCAMERICA = this.countries.filter(country => country.ctryGroup === 'North and Central America')
+    this['NorthAndCentralAmerica'] = uniqNames(NCAMERICA, "ctryDescription")
+    let SAMERICA = this.countries.filter(country => country.ctryGroup === 'South America')
+    this['SouthAmerica'] = uniqNames(SAMERICA, "ctryDescription")
 
     this.chapters = await this.repository.getScheduleBChapters(this.source)
 

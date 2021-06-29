@@ -93,6 +93,7 @@
 <script>
 import Toolbar from '@/Toolbar'
 import TokenExpirationListenerMixin from '../TokenExpirationListenerMixin'
+import { uniqNames } from '@/utils/helpers'
 export default {
   name: 'OtexaMergedPartCat',
   props: ['repository', 'pbi', 'reportName'],
@@ -129,7 +130,8 @@ export default {
       ? 'MERGED_CAT'
       : 'PART_CAT'
 
-    this.countries = await this.repository.getOtexaCountries(this.source)
+    let COUNTRIES = await this.repository.getOtexaCountries(this.source)
+    this.countries = uniqNames(COUNTRIES, "ctryDescription")
     this.categories = this.reportName.includes('Merged') 
       ? await this.repository.getOtexaMergedCategories() 
       : await this.repository.getOtexaPartCategories()

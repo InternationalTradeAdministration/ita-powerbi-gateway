@@ -13,7 +13,7 @@ AS
         , details.[CAT] as 'Category ID'
         , category.[CAT_DESCRIPTION] as 'Category Description'
         , category.[LONG_CATEGORY] as 'Category'
-        , hts.[LONG_HTS] as 'HTS'
+        , CONCAT(hts.[HTS], ' - ', hts.[HTS Description]) as 'HTS'
         , chapter.[LONG_CHAPTER] as 'Chapter'
     FROM OTEXA_MONTHLY_FOOTWEAR_IMPORTS details
         LEFT OUTER JOIN [dbo].[OTEXA_COUNTRY_REF_VW] country
@@ -22,9 +22,9 @@ AS
     LEFT OUTER JOIN [dbo].[otexa_category_ref_vw] category
         ON details.[CAT] = category.[CAT_ID]
         AND category.[SOURCE] = 'ANNUAL_FOOTWEAR'
-    LEFT OUTER JOIN [dbo].[OTEXA_HTS_REF_VW] hts
+    LEFT OUTER JOIN [dbo].[OTEXA_FOOTWEAR_HTS_LOOKUP] hts
         ON details.[HTS] = hts.[HTS]
-        AND details.[CAT] = hts.[CAT_ID]
+        AND details.[CAT] = hts.[Category]
     LEFT OUTER JOIN [dbo].[OTEXA_HTS_CHAPTER_REF_VW] chapter
         ON details.[HTS] = chapter.[HTS]
         AND details.[CAT] = chapter.[CAT_ID]

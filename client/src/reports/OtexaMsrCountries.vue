@@ -34,7 +34,7 @@
               <option value='QTY'>QTY</option>
             </select>
           </div>
-          <div class="filter-field" v-if="reportName.includes('Export')">
+          <div class="filter-field" v-else-if="reportName.includes('Export')">
             <label for="displayIn">Display In:</label>
             <select
               v-model="displayIn"
@@ -136,14 +136,14 @@ export default {
     },
     async viewReport () {
       let filters = []
-
+      let allSelectedCountries = [].concat(this.selectedCountries)
       if (this.displayIn.length === 0) {
         filters.push(this.filter('Display In', 'In', ['DOLLARS'], true))
       } else {
         filters.push(this.filter('Display In', 'In', [this.displayIn], true))
       }
 
-      if (this.selectedCountries.length > 0) {
+      if (allSelectedCountries.length > 0) {
         let selectedCountries = this.countries
           .filter(c => [this.selectedCountries].includes(c.ctryNumber))
           .map(c => c.ctryDescription.trim())

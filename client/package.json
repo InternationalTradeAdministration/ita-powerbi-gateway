@@ -11,7 +11,7 @@
     "test": "vue-cli-service test:unit --timeout 10000"
   },
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "core-js": "^3.3.2",
     "kind-of": "^6.0.3",
     "minimist": "^1.2.5",

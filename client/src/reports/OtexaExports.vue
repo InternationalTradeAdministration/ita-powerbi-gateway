@@ -429,7 +429,7 @@ export default {
           let selectedChapters = this.chapters
             .filter(c => this.selectedChapters.includes(c.chapter))
             .map(c => c.longChapter.trim())
-          filters.push(this.filter('Chapter', 'In', selectedChapters, false, false))
+          filters.push(this.filter('Chapter', 'In', selectedChapters, false, true))
         } else if (this.reportName !== 'Export Data (Historical)') {
           filters.push(this.filter('Chapter', 'All', [], false, false))
         }
@@ -440,7 +440,7 @@ export default {
           let selectedScheduleB = this.scheduleB
             .filter(c => this.selectedScheduleB.includes(c.scheduleB))
             .map(c => c.longSchedb.trim())
-          filters.push(this.filter('Schedule B', 'In', selectedScheduleB, false, false))
+          filters.push(this.filter('Schedule B', 'In', selectedScheduleB, false, true))
         } else if (this.reportName !== 'Export Data (Historical)') {
           filters.push(this.filter('Schedule B', 'All', [], false, false))
         }

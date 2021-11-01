@@ -430,6 +430,7 @@ export default {
         type: 'report',
         tokenType: this.pbi.models.TokenType.Embed,
         permissions: this.pbi.models.Permissions.All,
+        filters: filters,
         settings: {
           filterPaneEnabled: true,
           navContentPaneEnabled: false,
@@ -444,8 +445,6 @@ export default {
         this.loadingReport = false
         this.setTokenExpirationListener(this.report.powerBiToken.expiration)
         embedContainer.children[0].style.height = null;
-
-        report.setFilters(filters)
 
           let pages = await report.getPages()
           let htsPage = pages.filter(p => p.displayName === 'HTS')[0]

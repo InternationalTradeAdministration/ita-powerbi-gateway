@@ -471,6 +471,7 @@ export default {
         type: 'report',
         tokenType: this.pbi.models.TokenType.Embed,
         permissions: this.pbi.models.Permissions.All,
+        filters: filters,
         settings: {
           filterPaneEnabled: true,
           navContentPaneEnabled: false,
@@ -487,7 +488,6 @@ export default {
         this.setTokenExpirationListener(this.report.powerBiToken.expiration)
         embedContainer.children[0].style.height = null;
 
-        report.setFilters(filters)
         let pages = await report.getPages()
         let countryPage = pages.filter(p => p.displayName === 'Country')[0]
         let scheduleBPage = pages.filter(p => p.displayName === 'Schedule B')[0]

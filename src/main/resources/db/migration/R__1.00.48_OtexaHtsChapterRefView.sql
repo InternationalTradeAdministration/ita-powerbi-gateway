@@ -14,5 +14,6 @@ AS
         ON mapping.CHAPTER = c.CHAPTER
     LEFT OUTER JOIN [OTEXA_HTS_REF] hts
         ON mapping.HTS = hts.HTS
+        AND mapping.CAT_ID = hts.CAT_ID
     WHERE mapping.HTS is NOT NULL
 GO

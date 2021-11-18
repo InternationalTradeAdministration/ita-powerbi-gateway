@@ -301,12 +301,22 @@ export default {
         let selectedCategories = this.allCategories
           .filter(c => [this.selectedCategories].includes(c.catId))
           .map(c => c.longCategory.trim())
-        filters.push(this.filter('Category', 'In', selectedCategories, false))
+        if (selectedCategories.length > 0){
+          filters.push(this.filter('Category', 'In', selectedCategories, false))
+        } else {
+          console.log(selectedCategories.toString())
+          filters.push(this.filter('Category', 'All', [], false))
+        }
+        
       } else if (this.source === 'EXPORT') {
         let selectedGroups = this.allGroups
           .filter(c => [this.selectedGroups].includes(c.groupId))
           .map(c => c.longGroup.trim())
-        filters.push(this.filter('Group', 'In', selectedGroups, false))
+        if(selectedGroups.length > 0){
+          filters.push(this.filter('Group', 'In', selectedGroups, false))
+        } else {
+          filters.push(this.filter('Group', 'All', [], false))
+        }
       }
 
       this.report = await this.repository.generateToken(

@@ -125,7 +125,12 @@ export default {
       let selectedCategories = this.allCategories
         .filter(c => [this.selectedCategories].includes(c.catId))
         .map(c => c.longCategory.trim())
-      filters.push(this.filter('Category', 'In', selectedCategories, false))
+      
+      if (selectedCategories.length > 0){
+        filters.push(this.filter('Category', 'In', selectedCategories, false))
+      } else {
+        filters.push(this.filter('Category', 'All', [], false))
+      }
 
       this.report = await this.repository.generateToken(
         this.$route.params.workspaceName,

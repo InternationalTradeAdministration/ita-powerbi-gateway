@@ -25,7 +25,7 @@ FULL OUTER JOIN [dbo].[OTEXA_CATEGORY_REF_VW] category
     ON details.[CAT_ID] = category.[CAT_ID]
     AND category.[SOURCE] = 'ANNUAL_FOOTWEAR'
 
-FULL OUTER JOIN [dbo].[OTEXA_FOOTWEAR_HTS_LOOKUP] hts
+FULL OUTER JOIN (SELECT DISTINCT HTS, Category, [HTS Description] FROM [dbo].[OTEXA_FOOTWEAR_HTS_LOOKUP]) hts
     ON hts.[HTS] = details.[HTS]
     AND hts.[Category] = details.[CAT_ID]
 

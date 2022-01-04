@@ -41,6 +41,7 @@ SELECT details.[CTRYNUM]
     , chapter.[LONG_CHAPTER] as 'Chapter'
     , hdr.[HEADER_DESCRIPTION] as 'DATA_KEY'
     , CASE 
+        WHEN details.[CAT_ID] = 900 AND hdr.[HEADER_TYPE] = 'SME' THEN 0
         WHEN hdr.[HEADER_DESCRIPTION] = 'Current Month' THEN details.[VAL]
         ELSE details.[VAL] / details.[SYEF]
         END as 'DATA_VALUE'

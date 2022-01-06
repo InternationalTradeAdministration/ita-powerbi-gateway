@@ -6,7 +6,10 @@ SELECT details.[CTRYNUM]
     , hts.[LONG_HTS] as 'HTS'
     , chapter.[LONG_CHAPTER] as 'Chapter'
     , hdr.[HEADER_DESCRIPTION] as 'DATA_KEY'
-    , details.[VAL] AS 'DATA_VALUE'
+    , CASE
+        WHEN details.CAT_ID=900 and hdr.HEADER_TYPE = 'SME' THEN 0
+        ELSE details.[VAL] 
+        END AS 'DATA_VALUE'
     , hdr.[HEADER_TYPE] as 'DATA_TYPE'
     , details.[UOM] as 'Unit of Measure'
     , details.[M2] as 'M2'
@@ -40,8 +43,8 @@ SELECT details.[CTRYNUM]
     , hts.[LONG_HTS] as 'HTS'
     , chapter.[LONG_CHAPTER] as 'Chapter'
     , hdr.[HEADER_DESCRIPTION] as 'DATA_KEY'
-    , CASE 
-        WHEN details.[CAT_ID] = 900 AND hdr.[HEADER_TYPE] = 'SME' THEN 0
+    , CASE
+        WHEN details.SYEF = 0 THEN details.[VAL]
         WHEN hdr.[HEADER_DESCRIPTION] = 'Current Month' THEN details.[VAL]
         ELSE details.[VAL] / details.[SYEF]
         END as 'DATA_VALUE'
@@ -79,7 +82,7 @@ SELECT details.[CTRYNUM]
     , hts.[LONG_HTS] as 'HTS'
     , chapter.[LONG_CHAPTER] as 'Chapter'
     , hdr.[HEADER_DESCRIPTION] as 'DATA_KEY'
-    , details.[VAL] * details.[SYEF] AS 'DATA_VALUE'
+    , details.[VAL] * details.[SYEF] as 'DATA_VALUE'
     , 'SME' as 'DATA_TYPE'
     , details.[UOM] as 'Unit of Measure'
     , details.[M2] as 'M2'

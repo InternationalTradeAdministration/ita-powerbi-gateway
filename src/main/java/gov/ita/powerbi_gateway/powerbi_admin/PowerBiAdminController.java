@@ -4,11 +4,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.Pattern;
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.HashMap;
@@ -60,15 +62,11 @@ public class PowerBiAdminController {
     return (token.getExpiration().toEpochSecond(ZoneOffset.UTC) > tokenRefreshThreshold);
   }
 
-  @GetMapping("/export-to-file")
-  @Validated
-  public ExportStatus exportToFile(@RequestParam String workspaceName,
-                                   @RequestParam String reportName,
-                                   @RequestParam String bookmarkState,
-                                   @RequestParam @Pattern(regexp = "^(PDF|PNG|PPTX)$") String format) throws JsonProcessingException {
-    Group group = powerBiAdminService.getPbiGroups(workspaceName).getValue().get(0);
-    Report report = powerBiAdminService.getPbiReports(group.getId(), reportName).getValue().get(0);
-    return powerBiAdminService.exportToFileInGroup(group.getId(), report.getId(), bookmarkState, format);
+  @PostMapping("/export-to-file")
+  public ExportStatus exportToFile(@Valid @RequestBody ExportToFile exportToFile) throws JsonProcessingException {
+    Group group = powerBiAdminService.getPbiGroups(exportToFile.getWorkspaceName()).getValue().get(0);
+    Report report = powerBiAdminService.getPbiReports(group.getId(), exportToFile.getReportName()).getValue().get(0);
+    return powerBiAdminService.exportToFileInGroup(group.getId(), report.getId(), exportToFile.getBookmarkState(), exportToFile.getFormat());
   }
 
   @GetMapping("/export-to-file-status")

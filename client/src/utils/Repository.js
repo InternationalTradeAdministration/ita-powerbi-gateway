@@ -92,10 +92,11 @@ export default class Repository {
   }
 
   exportToFile(workspaceName, reportName, bookmarkState, format) {
-    return axios.get("/api/pbi-admin/export-to-file", {
-      params: {
-        workspaceName, reportName, bookmarkState, format
-      }
+    return axios.post("/api/pbi-admin/export-to-file", {
+      workspaceName: workspaceName,
+      reportName: reportName,
+      bookmarkState: bookmarkState,
+      format: format
     }).then(response => response.data)
   }
 

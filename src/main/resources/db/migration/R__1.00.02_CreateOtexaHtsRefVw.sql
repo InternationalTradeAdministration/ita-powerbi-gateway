@@ -4,4 +4,5 @@ AS
     FROM [dbo].[OTEXA_HTS_REF] hts
     FULL OUTER JOIN [dbo].[OTEXA_HTS_CAT_REF] hts_cat
     ON hts.HTS = hts_cat.HTS
+    AND hts.CAT_ID = hts_cat.CAT_ID
 GO

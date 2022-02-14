@@ -11,7 +11,7 @@ public class PropertiesController {
     @Autowired
     private ServerProperties serverProperties;
 
-    @GetMapping("/application/server/properties")
+    @GetMapping("/api/application/server/properties")
     public String getServerProperties() {
         return "maxHttpHeaderSize: " + serverProperties.getMaxHttpHeaderSize();
     }

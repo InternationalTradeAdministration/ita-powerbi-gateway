@@ -1,0 +1,6 @@
+IF NOT EXISTS(SELECT 1
+              FROM sys.columns
+              WHERE Name = N'ID'
+                AND Object_ID = OBJECT_ID(N'dbo.OTEXA_MONTHLY_FOOTWEAR_EXPORTS'))
+ALTER TABLE [dbo].[OTEXA_MONTHLY_FOOTWEAR_EXPORTS]
+    ADD [ID] bigint IDENTITY PRIMARY KEY NOT NULL

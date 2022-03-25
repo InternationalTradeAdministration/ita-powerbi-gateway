@@ -65,5 +65,6 @@ AS
         AND mapping.CAT_ID = schedb_cat.CAT_ID
     LEFT OUTER JOIN OTEXA_SCHEDULEB_REF schedb
         ON mapping.SCHEDULE_B = schedb.[SCHEDULE_B]
-        AND mapping.GROUP_ID = schedb.GROUP_ID
+        AND (mapping.GROUP_ID = schedb.GROUP_ID
+            OR mapping.SOURCE = 'EXPORT_FOOTWEAR')
 GO

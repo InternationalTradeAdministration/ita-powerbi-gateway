@@ -14,7 +14,7 @@
     "axios": "^0.21.1",
     "core-js": "^3.3.2",
     "kind-of": "^6.0.3",
-    "minimist": "^1.2.5",
+    "minimist": "^1.2.6",
     "powerbi-client": "^2.11.0",
     "serialize-javascript": "^3.1.0",
     "vue": "^2.6.10",

@@ -50,7 +50,7 @@ GO
 
 CREATE VIEW [dbo].[OTEXA_SCHEDULEB_CHAPTER_REF_VW]
 AS
-    SELECT mapping.GROUP_ID
+    SELECT DISTINCT mapping.GROUP_ID
         , schedb_cat.CAT_ID
         , mapping.SCHEDULE_B
         , CONCAT(mapping.[SCHEDULE_B], ' - ', schedb.[DESCRIPTION]) as 'LONG_SCHEDB'

@@ -168,7 +168,7 @@
               >
             </select>
           </div>
-          <div class="filter-field" v-if="(!onlyCountry && (!reportName.includes('Monthly') && this.reportName !== 'Export Data (Historical)' && !reportName.includes('all years'))) ">
+          <div class="filter-field" v-if="(!onlyCountry && (this.reportName !== 'Export Data (Historical)' && !reportName.includes('all years'))) ">
             <label for="chapters">Chapters:</label>
             <select
               v-model="selectedChapters"
@@ -186,7 +186,7 @@
               >
             </select>
           </div>
-          <div class="filter-field" v-if="(!onlyCountry && (!reportName.includes('Monthly') && this.reportName !== 'Export Data (Historical)' && !reportName.includes('all years')))">
+          <div class="filter-field" v-if="(!onlyCountry && (this.reportName !== 'Export Data (Historical)' && !reportName.includes('all years')))">
             <label for="scheduleB">Schedule B:</label>
             <span v-if="loadingScheduleB">loading...</span>
             <select
@@ -496,7 +496,7 @@ export default {
           scheduleBPage.setFilters(scheduleBPageFilters)
         }
 
-        if (!this.onlyCountry) {
+        if (countryPage && !this.onlyCountry) {
           countryPage.setActive()
         }
       })

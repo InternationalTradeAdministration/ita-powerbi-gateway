@@ -4,7 +4,7 @@
     <div v-else-if="!isReportVisible">
       <div class="filter-pane">
         <div class="filter-fields">
-          <div class="regions" v-if="this.$route.query.subset !== 'FTA' && this.$route.query.subset !== 'Major'">
+          <div class="regions" v-if="!this.isShowFTAPartnerCountries && !this.isShowMajorCountries">
             <div class="filter-field">
               <label for="CountryGroups">Country Groups:</label>
               <select
@@ -125,8 +125,8 @@
               </select>
             </div>
           </div>
-          <div class="filter-field" v-if="this.$route.query.subset === 'FTA' || this.$route.query.subset === 'Major'">
-            <label for="selectedCountries">{{this.$route.query.subset == 'FTA' ? 'FTA Partners' : 'Major Countries'}}</label>
+          <div class="filter-field" v-if="this.isShowFTAPartnerCountries || this.isShowMajorCountries">
+            <label for="selectedCountries">{{this.isShowFTAPartnerCountries ? 'FTA Partners' : 'Major Countries'}}</label>
             <select
               v-model="selectedCountries"
               name="selectedCountries"
@@ -206,6 +206,8 @@ export default {
   mixins: [TokenExpirationListenerMixin],
   data: () => ({
     report: null,
+    isShowFTAPartnerCountries: null,
+    isShowMajorCountries: null,
     source: null,
     countries: [],
     selectedCountries: [],
@@ -233,10 +235,13 @@ export default {
   async created () {
     this.source = 'ANNUAL'
     this.countries = []
-    if (this.$route.query.subset === 'FTA') {
+
+    if (this.reportName.endsWith('FTA')) {
+      this.isShowFTAPartnerCountries = true
       let allCountries = await this.repository.getOtexaCountries(this.source)
       this.countries = allCountries.filter(country => FTA_Partners.includes(country.ctryNumber))
-    } else if (this.$route.query.subset === 'Major') {
+    } else if (this.reportName.endsWith('Major')) {
+      this.isShowMajorCountries = true
       let allCountries = await this.repository.getOtexaCountries(this.source)
       this.countries = allCountries.filter(country => Major_Countries.includes(country.ctryNumber))
     } else {
@@ -278,7 +283,7 @@ export default {
           .filter(c => allSelectedCountries.includes(c.ctryNumber))
           .map(c => c.ctryDescription.trim())
         filters.push(this.filter('Country', 'In', selectedCountries, false, false))
-      } else if (this.$route.query.subset === 'FTA' || this.$route.query.subset === 'Major') {
+      } else if (this.isShowFTAPartnerCountries || this.isShowMajorCountries) {
         let selectedCountries = this.countries.map(c => c.ctryDescription)
         filters.push(this.filter('Country', 'In', selectedCountries, false, false))
       } else {

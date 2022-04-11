@@ -38,6 +38,8 @@ const OtexaReportNames = {
   ],
   'OtexaTradeBalance': [
     'Trade_Balance_Annual',
+    'Trade_Balance_Annual_FTA',
+    'Trade_Balance_Annual_Major',
     'Trade_Balance_Annual (Historical)',
   ],
 }

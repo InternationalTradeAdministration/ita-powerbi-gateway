@@ -1,6 +1,3 @@
-DROP VIEW IF EXISTS [dbo].[OTEXA_EXPORTS_HISTORICAL_VW]
-GO
-
 CREATE OR ALTER VIEW [dbo].[OTEXA_EXPORTS_HISTORICAL_VW]
 AS
 SELECT details.[CTRYNUM]
@@ -17,7 +14,7 @@ LEFT JOIN [dbo].[OTEXA_HEADER_REF] hdr
     AND hdr.[SOURCE] = 'EXPORT'
 LEFT OUTER JOIN [dbo].[OTEXA_COUNTRY_REF_VW] country
     ON details.[CTRYNUM] = country.[CTRY_NUMBER]
-    AND country.[SOURCE] = 'EXPORT'
+    AND country.[SOURCE] = 'EXPORT_HISTORICAL'
 LEFT JOIN [dbo].[OTEXA_GROUP_REF_VW] group_table
     ON details.[GROUP] = group_table.[GROUP_ID]
 

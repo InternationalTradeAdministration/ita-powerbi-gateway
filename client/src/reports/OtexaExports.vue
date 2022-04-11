@@ -317,7 +317,13 @@ export default {
     if (this.source == 'EXPORT_FOOTWEAR') {
       this.categories = await this.repository.getOtexaCategories(this.source)
     }
-    this.countries = await this.repository.getOtexaCountries(this.source)
+
+    if (this.reportName === 'Export Data (all years)' || this.reportName === 'Export Data (Historical)') {
+      this.countries = await this.repository.getOtexaCountries('EXPORT_HISTORICAL')
+    } else {
+      this.countries = await this.repository.getOtexaCountries(this.source)
+    }
+
     this['CountryGroups'] = this.countries.filter(country => country.ctryGroup === 'Country Groups')
     let AFRICA = this.countries.filter(country => country.ctryGroup === 'Africa')
     this['Africa'] = uniqNames(AFRICA, "ctryDescription")

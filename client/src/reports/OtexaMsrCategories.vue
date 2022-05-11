@@ -6,7 +6,7 @@
         <div class="filter-fields">
 
           <div class="filter-field" v-if="source==='ANNUAL'">
-            <label for="categoryNotions">Notions:</label>
+            <label for="categoryNotions">Aggregates:</label>
             <select
               v-model="selectedCategories"
               name="categoryNotions"

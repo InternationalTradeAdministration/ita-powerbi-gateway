@@ -232,10 +232,6 @@
             </select>
           </div>
         </div>
-        <p v-if="(!onlyCountry || reportName.includes('Historical'))">
-          *Multiple selections will be added together (use the Shift key for
-          sequential selections and the Ctrl key for non-sequential ones).
-        </p>
         <div class="filter-buttons">
           <button @click="viewReport()" id="submit-button">Submit</button>
           <button @click="reset()" id="reset-button">Reset</button>

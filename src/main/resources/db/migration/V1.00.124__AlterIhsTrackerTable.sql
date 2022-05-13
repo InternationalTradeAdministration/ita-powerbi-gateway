@@ -1,0 +1,16 @@
+ALTER TABLE [dbo].[IHS_TRACKER]
+    ALTER COLUMN name nvarchar(4000) NOT NULL;
+
+IF NOT EXISTS(SELECT 1
+              FROM sys.indexes
+              WHERE Name = N'PK_IHS_TRACKER'
+                AND Object_ID = OBJECT_ID(N'dbo.IHS_TRACKER'))
+ALTER TABLE [dbo].[IHS_TRACKER]
+    ADD CONSTRAINT PK_IHS_TRACKER PRIMARY KEY CLUSTERED ([id]);
+
+IF NOT EXISTS(SELECT 1
+              FROM sys.indexes
+              WHERE Name = N'INDEX_IHS_TRACKER_ON_CREATED_AT'
+                AND Object_ID = OBJECT_ID(N'dbo.IHS_TRACKER'))
+CREATE NONCLUSTERED INDEX INDEX_IHS_TRACKER_ON_CREATED_AT
+    ON [dbo].[IHS_TRACKER] (created_at)

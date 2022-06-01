@@ -4,6 +4,7 @@ SELECT p.[direction]
      , p.[reporter]
      , MAX(p.[date])                     AS [max_current_ytd_date]
      , DATEADD(YEAR, -1, MAX(p.[date]))  AS [max_previous_ytd_date]
+     , DATEADD(YEAR, -10, MAX(p.[date]))  AS [max_previous_10_ytd_date]
      , CAST(MAX(p.[created_at]) AS date) AS [last_updated_on]
 FROM [imau_gatm].[PRODUCTS] p
 WHERE p.[attribute] = 'Quantity'
@@ -27,7 +28,8 @@ FROM [imau_gatm].[PRODUCTS] p
                    ON p.[product] = c.[hs_code]
          LEFT JOIN [imau_gatm].[YTD_DATES] y ON p.[direction] = y.[direction]
     AND p.[reporter] = y.[reporter]
-WHERE YEAR(p.[date]) <= YEAR(y.[max_previous_ytd_date])
+WHERE YEAR(p.[date]) >= YEAR(y.[max_previous_10_ytd_date])
+  AND YEAR(p.[date]) <= YEAR(y.[max_previous_ytd_date])
   AND p.[attribute] = 'Quantity'
 GROUP BY p.[direction],
          p.[reporter],
@@ -52,7 +54,8 @@ FROM [imau_gatm].[PRODUCTS] p
                    ON p.[product] = c.[hs_code]
          LEFT JOIN [imau_gatm].[YTD_DATES] y ON p.[direction] = y.[direction]
     AND p.[reporter] = y.[reporter]
-WHERE YEAR(p.[date]) <= YEAR(y.[max_previous_ytd_date])
+WHERE YEAR(p.[date]) >= YEAR(y.[max_previous_10_ytd_date])
+  AND YEAR(p.[date]) <= YEAR(y.[max_previous_ytd_date])
   AND p.[attribute] = 'Value'
 GROUP BY p.[direction],
          p.[reporter],
@@ -135,7 +138,7 @@ FROM [imau_gatm].[PRODUCTS] p
                    ON p.[product] = c.[hs_code]
          LEFT JOIN [imau_gatm].[YTD_DATES] y ON p.[direction] = y.[direction]
     AND p.[reporter] = y.[reporter]
-WHERE YEAR(p.[date]) >= YEAR(y.[max_previous_ytd_date])
+WHERE YEAR(p.[date]) >= YEAR(y.[max_previous_10_ytd_date])
   AND MONTH(p.[date]) <= MONTH(y.[max_current_ytd_date])
   AND p.[attribute] = 'Quantity'
 GROUP BY p.[direction],
@@ -166,7 +169,7 @@ FROM [imau_gatm].[PRODUCTS] p
                    ON p.[product] = c.[hs_code]
          LEFT JOIN [imau_gatm].[YTD_DATES] y ON p.[direction] = y.[direction]
     AND p.[reporter] = y.[reporter]
-WHERE YEAR(p.[date]) >= YEAR(y.[max_previous_ytd_date])
+WHERE YEAR(p.[date]) >= YEAR(y.[max_previous_10_ytd_date])
   AND MONTH(p.[date]) <= MONTH(y.[max_current_ytd_date])
   AND p.[attribute] = 'Value'
 GROUP BY p.[direction],

@@ -171,6 +171,22 @@
               <option value='Trade Balance'>Trade Balance</option>
             </select>
           </div>
+          <div class="filter-field years" v-if="reportName.includes('Historical')">
+            <label for="years">*Years:</label>
+            <select
+                v-model="selectedYears"
+                name="years"
+                id="years"
+                multiple
+                size="20"
+            >
+              <option
+                  v-for="item in years"
+                  :key="item[yearKey]"
+                  :value="item[yearKey]"
+              >{{ item[yearKey] }}</option>
+            </select>
+          </div>
         </div>
         <div class="filter-buttons">
           <button @click="viewReport()" id="submit-button">Submit</button>
@@ -209,6 +225,7 @@ export default {
     selectedCountries: [],
     aggGroups: ["Total", "Apparel", "Fabric", "Made-up", "Yarn"],
     selectedAggGroups: [],
+    selectedYears: [],
     isReportVisible: false,
     loading: true,
     loadingReport: true,
@@ -258,6 +275,12 @@ export default {
       this['SouthAmerica'] = uniqNames(SAMERICA, "ctryDescription")
     }
 
+    if (this.reportName.includes('Historical')) {
+      let years = await this.repository.getOtexaYears()
+      this.years = years.filter(year => !year.headerDescription.includes('Quarter'))
+      this.yearKey = 'headerDescription'
+    }
+
     this.tradeFlow = "Trade Balance"
 
     this.loading = false
@@ -292,6 +315,14 @@ export default {
         filters.push(this.filter('Aggregate Group', 'All', [], false, false))
       }
 
+      if (this.reportName.includes('Historical')) {
+        if (this.selectedYears.length > 0) {
+          let selectedYears = this.selectedYears
+          filters.push(this.filter('Year', 'In', selectedYears, false, false))
+        } else {
+          filters.push(this.filter('Year', 'All', [], false, false))
+        }
+      }
       this.report = await this.repository.generateToken(
         this.$route.params.workspaceName,
         this.$route.params.reportName
@@ -345,6 +376,7 @@ export default {
       this.selectedNorthAndCentralAmerica = []
       this.selectedSouthAmerica = []
       this.selectedAggGroups = []
+      this.selectedYears = []
       this.tradeFlow = "Trade Balance"
       this.isReportVisible = false
     },

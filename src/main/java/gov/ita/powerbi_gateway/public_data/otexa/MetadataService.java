@@ -23,6 +23,8 @@ public interface MetadataService {
 
   List<MonthlyYear> getMonthlyYears(String source);
 
+  List<TradeBalanceYear> getTradeBalanceYears();
+
   List<Hts> getHtsByCategoriesAndChapters(List<Long> categories, List<Long> chapters, String source);
 
   List<Hts> getHtsByCategories(List<Long> categoryIds, String source);

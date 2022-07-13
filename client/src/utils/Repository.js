@@ -91,6 +91,10 @@ export default class Repository {
     }).then(response => response.data)
   }
 
+  async getOtexaTradeBalanceYears() {
+    return await axios.get('/api/otexa/tradebalanceyears').then(response => response.data)
+  }
+
   exportToFile(workspaceName, reportName, bookmarkState, format) {
     return axios.post("/api/pbi-admin/export-to-file", {
       workspaceName: workspaceName,

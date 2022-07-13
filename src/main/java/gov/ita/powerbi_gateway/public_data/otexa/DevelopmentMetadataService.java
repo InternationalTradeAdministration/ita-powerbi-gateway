@@ -43,6 +43,13 @@ public class DevelopmentMetadataService implements MetadataService {
   }
 
   @Override
+  public List<TradeBalanceYear> getTradeBalanceYears() {
+    return Arrays.asList(
+       new TradeBalanceYear("YTD 2022"),
+       new TradeBalanceYear("2021")
+    );
+  }
+  @Override
   public List<Category> getCategories(String source) {
     return Arrays.asList(
       new Category(1L, "1 - Frogs", "ANNUAL"),

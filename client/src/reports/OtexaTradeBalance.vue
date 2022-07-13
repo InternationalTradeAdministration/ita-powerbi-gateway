@@ -276,9 +276,8 @@ export default {
     }
 
     if (this.reportName.includes('Historical')) {
-      let years = await this.repository.getOtexaYears()
-      this.years = years.filter(year => !year.headerDescription.includes('Quarter'))
-      this.yearKey = 'headerDescription'
+      this.years = await this.repository.getOtexaTradeBalanceYears()
+      this.yearKey = 'tradeYear'
     }
 
     this.tradeFlow = "Trade Balance"

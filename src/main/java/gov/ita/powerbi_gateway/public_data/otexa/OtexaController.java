@@ -38,6 +38,11 @@ public class OtexaController {
     return metadataService.getMonthlyYears(source);
   }
 
+  @GetMapping("/tradebalanceyears")
+  public List<TradeBalanceYear> getTradeBalanceYears() {
+    return metadataService.getTradeBalanceYears();
+  }
+
   @GetMapping("/categories")
   public List<Category> getCategories(@RequestParam String source) {
     return metadataService.getCategories(source);

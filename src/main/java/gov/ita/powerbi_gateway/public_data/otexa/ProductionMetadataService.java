@@ -46,6 +46,9 @@ public class ProductionMetadataService implements MetadataService {
   @Autowired
   private MonthlyYearRepository monthlyYearRepository;
 
+  @Autowired
+  private TradeBalanceYearRepository tradeBalanceYearRepository;
+
   @Override
   public List<Country> getCountries(String source) {
     return countryRepository.findBySourceOrderByCtryDescription(source);
@@ -134,6 +137,11 @@ public class ProductionMetadataService implements MetadataService {
   @Override
   public List<ScheduleB> getScheduleBByCategories(List<Long> categoryIds, String source) {
     return scheduleBRepository.findByCategory(categoryIds, source);
+  }
+
+  @Override
+  public List<TradeBalanceYear> getTradeBalanceYears() {
+    return tradeBalanceYearRepository.findAllDistinctTradeYears();
   }
 
 }

@@ -141,7 +141,7 @@ public class ProductionMetadataService implements MetadataService {
 
   @Override
   public List<TradeBalanceYear> getTradeBalanceYears() {
-    return tradeBalanceYearRepository.findAllDistinctTradeYears();
+    return tradeBalanceYearRepository.findDistinctByOrderByTradeYearDesc();
   }
 
 }

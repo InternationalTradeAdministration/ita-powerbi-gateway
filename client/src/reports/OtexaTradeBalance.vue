@@ -223,7 +223,7 @@ export default {
     source: null,
     countries: [],
     selectedCountries: [],
-    aggGroups: ["Total", "Apparel", "Fabric", "Made-up", "Yarn"],
+    aggGroups: ["0-Yarn", "1-Fabric", "2-Made-up", "3-Apparel", "4-Total"],
     selectedAggGroups: [],
     selectedYears: [],
     isReportVisible: false,

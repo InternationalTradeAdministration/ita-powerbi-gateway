@@ -5,7 +5,7 @@
         <slot />
       </div>
       <div class="toolbar-btns">
-        <button v-show="!loadingReport" v-bind:disabled="isExportReportInProgress" @click="selectExportFormat">
+        <button v-if="!loadingReport && this.$route.query.exportreport != 0" v-bind:disabled="isExportReportInProgress" @click="selectExportFormat">
           <img class="bar-chart"
             src="/images/bar-chart.svg"
             alt="Export Report"

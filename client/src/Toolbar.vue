@@ -5,14 +5,16 @@
         <slot />
       </div>
       <div class="toolbar-btns">
-        <button v-show="!loadingReport" v-bind:disabled="isExportReportInProgress" @click="selectExportFormat">
-          <img class="bar-chart"
-            src="/images/bar-chart.svg"
-            alt="Export Report"
-            title="Export Report"
-          />
-        </button>
-        <button v-if="!loadingReport && this.$route.query.exportdata != 0">
+        <span v-if="this.repository!= null && this.$route.query.exportreport !== '0'">
+          <button v-show="!loadingReport" v-bind:disabled="isExportReportInProgress" @click="selectExportFormat">
+            <img class="bar-chart"
+              src="/images/bar-chart.svg"
+              alt="Export Report"
+              title="Export Report"
+            />
+          </button>
+        </span>
+        <button v-if="!loadingReport && this.$route.query.exportdata !== '0'">
           <img
             src="/images/download.svg"
             alt="Export Data"
@@ -297,22 +299,22 @@ export default {
   justify-content: space-between;
 }
 
-.toolbar-btns > button {
+.toolbar-btns button {
   border: none;
   background: none;
   cursor: pointer;
   padding: 0;
 }
 
-.toolbar-btns > button:disabled {
+.toolbar-btns button:disabled {
   cursor: default;
 }
 
-.toolbar-btns > button > img {
+.toolbar-btns button > img {
   padding: 8px 10px;
 }
 
-.toolbar-btns > button:not([disabled]) > img:hover {
+.toolbar-btns button:not([disabled]) > img:hover {
   background-color: white;
 }
 

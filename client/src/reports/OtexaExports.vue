@@ -347,7 +347,7 @@ export default {
       this.years = await this.repository.getOtexaFootwearYears()
       this.yearKey = 'dataKey'
     } else {
-      let years = await this.repository.getOtexaYears()
+      let years = await this.repository.getOtexaYears(this.source)
       this.years = years.filter(year => !year.headerDescription.includes('Quarter'))
       this.yearKey = 'headerDescription'
     }

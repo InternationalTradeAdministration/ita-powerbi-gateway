@@ -24,8 +24,8 @@ public class OtexaController {
   }
 
   @GetMapping("/years")
-  public List<Year> getYears() {
-    return metadataService.getYears();
+  public List<Year> getYears(@RequestParam String source) {
+    return metadataService.getYears(source);
   }
 
   @GetMapping("/footwearyears")

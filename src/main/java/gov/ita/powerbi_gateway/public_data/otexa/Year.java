@@ -14,6 +14,8 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @Table(name = "OtexaHeaderRef")
 public class Year {
+  private String source;
+
   @Id
   private String headerDescription;
 }

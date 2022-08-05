@@ -55,8 +55,8 @@ public class ProductionMetadataService implements MetadataService {
   }
 
   @Override
-  public List<Year> getYears() {
-    return yearRepository.findAllYears();
+  public List<Year> getYears(String source) {
+    return yearRepository.findDistinctHeaderDescriptionBySourceOrderByHeaderDescriptionDesc(source);
   }
 
   @Override

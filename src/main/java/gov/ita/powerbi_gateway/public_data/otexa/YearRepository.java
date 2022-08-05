@@ -8,6 +8,5 @@ import java.util.List;
 
 @Repository
 interface YearRepository extends JpaRepository<Year, Long> {
-  @Query("select distinct new gov.ita.powerbi_gateway.public_data.otexa.Year(t.headerDescription) from Year t order by t.headerDescription desc")
-  List<Year> findAllYears();
+  List<Year> findDistinctHeaderDescriptionBySourceOrderByHeaderDescriptionDesc(String source);
 }

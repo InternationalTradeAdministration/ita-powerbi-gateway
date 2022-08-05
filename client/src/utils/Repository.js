@@ -77,8 +77,8 @@ export default class Repository {
     return await axios.get('/api/otexa/scheduleb?categories=' + categoryIds + '&chapters=' + chapterIds + '&source=' + source).then(response => response.data)
   }
 
-  async getOtexaYears() {
-    return await axios.get('/api/otexa/years').then(response => response.data)
+  async getOtexaYears(source) {
+    return await axios.get('/api/otexa/years', { params: { source } }).then(response => response.data)
   }
 
   async getOtexaFootwearYears() {

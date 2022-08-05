@@ -17,7 +17,7 @@ public interface MetadataService {
 
   List<Chapter> getScheduleBChapters(String source);
 
-  List<Year> getYears();
+  List<Year> getYears(String source);
 
   List<FootwearYear> getFootwearYears();
 

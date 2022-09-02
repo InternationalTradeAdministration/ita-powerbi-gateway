@@ -230,6 +230,8 @@ WHERE YEAR(p.[date]) >= YEAR(y.[reverse_flow_previous_10_ytd_date])
     OR p.[partner] = 'Laos'
     OR p.[partner] = 'Myanmar'
     OR p.[partner] = 'Vietnam')
+  AND p.[reporter] <> 'EU (External Trade)'
+  AND p.[reporter] <> 'United States'
 GROUP BY p.[direction],
          p.[reporter],
          p.[date],
@@ -267,6 +269,8 @@ WHERE YEAR(p.[date]) >= YEAR(y.[reverse_flow_previous_10_ytd_date])
     OR p.[partner] = 'Laos'
     OR p.[partner] = 'Myanmar'
     OR p.[partner] = 'Vietnam')
+  AND p.[reporter] <> 'EU (External Trade)'
+  AND p.[reporter] <> 'United States'
 GROUP BY p.[direction],
          p.[date],
          p.[partner],
@@ -303,6 +307,8 @@ WHERE MONTH(y.[reverse_flow_current_ytd_date]) = 12
     OR p.[partner] = 'Laos'
     OR p.[partner] = 'Myanmar'
     OR p.[partner] = 'Vietnam')
+  AND p.[reporter] <> 'EU (External Trade)'
+  AND p.[reporter] <> 'United States'
 GROUP BY p.[direction],
          p.[reporter],
          p.[date],
@@ -341,6 +347,8 @@ WHERE MONTH(y.[reverse_flow_current_ytd_date]) = 12
     OR p.[partner] = 'Laos'
     OR p.[partner] = 'Myanmar'
     OR p.[partner] = 'Vietnam')
+  AND p.[reporter] <> 'EU (External Trade)'
+  AND p.[reporter] <> 'United States'
 GROUP BY p.[direction],
          p.[date],
          y.[reverse_flow_current_ytd_date],
@@ -383,6 +391,8 @@ WHERE YEAR(p.[date]) >= YEAR(y.[reverse_flow_previous_10_ytd_date])
     OR p.[partner] = 'Laos'
     OR p.[partner] = 'Myanmar'
     OR p.[partner] = 'Vietnam')
+  AND p.[reporter] <> 'EU (External Trade)'
+  AND p.[reporter] <> 'United States'
 GROUP BY p.[direction],
          p.[reporter],
          p.[date],
@@ -426,6 +436,8 @@ WHERE YEAR(p.[date]) >= YEAR(y.[reverse_flow_previous_10_ytd_date])
     OR p.[partner] = 'Laos'
     OR p.[partner] = 'Myanmar'
     OR p.[partner] = 'Vietnam')
+  AND p.[reporter] <> 'EU (External Trade)'
+  AND p.[reporter] <> 'United States'
 GROUP BY p.[direction],
          p.[date],
          y.[reverse_flow_current_ytd_date],

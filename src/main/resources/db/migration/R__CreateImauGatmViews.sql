@@ -223,15 +223,8 @@ FROM [imau_gatm].[PRODUCTS] p
         ON p.[direction] = y.[direction]
 WHERE YEAR(p.[date]) >= YEAR(y.[reverse_flow_previous_10_ytd_date])
   AND YEAR(p.[date]) <= YEAR(y.[reverse_flow_previous_ytd_date])
-  AND (p.[partner] = 'United Arab Emirates'
-    OR p.[partner] = 'Oman'
-    OR p.[partner] = 'Mozambique'
-    OR p.[partner] = 'Cambodia'
-    OR p.[partner] = 'Laos'
-    OR p.[partner] = 'Myanmar'
-    OR p.[partner] = 'Vietnam')
-  AND p.[reporter] <> 'EU (External Trade)'
-  AND p.[reporter] <> 'United States'
+  AND p.[partner] IN ('Cambodia', 'Laos', 'Mozambique', 'Myanmar', 'Oman', 'Russia', 'United Arab Emirates', 'Vietnam')
+  AND p.[reporter] NOT IN ('EU (External Trade)', 'United States') 
 GROUP BY p.[direction],
          p.[reporter],
          p.[date],
@@ -262,15 +255,8 @@ FROM [imau_gatm].[PRODUCTS] p
         ON p.[direction] = y.[direction]
 WHERE YEAR(p.[date]) >= YEAR(y.[reverse_flow_previous_10_ytd_date])
   AND YEAR(p.[date]) <= YEAR(y.[reverse_flow_previous_ytd_date])
-  AND (p.[partner] = 'United Arab Emirates'
-    OR p.[partner] = 'Oman'
-    OR p.[partner] = 'Mozambique'
-    OR p.[partner] = 'Cambodia'
-    OR p.[partner] = 'Laos'
-    OR p.[partner] = 'Myanmar'
-    OR p.[partner] = 'Vietnam')
-  AND p.[reporter] <> 'EU (External Trade)'
-  AND p.[reporter] <> 'United States'
+  AND p.[partner] IN ('Cambodia', 'Laos', 'Mozambique', 'Myanmar', 'Oman', 'Russia', 'United Arab Emirates', 'Vietnam')
+  AND p.[reporter] NOT IN ('EU (External Trade)', 'United States') 
 GROUP BY p.[direction],
          p.[date],
          p.[partner],
@@ -300,15 +286,8 @@ FROM [imau_gatm].[PRODUCTS] p
         ON p.[direction] = y.[direction]
 WHERE MONTH(y.[reverse_flow_current_ytd_date]) = 12
   AND YEAR(p.[date]) = YEAR(y.[reverse_flow_current_ytd_date])
-  AND (p.[partner] = 'United Arab Emirates'
-    OR p.[partner] = 'Oman'
-    OR p.[partner] = 'Mozambique'
-    OR p.[partner] = 'Cambodia'
-    OR p.[partner] = 'Laos'
-    OR p.[partner] = 'Myanmar'
-    OR p.[partner] = 'Vietnam')
-  AND p.[reporter] <> 'EU (External Trade)'
-  AND p.[reporter] <> 'United States'
+  AND p.[partner] IN ('Cambodia', 'Laos', 'Mozambique', 'Myanmar', 'Oman', 'Russia', 'United Arab Emirates', 'Vietnam')
+  AND p.[reporter] NOT IN ('EU (External Trade)', 'United States') 
 GROUP BY p.[direction],
          p.[reporter],
          p.[date],
@@ -340,15 +319,8 @@ FROM [imau_gatm].[PRODUCTS] p
         ON p.[direction] = y.[direction]
 WHERE MONTH(y.[reverse_flow_current_ytd_date]) = 12
   AND YEAR(p.[date]) = YEAR(y.[reverse_flow_current_ytd_date])
-  AND (p.[partner] = 'United Arab Emirates'
-    OR p.[partner] = 'Oman'
-    OR p.[partner] = 'Mozambique'
-    OR p.[partner] = 'Cambodia'
-    OR p.[partner] = 'Laos'
-    OR p.[partner] = 'Myanmar'
-    OR p.[partner] = 'Vietnam')
-  AND p.[reporter] <> 'EU (External Trade)'
-  AND p.[reporter] <> 'United States'
+  AND p.[partner] IN ('Cambodia', 'Laos', 'Mozambique', 'Myanmar', 'Oman', 'Russia', 'United Arab Emirates', 'Vietnam')
+  AND p.[reporter] NOT IN ('EU (External Trade)', 'United States') 
 GROUP BY p.[direction],
          p.[date],
          y.[reverse_flow_current_ytd_date],
@@ -384,15 +356,8 @@ FROM [imau_gatm].[PRODUCTS] p
 WHERE YEAR(p.[date]) >= YEAR(y.[reverse_flow_previous_10_ytd_date])
   AND YEAR(p.[date]) <= YEAR(y.[reverse_flow_current_ytd_date])
   AND MONTH(p.[date]) <= MONTH(y.[reverse_flow_current_ytd_date])
-  AND (p.[partner] = 'United Arab Emirates'
-    OR p.[partner] = 'Oman'
-    OR p.[partner] = 'Mozambique'
-    OR p.[partner] = 'Cambodia'
-    OR p.[partner] = 'Laos'
-    OR p.[partner] = 'Myanmar'
-    OR p.[partner] = 'Vietnam')
-  AND p.[reporter] <> 'EU (External Trade)'
-  AND p.[reporter] <> 'United States'
+  AND p.[partner] IN ('Cambodia', 'Laos', 'Mozambique', 'Myanmar', 'Oman', 'Russia', 'United Arab Emirates', 'Vietnam')
+  AND p.[reporter] NOT IN ('EU (External Trade)', 'United States') 
 GROUP BY p.[direction],
          p.[reporter],
          p.[date],
@@ -429,15 +394,8 @@ FROM [imau_gatm].[PRODUCTS] p
 WHERE YEAR(p.[date]) >= YEAR(y.[reverse_flow_previous_10_ytd_date])
   AND YEAR(p.[date]) <= YEAR(y.[reverse_flow_current_ytd_date])
   AND MONTH(p.[date]) <= MONTH(y.[reverse_flow_current_ytd_date])
-  AND (p.[partner] = 'United Arab Emirates'
-    OR p.[partner] = 'Oman'
-    OR p.[partner] = 'Mozambique'
-    OR p.[partner] = 'Cambodia'
-    OR p.[partner] = 'Laos'
-    OR p.[partner] = 'Myanmar'
-    OR p.[partner] = 'Vietnam')
-  AND p.[reporter] <> 'EU (External Trade)'
-  AND p.[reporter] <> 'United States'
+  AND p.[partner] IN ('Cambodia', 'Laos', 'Mozambique', 'Myanmar', 'Oman', 'Russia', 'United Arab Emirates', 'Vietnam')
+  AND p.[reporter] NOT IN ('EU (External Trade)', 'United States') 
 GROUP BY p.[direction],
          p.[date],
          y.[reverse_flow_current_ytd_date],

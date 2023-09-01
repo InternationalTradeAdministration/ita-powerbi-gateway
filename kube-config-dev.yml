@@ -77,7 +77,7 @@ spec:
     - host: powerbi-dev.trade.gov
       http:
         paths:
-          - pathType: Prefix
+          - pathType: ImplementationSpecific
             path: /
             backend:
               service:

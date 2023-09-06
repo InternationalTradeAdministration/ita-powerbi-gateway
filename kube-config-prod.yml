@@ -57,7 +57,7 @@ spec:
     app: ita-power-bi-gateway
 ---
 
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
@@ -72,9 +72,14 @@ spec:
     - host: powerbi.trade.gov
       http:
         paths:
-          - path: /
+          - pathType: ImplementationSpecific
+            path: /
             backend:
-              serviceName: ita-power-bi-gateway
-              servicePort: 80
+              service:
+                name: ita-power-bi-gateway
+                port:
+                  number: 80
   tls:
-    - secretName: trade-gov-tls-secret
+    - hosts:
+        - powerbi.trade.gov
+      secretName: trade-gov-tls-secret

@@ -15,7 +15,8 @@ FROM [sima_gstm].[PRODUCTS] p
                    ON p.[product] = c.[hs_code]
          LEFT JOIN [sima_gstm].[YTD_DATES] y ON p.[direction] = y.[direction]
     AND p.[reporter] = y.[reporter]
-WHERE YEAR(p.[date]) <= YEAR(y.[max_previous_ytd_date])
+WHERE YEAR(p.[date]) >= YEAR(y.[max_previous_10_ytd_date])
+  AND YEAR(p.[date]) <= YEAR(y.[max_previous_ytd_date])
   AND p.[attribute] = 'Quantity'
 GROUP BY p.[direction],
          p.[reporter],
@@ -40,7 +41,8 @@ FROM [sima_gstm].[PRODUCTS] p
                    ON p.[product] = c.[hs_code]
          LEFT JOIN [sima_gstm].[YTD_DATES] y ON p.[direction] = y.[direction]
     AND p.[reporter] = y.[reporter]
-WHERE YEAR(p.[date]) <= YEAR(y.[max_previous_ytd_date])
+WHERE YEAR(p.[date]) >= YEAR(y.[max_previous_10_ytd_date])
+  AND YEAR(p.[date]) <= YEAR(y.[max_previous_ytd_date])
   AND p.[attribute] = 'Value'
 GROUP BY p.[direction],
          p.[reporter],
@@ -123,7 +125,7 @@ FROM [sima_gstm].[PRODUCTS] p
                    ON p.[product] = c.[hs_code]
          LEFT JOIN [sima_gstm].[YTD_DATES] y ON p.[direction] = y.[direction]
     AND p.[reporter] = y.[reporter]
-WHERE YEAR(p.[date]) >= YEAR(y.[max_previous_ytd_date])
+WHERE YEAR(p.[date]) >= YEAR(y.[max_previous_10_ytd_date])
   AND MONTH(p.[date]) <= MONTH(y.[max_current_ytd_date])
   AND p.[attribute] = 'Quantity'
 GROUP BY p.[direction],
@@ -154,7 +156,7 @@ FROM [sima_gstm].[PRODUCTS] p
                    ON p.[product] = c.[hs_code]
          LEFT JOIN [sima_gstm].[YTD_DATES] y ON p.[direction] = y.[direction]
     AND p.[reporter] = y.[reporter]
-WHERE YEAR(p.[date]) >= YEAR(y.[max_previous_ytd_date])
+WHERE YEAR(p.[date]) >= YEAR(y.[max_previous_10_ytd_date])
   AND MONTH(p.[date]) <= MONTH(y.[max_current_ytd_date])
   AND p.[attribute] = 'Value'
 GROUP BY p.[direction],

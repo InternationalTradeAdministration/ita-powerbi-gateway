@@ -41,7 +41,7 @@ FROM [sima_gstm].[PRODUCTS] p
 WHERE YEAR(p.[date]) >= YEAR(y.[reverse_flow_previous_10_ytd_date])
   AND YEAR(p.[date]) <= YEAR(y.[reverse_flow_previous_ytd_date])
   AND p.[partner] IN ('Iran', 'Russia', 'United Arab Emirates', 'Vietnam')
-  AND p.[reporter] NOT IN ('EU (External Trade)', 'United States') 
+  AND p.[reporter] NOT IN ('EU (External Trade)', 'United States', 'Mexico (BOL)') 
 GROUP BY p.[direction],
          p.[reporter],
          p.[date],
@@ -73,7 +73,7 @@ FROM [sima_gstm].[PRODUCTS] p
 WHERE YEAR(p.[date]) >= YEAR(y.[reverse_flow_previous_10_ytd_date])
   AND YEAR(p.[date]) <= YEAR(y.[reverse_flow_previous_ytd_date])
   AND p.[partner] IN ('Iran', 'Russia', 'United Arab Emirates', 'Vietnam')
-  AND p.[reporter] NOT IN ('EU (External Trade)', 'United States') 
+  AND p.[reporter] NOT IN ('EU (External Trade)', 'United States', 'Mexico (BOL)') 
 GROUP BY p.[direction],
          p.[date],
          p.[partner],
@@ -104,7 +104,7 @@ FROM [sima_gstm].[PRODUCTS] p
 WHERE MONTH(y.[reverse_flow_current_ytd_date]) = 12
   AND YEAR(p.[date]) = YEAR(y.[reverse_flow_current_ytd_date])
   AND p.[partner] IN ('Iran', 'Russia', 'United Arab Emirates', 'Vietnam')
-  AND p.[reporter] NOT IN ('EU (External Trade)', 'United States') 
+  AND p.[reporter] NOT IN ('EU (External Trade)', 'United States', 'Mexico (BOL)') 
 GROUP BY p.[direction],
          p.[reporter],
          p.[date],
@@ -137,7 +137,7 @@ FROM [sima_gstm].[PRODUCTS] p
 WHERE MONTH(y.[reverse_flow_current_ytd_date]) = 12
   AND YEAR(p.[date]) = YEAR(y.[reverse_flow_current_ytd_date])
   AND p.[partner] IN ('Iran', 'Russia', 'United Arab Emirates', 'Vietnam')
-  AND p.[reporter] NOT IN ('EU (External Trade)', 'United States') 
+  AND p.[reporter] NOT IN ('EU (External Trade)', 'United States', 'Mexico (BOL)') 
 GROUP BY p.[direction],
          p.[date],
          y.[reverse_flow_current_ytd_date],
@@ -174,7 +174,7 @@ WHERE YEAR(p.[date]) >= YEAR(y.[reverse_flow_previous_10_ytd_date])
   AND YEAR(p.[date]) <= YEAR(y.[reverse_flow_current_ytd_date])
   AND MONTH(p.[date]) <= MONTH(y.[reverse_flow_current_ytd_date])
   AND p.[partner] IN ('Iran', 'Russia', 'United Arab Emirates', 'Vietnam')
-  AND p.[reporter] NOT IN ('EU (External Trade)', 'United States') 
+  AND p.[reporter] NOT IN ('EU (External Trade)', 'United States', 'Mexico (BOL)') 
 GROUP BY p.[direction],
          p.[reporter],
          p.[date],
@@ -212,7 +212,7 @@ WHERE YEAR(p.[date]) >= YEAR(y.[reverse_flow_previous_10_ytd_date])
   AND YEAR(p.[date]) <= YEAR(y.[reverse_flow_current_ytd_date])
   AND MONTH(p.[date]) <= MONTH(y.[reverse_flow_current_ytd_date])
   AND p.[partner] IN ('Iran', 'Russia', 'United Arab Emirates', 'Vietnam')
-  AND p.[reporter] NOT IN ('EU (External Trade)', 'United States') 
+  AND p.[reporter] NOT IN ('EU (External Trade)', 'United States', 'Mexico (BOL)') 
 GROUP BY p.[direction],
          p.[date],
          y.[reverse_flow_current_ytd_date],

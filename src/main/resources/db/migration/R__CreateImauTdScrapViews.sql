@@ -154,10 +154,16 @@ FROM [imau].[IHS_DATASET_PRODUCTS] p
 WHERE YEAR(p.[date]) >= YEAR(y.[reverse_flow_previous_10_ytd_date])
   AND YEAR(p.[date]) <= YEAR(y.[reverse_flow_previous_ytd_date])
   AND p.[ihs_dataset_id] = 6
+  AND LEFT(p.[product],4) IN (7201, 7203, 7204, 7602)
   AND p.[partner] in ('Bahamas', 'Cambodia', 'Cote d Ivoire', 'Dominican Republic', 'Guadeloupe', 
-  'Guinea', 'Iran', 'Jamaica', 'Laos', 'Libya', 'Mauritania', 'Mozambique', 'Myanmar', 'New Caledonia', 
-  'Oman', 'Russia', 'Sierra Leone', 'Trinidad & Tobago', 'United Arab Emirates', 'Vietnam')
- AND p.[reporter] NOT IN ('EU (External Trade)', 'United States') 
+    'Guinea', 'Iran', 'Jamaica', 'Laos', 'Libya', 'Mauritania', 'Mozambique', 'Myanmar', 'New Caledonia', 
+    'Oman', 'Russia', 'Sierra Leone', 'Trinidad & Tobago', 'United Arab Emirates', 'Vietnam')
+  AND p.[reporter] NOT IN ('EU (External Trade)', 'United States', 'Argentina (Secondary)', 
+    'Austria (Customs)', 'Brazil (CIF)', 'China with HK ReExports', 'Cote d Ivoire (General)', 
+    'Egypt (UN)', 'France (Customs)', 'Germany (Customs)', 'Ireland (Customs)', 'Italy Istat', 
+    'Mexico (BOL)', 'Pakistan Stat', 'Panama (BOL)', 'Poland (Customs)', 'Spain (Customs)', 
+    'United Kingdom HMRC', 'United Kingdom HMRC (Incl N Ireland)', 'United States (CIF)', 
+    'United States (Duty Paid)', 'United States (HS 8)')
 GROUP BY p.[direction],
          p.[reporter],
          p.[date],
@@ -187,10 +193,16 @@ FROM [imau].[IHS_DATASET_PRODUCTS] p
 WHERE YEAR(p.[date]) >= YEAR(y.[reverse_flow_previous_10_ytd_date])
   AND YEAR(p.[date]) <= YEAR(y.[reverse_flow_previous_ytd_date])
   AND p.[ihs_dataset_id] = 6
+  AND LEFT(p.[product],4) IN (7201, 7203, 7204, 7602)
   AND p.[partner] in ('Bahamas', 'Cambodia', 'Cote d Ivoire', 'Dominican Republic', 'Guadeloupe', 
-  'Guinea', 'Iran', 'Jamaica', 'Laos', 'Libya', 'Mauritania', 'Mozambique', 'Myanmar', 'New Caledonia', 
-  'Oman', 'Russia', 'Sierra Leone', 'Trinidad & Tobago', 'United Arab Emirates', 'Vietnam')
-  AND p.[reporter] NOT IN ('EU (External Trade)', 'United States') 
+    'Guinea', 'Iran', 'Jamaica', 'Laos', 'Libya', 'Mauritania', 'Mozambique', 'Myanmar', 'New Caledonia', 
+    'Oman', 'Russia', 'Sierra Leone', 'Trinidad & Tobago', 'United Arab Emirates', 'Vietnam')
+  AND p.[reporter] NOT IN ('EU (External Trade)', 'United States', 'Argentina (Secondary)', 
+    'Austria (Customs)', 'Brazil (CIF)', 'China with HK ReExports', 'Cote d Ivoire (General)', 
+    'Egypt (UN)', 'France (Customs)', 'Germany (Customs)', 'Ireland (Customs)', 'Italy Istat', 
+    'Mexico (BOL)', 'Pakistan Stat', 'Panama (BOL)', 'Poland (Customs)', 'Spain (Customs)', 
+    'United Kingdom HMRC', 'United Kingdom HMRC (Incl N Ireland)', 'United States (CIF)', 
+    'United States (Duty Paid)', 'United States (HS 8)')
 GROUP BY p.[direction],
          p.[date],
          p.[partner],
@@ -219,10 +231,16 @@ FROM [imau].[IHS_DATASET_PRODUCTS] p
 WHERE MONTH(y.[reverse_flow_current_ytd_date]) = 12
   AND YEAR(p.[date]) = YEAR(y.[reverse_flow_current_ytd_date])
   AND p.[ihs_dataset_id] = 6
+  AND LEFT(p.[product],4) IN (7201, 7203, 7204, 7602)
   AND p.[partner] in ('Bahamas', 'Cambodia', 'Cote d Ivoire', 'Dominican Republic', 'Guadeloupe', 
-  'Guinea', 'Iran', 'Jamaica', 'Laos', 'Libya', 'Mauritania', 'Mozambique', 'Myanmar', 'New Caledonia', 
-  'Oman', 'Russia', 'Sierra Leone', 'Trinidad & Tobago', 'United Arab Emirates', 'Vietnam')
-  AND p.[reporter] NOT IN ('EU (External Trade)', 'United States') 
+    'Guinea', 'Iran', 'Jamaica', 'Laos', 'Libya', 'Mauritania', 'Mozambique', 'Myanmar', 'New Caledonia', 
+    'Oman', 'Russia', 'Sierra Leone', 'Trinidad & Tobago', 'United Arab Emirates', 'Vietnam')
+  AND p.[reporter] NOT IN ('EU (External Trade)', 'United States', 'Argentina (Secondary)', 
+    'Austria (Customs)', 'Brazil (CIF)', 'China with HK ReExports', 'Cote d Ivoire (General)', 
+    'Egypt (UN)', 'France (Customs)', 'Germany (Customs)', 'Ireland (Customs)', 'Italy Istat', 
+    'Mexico (BOL)', 'Pakistan Stat', 'Panama (BOL)', 'Poland (Customs)', 'Spain (Customs)', 
+    'United Kingdom HMRC', 'United Kingdom HMRC (Incl N Ireland)', 'United States (CIF)', 
+    'United States (Duty Paid)', 'United States (HS 8)')
 GROUP BY p.[direction],
          p.[reporter],
          p.[date],
@@ -253,10 +271,16 @@ FROM [imau].[IHS_DATASET_PRODUCTS] p
 WHERE MONTH(y.[reverse_flow_current_ytd_date]) = 12
   AND YEAR(p.[date]) = YEAR(y.[reverse_flow_current_ytd_date])
   AND p.[ihs_dataset_id] = 6
+  AND LEFT(p.[product],4) IN (7201, 7203, 7204, 7602)
   AND p.[partner] in ('Bahamas', 'Cambodia', 'Cote d Ivoire', 'Dominican Republic', 'Guadeloupe', 
-  'Guinea', 'Iran', 'Jamaica', 'Laos', 'Libya', 'Mauritania', 'Mozambique', 'Myanmar', 'New Caledonia', 
-  'Oman', 'Russia', 'Sierra Leone', 'Trinidad & Tobago', 'United Arab Emirates', 'Vietnam')
-  AND p.[reporter] NOT IN ('EU (External Trade)', 'United States') 
+    'Guinea', 'Iran', 'Jamaica', 'Laos', 'Libya', 'Mauritania', 'Mozambique', 'Myanmar', 'New Caledonia', 
+    'Oman', 'Russia', 'Sierra Leone', 'Trinidad & Tobago', 'United Arab Emirates', 'Vietnam')
+  AND p.[reporter] NOT IN ('EU (External Trade)', 'United States', 'Argentina (Secondary)', 
+    'Austria (Customs)', 'Brazil (CIF)', 'China with HK ReExports', 'Cote d Ivoire (General)', 
+    'Egypt (UN)', 'France (Customs)', 'Germany (Customs)', 'Ireland (Customs)', 'Italy Istat', 
+    'Mexico (BOL)', 'Pakistan Stat', 'Panama (BOL)', 'Poland (Customs)', 'Spain (Customs)', 
+    'United Kingdom HMRC', 'United Kingdom HMRC (Incl N Ireland)', 'United States (CIF)', 
+    'United States (Duty Paid)', 'United States (HS 8)')
 GROUP BY p.[direction],
          p.[date],
          y.[reverse_flow_current_ytd_date],
@@ -291,10 +315,16 @@ WHERE YEAR(p.[date]) >= YEAR(y.[reverse_flow_previous_10_ytd_date])
   AND YEAR(p.[date]) <= YEAR(y.[reverse_flow_current_ytd_date])
   AND MONTH(p.[date]) <= MONTH(y.[reverse_flow_current_ytd_date])
   AND p.[ihs_dataset_id] = 6
+  AND LEFT(p.[product],4) IN (7201, 7203, 7204, 7602)
   AND p.[partner] in ('Bahamas', 'Cambodia', 'Cote d Ivoire', 'Dominican Republic', 'Guadeloupe', 
-  'Guinea', 'Iran', 'Jamaica', 'Laos', 'Libya', 'Mauritania', 'Mozambique', 'Myanmar', 'New Caledonia', 
-  'Oman', 'Russia', 'Sierra Leone', 'Trinidad & Tobago', 'United Arab Emirates', 'Vietnam')
-  AND p.[reporter] NOT IN ('EU (External Trade)', 'United States') 
+    'Guinea', 'Iran', 'Jamaica', 'Laos', 'Libya', 'Mauritania', 'Mozambique', 'Myanmar', 'New Caledonia', 
+    'Oman', 'Russia', 'Sierra Leone', 'Trinidad & Tobago', 'United Arab Emirates', 'Vietnam')
+  AND p.[reporter] NOT IN ('EU (External Trade)', 'United States', 'Argentina (Secondary)', 
+    'Austria (Customs)', 'Brazil (CIF)', 'China with HK ReExports', 'Cote d Ivoire (General)', 
+    'Egypt (UN)', 'France (Customs)', 'Germany (Customs)', 'Ireland (Customs)', 'Italy Istat', 
+    'Mexico (BOL)', 'Pakistan Stat', 'Panama (BOL)', 'Poland (Customs)', 'Spain (Customs)', 
+    'United Kingdom HMRC', 'United Kingdom HMRC (Incl N Ireland)', 'United States (CIF)', 
+    'United States (Duty Paid)', 'United States (HS 8)')
 GROUP BY p.[direction],
          p.[reporter],
          p.[date],
@@ -330,10 +360,16 @@ WHERE YEAR(p.[date]) >= YEAR(y.[reverse_flow_previous_10_ytd_date])
   AND YEAR(p.[date]) <= YEAR(y.[reverse_flow_current_ytd_date])
   AND MONTH(p.[date]) <= MONTH(y.[reverse_flow_current_ytd_date])
   AND p.[ihs_dataset_id] = 6
+  AND LEFT(p.[product],4) IN (7201, 7203, 7204, 7602)
   AND p.[partner] in ('Bahamas', 'Cambodia', 'Cote d Ivoire', 'Dominican Republic', 'Guadeloupe', 
-  'Guinea', 'Iran', 'Jamaica', 'Laos', 'Libya', 'Mauritania', 'Mozambique', 'Myanmar', 'New Caledonia', 
-  'Oman', 'Russia', 'Sierra Leone', 'Trinidad & Tobago', 'United Arab Emirates', 'Vietnam')
-  AND p.[reporter] NOT IN ('EU (External Trade)', 'United States') 
+    'Guinea', 'Iran', 'Jamaica', 'Laos', 'Libya', 'Mauritania', 'Mozambique', 'Myanmar', 'New Caledonia', 
+    'Oman', 'Russia', 'Sierra Leone', 'Trinidad & Tobago', 'United Arab Emirates', 'Vietnam')
+  AND p.[reporter] NOT IN ('EU (External Trade)', 'United States', 'Argentina (Secondary)', 
+    'Austria (Customs)', 'Brazil (CIF)', 'China with HK ReExports', 'Cote d Ivoire (General)', 
+    'Egypt (UN)', 'France (Customs)', 'Germany (Customs)', 'Ireland (Customs)', 'Italy Istat', 
+    'Mexico (BOL)', 'Pakistan Stat', 'Panama (BOL)', 'Poland (Customs)', 'Spain (Customs)', 
+    'United Kingdom HMRC', 'United Kingdom HMRC (Incl N Ireland)', 'United States (CIF)', 
+    'United States (Duty Paid)', 'United States (HS 8)')
 GROUP BY p.[direction],
          p.[date],
          y.[reverse_flow_current_ytd_date],

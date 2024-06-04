@@ -1,0 +1,1 @@
+EXEC sp_rename 'dbo.SIMA_CENSUS', 'SIMA_CENSUS_LEGACY'

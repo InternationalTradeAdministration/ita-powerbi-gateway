@@ -227,8 +227,7 @@ export default {
       this.isExportToPdfSuccessful = false
       let workspaceName = this.$route.params.workspaceName
       let reportName = this.$route.params.reportName
-      let bookmarkCaptureOptions = this.$route.query.exportCaptureAllPages === 'true' ? { allPages: true } : {}
-      this.getReport().bookmarksManager.capture(bookmarkCaptureOptions)
+      this.getReport().bookmarksManager.capture({ allPages: true })
       .then(bookmark => this.startExportToFile(workspaceName, reportName, bookmark.state, this.exportReportFileFormat))
       .then(exportStatus => this.getFinalExportStatus(workspaceName, reportName, exportStatus.id, 15000))
       .then(exportStatus => this.processFinalExportStatus(workspaceName, reportName, exportStatus))
